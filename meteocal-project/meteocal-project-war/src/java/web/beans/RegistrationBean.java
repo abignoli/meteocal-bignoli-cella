@@ -18,8 +18,8 @@ import javax.faces.bean.ManagedBean;
 public class RegistrationBean {
     
     private String name;
-    private String psw;
-    private String confPsw;
+    private String password;
+    private String passwordConfirmation;
     
     /**
      * Creates a new instance of LoginBean
@@ -29,27 +29,25 @@ public class RegistrationBean {
 
     public void setName(String name){
         this.name = name;
-        return;
+        System.out.println(this.name);
     }
      
-    public void setPsw(String password){
-        this.psw = password;
-        return;
+    public void setPassword(String password){
+        this.password = password;
     }
     
-    public void setConfPsw(String confPsw){
-        this.confPsw = confPsw;
-        return;
+    public void setPasswordConfirmation(String passwordConf){
+        this.passwordConfirmation = passwordConf;
     }
     
     public String getName(){
         return this.name;
     }
-    public String getPsw(){
-        return this.psw;
+    public String getPassword(){
+        return this.password;
     }
-    public String getConfPsw(){
-        return this.confPsw;
+    public String getPasswordConfirmation(){
+        return this.passwordConfirmation;
     }
     
     public String add(){

@@ -20,12 +20,12 @@
     	<h:form>
             <p:panel id="registrationPanel" header="First Option - Registration" footer="Registration form" style="margin-bottom:20px" class="panelForm">
                 <h:panelGrid columns="2" id="registrationGrid">
-                    <p:outputLabel value="Username" for="userReg" />
-                    <p:autoComplete id="userReg" value="#{registrationBean.name}" />
-                    <p:outputLabel value="Password" for="pswReg"/>
-                    <p:password id="pswReg" value="#{registrationBean.psw}" />
-                    <p:outputLabel value="Password Confirmation" for="confPswReg"/>
-                    <p:password id="confPswReg" value="#{registrationBean.confPsw}" />
+                    <p:outputLabel value="Username" for="userRegistration" />
+                    <p:autoComplete id="userRegistration" value="#{registrationBean.name}" />
+                    <p:outputLabel value="Password" for="passwordRegistration"/>
+                    <p:password id="passwordRegistration" value="#{registrationBean.password}" />
+                    <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
+                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" />
                     <p:commandButton action="#{registrationBean.add()}" value="Signup" type="submit" ajax="false" styleClass="block" />
 		</h:panelGrid>
             </p:panel>
@@ -37,8 +37,8 @@
                     <p:outputLabel value="Username" for="userLogin" />
                     <p:autoComplete id="userLogin" value="#{loginBean.name}" />
                     <p:outputLabel value="Password" for="pswLog"/>
-                    <p:password id="pswLog" value="#{loginBean.psw}" />
-                    <p:commandButton action="#{loginBean.check()}" value="Login" type="submit" ajax="false" styleClass="block" />
+                    <p:password id="pswLog" value="#{loginBean.password}" />
+                    <p:commandButton action="#{loginBean.login()}" value="Login" type="submit" ajax="false" styleClass="block" />
                 </h:panelGrid>
             </p:panel>
         </h:form>
