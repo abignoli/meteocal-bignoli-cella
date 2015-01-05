@@ -13,7 +13,7 @@ import javax.ejb.Stateless;
 /**
  *
  * @author Andrea Bignoli
- */
+ */ 
 
 @Stateless
 public class UserFacadeImplementation implements UserFacade {
