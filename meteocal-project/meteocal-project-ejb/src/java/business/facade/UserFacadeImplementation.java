@@ -5,10 +5,35 @@
  */
 package business.facade;
 
+import business.dao.UserDAO;
+import business.entities.User;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
-public class UserFacadeImplementation {
-    
+
+@Stateless
+public class UserFacadeImplementation implements UserFacade {
+    @EJB
+    private UserDAO userDAO;
+
+    public void save(User u) {
+        if(u.isValid()) {
+            u.encryptPassword();
+            userDAO.save(u);
+        }
+        
+        // TODO what if user not valid
+    }
+
+    public User update(User u) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void delete(User u) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

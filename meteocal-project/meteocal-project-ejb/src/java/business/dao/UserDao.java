@@ -3,22 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.facade;
+package business.dao;
 
 import business.entities.User;
-import javax.ejb.Local;
 
 /**
  *
  * @author Andrea Bignoli
  */
-
-@Local
-public interface UserFacade {
+public class UserDAO extends DAObase<User> {
     
-    	public abstract void save(User u);
-
-	public abstract User update(User u);
-
-	public abstract void delete(User u);
+    public UserDAO() {
+	super(User.class);
+    }
+        
 }
