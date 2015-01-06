@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.entities;
+package business.facade;
 
 /**
  *
  * @author USUARIO
  */
-public class Partecipation {
+public class ParticipationFacadeImplementation {
     
 }

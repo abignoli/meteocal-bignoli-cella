@@ -9,6 +9,6 @@ package business.facade;
  *
  * @author USUARIO
  */
-public class PartecipationFacadeImplementation {
+public interface ParticipationFacade {
     
 }
