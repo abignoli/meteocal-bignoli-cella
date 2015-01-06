@@ -5,6 +5,9 @@
  */
 package web.beans;
 
+import business.entities.User;
+import business.facade.UserFacade;
+import javax.ejb.EJB;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -17,44 +20,51 @@ import javax.faces.bean.ManagedBean;
 //Is a Session Bean
 public class RegistrationBean {
     
-    private String name;
-    private String password;
+    @EJB
+    UserFacade userFacade;
+    
+
     private String passwordConfirmation;
+    private User userToRegister;
+    
     
     /**
      * Creates a new instance of LoginBean
      */
     public RegistrationBean() {
     }
-
-    public void setName(String name){
-        this.name = name;
-        System.out.println(this.name);
-    }
-     
-    public void setPassword(String password){
-        this.password = password;
-    }
     
-    public void setPasswordConfirmation(String passwordConf){
-        this.passwordConfirmation = passwordConf;
-    }
-    
-    public String getName(){
-        return this.name;
-    }
-    public String getPassword(){
-        return this.password;
-    }
     public String getPasswordConfirmation(){
         return this.passwordConfirmation;
     }
+        
+    public void setPasswordConfirmation(String passwordConf){
+        this.passwordConfirmation = passwordConf;
+    }
+
+    public User getUser() {
+        if (userToRegister == null) {
+            userToRegister = new User();
+        }
+        return userToRegister;
+    }
+
+    public void setUser(User user) {
+        this.userToRegister = user;
+    }
     
-    public String add(){
-        if( true ){
+    private boolean passwordMatching(){
+        return userToRegister.getPassword().equals(this.passwordConfirmation);
+    }
+    
+    public String register(){
+        if( passwordMatching() ){
+            System.out.println("Starting registration!");
+            userFacade.save(userToRegister);
+            System.out.println("Registration complete!");
             return "Index";
         }
-        else
+        else 
             return "Error";
     }
 }

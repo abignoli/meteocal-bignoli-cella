@@ -6,11 +6,14 @@
 package business.dao;
 
 import business.entities.User;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Andrea Bignoli
  */
+
+@Stateless
 public class UserDAO extends DAObase<User> {
     
     public UserDAO() {

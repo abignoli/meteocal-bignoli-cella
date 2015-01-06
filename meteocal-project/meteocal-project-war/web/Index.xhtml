@@ -21,12 +21,12 @@
             <p:panel id="registrationPanel" header="First Option - Registration" footer="Registration form" style="margin-bottom:20px" class="panelForm">
                 <h:panelGrid columns="2" id="registrationGrid">
                     <p:outputLabel value="Username" for="userRegistration" />
-                    <p:autoComplete id="userRegistration" value="#{registrationBean.name}" />
+                    <p:autoComplete id="userRegistration" value="#{registrationBean.user.username}" />
                     <p:outputLabel value="Password" for="passwordRegistration"/>
-                    <p:password id="passwordRegistration" value="#{registrationBean.password}" />
+                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" />
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
                     <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" />
-                    <p:commandButton action="#{registrationBean.add()}" value="Signup" type="submit" ajax="false" styleClass="block" />
+                    <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block" />
 		</h:panelGrid>
             </p:panel>
 	</h:form> 

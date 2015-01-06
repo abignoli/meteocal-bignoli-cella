@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class UserFacadeImplementation implements UserFacade {
+    
     @EJB
     private UserDAO userDAO;
 
