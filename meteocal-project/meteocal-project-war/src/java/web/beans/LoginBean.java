@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean
 @SessionScoped
 //Is a Session Bean
-public class LoginBean {
+public class LoginBean{
     
     private String username;
     private String password;
@@ -49,22 +49,29 @@ public class LoginBean {
  
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
-
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
+        
+        System.out.println("Login user: " + this.username + " psw: "+  this.password);
         try {
+            System.out.println("1");
+            
             request.login(this.username, this.password);
-        } catch (ServletException e) {
+            
+            System.out.println("2");
+             } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
-            return "Index";
+            System.out.println("user" + e.toString());
+            return "/Error";
         }
         return "/protected/personal/HomeCalendarMonth";
     }
+    
     public String logout() {
+        System.out.println("logout was called from someone");
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         request.getSession().invalidate();
-        return "/Index?faces-redirect=true";
+        return "/Index";
     }
     
 }
