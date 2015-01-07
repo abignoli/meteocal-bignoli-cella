@@ -33,7 +33,7 @@ public class UserFacadeImplementation implements UserFacade {
         // TODO what if user not valid
     }
 
-    public void update(User u) throws BusinessException {
+    public void updateData(User u) throws BusinessException {
         // Check if password has been modified, if this is the case the method will return since to modify the password the old one is required
         if(!checkPassword(u, u.getPassword()))
             throw new BusinessException(BusinessException.MISSING_PASSWORD);
@@ -41,7 +41,7 @@ public class UserFacadeImplementation implements UserFacade {
         userDAO.update(u);
     }
     
-    public void update(User u, String oldPassword) throws BusinessException {
+    public void updateData(User u, String oldPassword) throws BusinessException {
         // Check if provided current password is correct
         if(!checkPassword(u, oldPassword))
             throw new BusinessException(BusinessException.WRONG_PASSWORD);

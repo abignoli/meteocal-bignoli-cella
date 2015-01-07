@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.facade;
-
-import javax.ejb.Stateless;
+package business.dao;
 
 /**
  *
  * @author USUARIO
  */
-@Stateless
-public class EventFacadeImplementation {
+public class NotificationViewDAO {
     
 }

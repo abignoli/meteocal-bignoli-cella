@@ -5,13 +5,18 @@
  */
 package business.dao;
 
-import business.entities.User;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Map.Entry;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -70,6 +75,17 @@ public abstract class DAObase<T> {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public List<T> findAll() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(databaseEntityClass);
+        Root<T> rootEntry = cq.from(databaseEntityClass);
+        CriteriaQuery<T> all = cq.select(rootEntry);
+        TypedQuery<T> allQuery = em.createQuery(all);
+        
+        return allQuery.getResultList();
+
     }
 
     protected T findSingleResult(String namedQuery, Map<String, Object> parameters) {

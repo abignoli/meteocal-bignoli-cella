@@ -9,6 +9,7 @@ package business.facade;
  *
  * @author USUARIO
  */
+
 public interface EventFacade {
     
 }

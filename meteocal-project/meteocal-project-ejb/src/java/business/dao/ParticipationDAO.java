@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.facade;
+package business.dao;
 
+import business.entities.Event;
+import business.entities.User;
 import javax.ejb.Stateless;
 
 /**
@@ -12,6 +14,9 @@ import javax.ejb.Stateless;
  * @author USUARIO
  */
 @Stateless
-public class EventFacadeImplementation {
+public class ParticipationDAO {
     
+    public void testCreatePartecipation(User u, Event e) {
+        u.partecipateTo(e);
+    }
 }

@@ -18,9 +18,9 @@ public interface UserFacade {
 
     public abstract void save(User u);
 
-    public abstract void update(User u) throws BusinessException;
+    public abstract void updateData(User u) throws BusinessException;
     
-    public abstract void update(User u, String oldPassword) throws BusinessException;
+    public abstract void updateData(User u, String oldPassword) throws BusinessException;
 
     public abstract void remove(User u);
 
