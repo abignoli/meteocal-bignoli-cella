@@ -12,13 +12,15 @@ import javax.ejb.Local;
  *
  * @author Andrea Bignoli
  */
-
 @Local
 public interface UserFacade {
-    
-    	public abstract void save(User u);
 
-	public abstract User update(User u);
+    public abstract void save(User u);
 
-	public abstract void delete(User u);
+    public abstract User update(User u);
+
+    public abstract void remove(User u);
+
+    public abstract User findByUsername(String username);
+
 }

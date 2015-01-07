@@ -6,6 +6,8 @@
 package business.dao;
 
 import business.entities.User;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.Stateless;
 
 /**
@@ -19,5 +21,11 @@ public class UserDAO extends DAObase<User> {
     public UserDAO() {
 	super(User.class);
     }
-        
+    
+    public User findByUsername(String username) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("username", username);
+        String query = "select u from User u where u.username = :username";
+        return super.findSingleResult(query, parameters);
+    }
 }

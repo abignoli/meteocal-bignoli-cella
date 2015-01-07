@@ -81,7 +81,6 @@ public class User {
     private boolean calendarVisible;
         
     public User() {
-        groupName = Group.USER.getName();
     }
 
     public int getId() {

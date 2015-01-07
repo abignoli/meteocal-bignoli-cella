@@ -7,6 +7,7 @@ package business.facade;
 
 import business.dao.UserDAO;
 import business.entities.User;
+import business.shared.data.Group;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -23,6 +24,7 @@ public class UserFacadeImplementation implements UserFacade {
 
     public void save(User u) {
         if(u.isValid()) {
+            u.setGroupName(Group.USER.getName());
             u.encryptPassword();
             userDAO.save(u);
         }
@@ -34,7 +36,11 @@ public class UserFacadeImplementation implements UserFacade {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void delete(User u) {
+    public void remove(User u) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public User findByUsername(String username) {
+        return userDAO.findByUsername(username);
     }
 }
