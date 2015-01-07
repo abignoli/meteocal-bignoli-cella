@@ -9,6 +9,7 @@ import java.beans.*;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -56,5 +57,12 @@ public class SettingsEditingBean implements Serializable {
     
     public void setEmail(String value){
         this.email = value;
+    }
+    
+    public void save(){
+        
+        UserSessionBean sessionUser = FacesContext.getCurrentInstance().getApplication().evaluateExpressionGet(FacesContext.getCurrentInstance(), "#{userSessionBean}", UserSessionBean.class);
+        String user = sessionUser.getUsername();
+        return;
     }
 }

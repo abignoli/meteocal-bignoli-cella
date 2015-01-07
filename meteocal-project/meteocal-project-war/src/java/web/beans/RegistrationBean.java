@@ -7,26 +7,32 @@ package web.beans;
 
 import business.entities.User;
 import business.facade.UserFacade;
+import business.security.UserManager;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author USUARIO
  */
-@ManagedBean
-@SessionScoped
+@Named
+@RequestScoped
 //Is a Session Bean
 public class RegistrationBean {
     
     @EJB
-    UserFacade userFacade;
+    UserManager um;
     
 
     private String passwordConfirmation;
     private User userToRegister;
     
+    @PostConstruct
+    public void init(){
+        userToRegister = new User();
+    }
     
     /**
      * Creates a new instance of LoginBean
@@ -43,9 +49,6 @@ public class RegistrationBean {
     }
 
     public User getUser() {
-        if (userToRegister == null) {
-            userToRegister = new User();
-        }
         return userToRegister;
     }
 
@@ -60,8 +63,10 @@ public class RegistrationBean {
     public String register(){
         if( passwordMatching() ){
             System.out.println("Starting registration!");
-            userFacade.save(userToRegister);
+            um.register(userToRegister);
+            
             System.out.println("Registration complete!");
+            //protected/personal/HomeCalendarMonth
             return "Index";
         }
         else 
