@@ -24,6 +24,7 @@ public class Invitation {
     @Id
     private int eventID;
     
+    @Column(columnDefinition="boolean default false")
     private boolean seen;
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -49,6 +50,22 @@ public class Invitation {
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public boolean isSeen() {

@@ -7,7 +7,7 @@ package business.dao;
 
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
 public class InvitationDao {
     

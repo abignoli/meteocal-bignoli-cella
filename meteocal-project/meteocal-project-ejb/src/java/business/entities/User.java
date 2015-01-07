@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
 
 @Entity
@@ -43,6 +43,9 @@ public class User {
     @NotNull(message = "Group name cannot be empty")
     private String groupName;
     
+    @OneToMany(mappedBy="creator")
+    private List<Event> createdEvents;    
+    
     @ManyToMany
     @JoinTable(name="INVITATION",
             joinColumns = {@JoinColumn(name = "userID", 
@@ -61,8 +64,20 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "eventID", 
                               referencedColumnName = "id")})
     private List<Event> participatingTo;    
+    
+    @OneToMany(mappedBy="user")
+    private List<NotificationView> notificationViews;
+    
+    @ManyToMany
+    @JoinTable(name="NOTIFICATIONVIEW",
+            joinColumns = {@JoinColumn(name = "userID", 
+                              referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "notificationID", 
+                              referencedColumnName = "id")})
+    private List<Notification> notifications;   
         
-    //TODO default value
+    @NotNull
+    @Column(columnDefinition="boolean default false")
     private boolean calendarVisible;
         
     public User() {

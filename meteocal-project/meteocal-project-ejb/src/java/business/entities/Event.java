@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
 
 @Entity
@@ -27,8 +27,36 @@ public class Event {
     @NotNull(message = "Event name cannot be empty")
     private String name;
     
+    @NotNull(message = "Event description cannot be empty")
+    private String description;
+    
+    // TODO add start and end datetime
+ 
+    private String country;
+    
+    private String city;
+    
+    private String address;
+    
+    private boolean indoor;
+    
+    // TODO Bad Weather Conditions set
+    
+    private boolean privateEvent;
+    
+    // TODO Enum with Event State
+    
+    // TODO Suggested schedule change datetime
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="CREATORID", referencedColumnName = "ID")
+    private User creator;
+    
     @OneToMany(mappedBy="event")
     private List<Invitation> invitations;
+    
+    @OneToMany(mappedBy="event")
+    private List<Notification> notifications;
     
     @ManyToMany
     @JoinTable(name="PARTICIPATION",
@@ -45,6 +73,9 @@ public class Event {
             inverseJoinColumns = {@JoinColumn(name = "userID", 
                               referencedColumnName = "id")})
     private List<User> invited; 
+    
+    @OneToMany(mappedBy="event")
+    private List<WeatherForecast> weatherForecasts;
 
     public int getId() {
         return id;
