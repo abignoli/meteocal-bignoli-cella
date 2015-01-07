@@ -12,12 +12,12 @@
             
             <p:menubar>
                 <p:menuitem value="home" url="/protected/personal/HomeCalendarMonth.xhtml" />
-                <p:menuitem value="Username" url="#" />
+                <p:menuitem value="#{topbarBean.username}" url="#" />
                 
                 <f:facet name="options">
                     <p:inputText style="margin-right:20px" placeholder="Search"
                                  requiredMessage="Please enter your username." id="searchText">
-                        <f:validateLength minimum="3" maximum="20" />
+                        <f:validateLength />
                     </p:inputText>
                 </f:facet>
                 
@@ -32,10 +32,12 @@
                 </p:submenu>                
                 <p:submenu label="Account" >
                     <p:menuitem value="Settings" url="/protected/personal/Settings.xhtml"  />
-                    <p:menuitem value="Logout" url="/Index.xhtml" />
+                    <p:menuitem value="Logout" actionListener="#{loginBean.logout()}" ajax="false" />
                 </p:submenu>
 
             </p:menubar>
+                
         </h:form>
+            
 
 </ui:composition>

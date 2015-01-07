@@ -5,10 +5,13 @@
  */
 package web.beans;
 
+import java.io.IOException;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +19,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author USUARIO
  */
-@ManagedBean
-@SessionScoped
-//Is a Session Bean
+@Named
+@RequestScoped
 public class LoginBean{
     
     private String username;
@@ -32,12 +34,10 @@ public class LoginBean{
 
     public void setName(String name){
         this.username = name;
-        return;
     }
      
     public void setPassword(String password){
         this.password = password;
-        return;
     }
     
     public String getName(){
@@ -46,32 +46,36 @@ public class LoginBean{
     public String getPassword(){
         return this.password;
     }
- 
+    
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         
-        System.out.println("Login user: " + this.username + " psw: "+  this.password);
+        System.out.println("Login user: " + this.username + " psw: "+  this.password + " !");
         try {
-            System.out.println("1");
             
             request.login(this.username, this.password);
-            
-            System.out.println("2");
-             } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage("Login failed."));
-            System.out.println("user" + e.toString());
+            } 
+            catch (ServletException e) {
+                context.addMessage(null, new FacesMessage("Login failed."));
+                System.out.println("user" + e.toString());
             return "/Error";
         }
+        
         return "/protected/personal/HomeCalendarMonth";
     }
     
-    public String logout() {
-        System.out.println("logout was called from someone");
+    public void logout() {
+        System.out.println("logout!");
+        String contextPath;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         request.getSession().invalidate();
-        return "/Index";
+        try {
+            contextPath = request.getContextPath();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml");
+        } catch (IOException ex) {
+        }
     }
     
 }
