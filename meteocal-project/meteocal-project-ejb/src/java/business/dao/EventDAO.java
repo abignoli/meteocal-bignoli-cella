@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.facade;
+package business.dao;
 
-import javax.ejb.Stateless;
+import business.entities.Event;
+import business.entities.User;
 
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
-@Stateless
-public class EventFacadeImplementation {
+public class EventDAO extends DAObase<Event> {
     
+    public EventDAO() {
+	super(Event.class);
+    }
 }

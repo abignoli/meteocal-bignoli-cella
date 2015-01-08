@@ -6,6 +6,7 @@
 package business.facade;
 
 import business.entities.User;
+import business.exceptions.BusinessException;
 import javax.ejb.Local;
 
 /**
@@ -17,7 +18,9 @@ public interface UserFacade {
 
     public abstract void save(User u);
 
-    public abstract User update(User u);
+    public abstract void updateData(User u) throws BusinessException;
+    
+    public abstract void updateData(User u, String oldPassword) throws BusinessException;
 
     public abstract void remove(User u);
 
