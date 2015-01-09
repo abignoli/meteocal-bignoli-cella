@@ -1,3 +1,22 @@
 #searchText{
     margin: 10px;
 }
+
+.tableHead{
+    width: 100px;
+    height: 50px;
+    border:1px solid black;
+}
+
+.cell{
+    width: 100px;
+    height: 100px;
+}
+
+.tableHead :hover{
+    background-color: red;
+}
+
+.cell :hover{
+    background-color: red;
+}

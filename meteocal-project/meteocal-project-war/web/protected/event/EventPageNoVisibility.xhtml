@@ -16,6 +16,8 @@ and open the template in the editor.
     <body>
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" binding="#{exceptionBean.noVisibility}"/>
+            
         </div>
     </body>
 </html>

@@ -8,6 +8,7 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Events Creation</title>
@@ -17,5 +18,43 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
+        <h:form>
+            <p:panel id="privacyPanel" header="Event Creation" footer="Creation form" style="margin-top:70px" class="panelForm">     
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
+                    
+                    <p:outputLabel value="Name" for="name" />
+                    <p:autoComplete id="name" value="#{eventCreationBean.name}" emptyMessage="Event's name" />
+                    
+                    <p:outputLabel value="Address" for="address" />
+                    <p:autoComplete id="address" value="#{eventCreationBean.address}" emptyMessage="Road , N" />
+                    
+                    <p:outputLabel value="City" for="city" />
+                    <p:autoComplete id="city" value="#{eventCreationBean.city}" emptyMessage="City" />
+                    
+                    <p:outputLabel value="Country" for="country" />
+                    <p:autoComplete id="country" value="#{eventCreationBean.country}" emptyMessage="Country" />
+                    
+                    <p:outputLabel value="Description" for="description" />
+                    <p:inputTextarea id="description" rows="5" cols="30" counter="display" maxlength="250" counterTemplate="{0} characters remaining." autoResize="true" value="#{eventCreationBean.description}"/>
+                    <h:outputText id="display" style="columns: 2"/>
+                    
+                    <br/>
+                        
+                    <h:outputText value="Location: " />
+                    <p:selectOneButton value="#{eventCreationBean.indoor}">
+                    <f:selectItem itemLabel="Indoor" itemValue="1" />
+                    <f:selectItem itemLabel="Outdoor" itemValue="0" />
+                    </p:selectOneButton>
+                    
+                    <h:outputText value="Privacy Mode " />
+                    <p:selectOneButton value="#{eventCreationBean.privateEvent}">
+                    <f:selectItem itemLabel="Private" itemValue="1" />
+                    <f:selectItem itemLabel="Public" itemValue="0" />
+                    </p:selectOneButton>
+                    
+                    <p:commandButton value="Create" icon="ui-icon-check" action="#{eventCreationBean.eventCreation()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
     </body>
 </html>
