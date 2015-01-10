@@ -11,4 +11,21 @@
     <module>meteocal-web</module>
     <module>meteocal-ejb</module>
   </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>primefaces</groupId>
+            <artifactId>primefaces-lib</artifactId>
+            <version>5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>primefaces.themes</groupId>
+            <artifactId>humanity</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+    </dependencies>
 </project>
