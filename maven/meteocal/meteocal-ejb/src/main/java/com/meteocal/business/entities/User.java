@@ -165,9 +165,7 @@ public class User {
         return true;
     }
 
-    public void encryptPassword() {
-        password = PasswordEncrypter.encrypt(password);
+    public static String encryptPassword(String password) {
+        return PasswordEncrypter.encrypt(password);
     }
-
-    
 }

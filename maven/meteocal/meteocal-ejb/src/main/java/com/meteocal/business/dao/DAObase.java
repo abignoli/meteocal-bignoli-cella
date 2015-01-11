@@ -47,7 +47,10 @@ public abstract class DAObase<T> {
                 // This also persits the entity if it isn't already in the database.
 
         try {
-            return em.merge(entity);
+            T result = em.merge(entity);
+            em.flush();
+            return result;
+            
         } catch (Exception e) {
             System.out.println("[ERROR - PERSISTENCE] While running query: " + e.getMessage());
             e.printStackTrace();

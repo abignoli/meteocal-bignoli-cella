@@ -71,9 +71,10 @@ public class SettingsEditingBean implements Serializable{
     
     public String saveCalendarVisibility(){
             System.out.println("init saveVisibility");
-            User localUser = new User();
+            User localUser;
             
             System.out.println("define localUser");
+            localUser = um.getLoggedUser();
             localUser.setUsername(um.getLoggedUser().getUsername());
             localUser.setCalendarVisible(this.getCalendarVisibility());
             localUser.setEmail(um.getLoggedUser().getEmail());
@@ -82,7 +83,7 @@ public class SettingsEditingBean implements Serializable{
             System.out.println("username: " + localUser.getUsername() + " visibility: " + localUser.isCalendarVisible() + " \nemail: " + localUser.getEmail() + " password: " + localUser.getPassword());
         
         try {
-            
+            localUser.setId(um.getLoggedUser().getId());
             System.out.println("Calling userFacade");
             userFacade.updateData(localUser);
             
@@ -121,10 +122,29 @@ public class SettingsEditingBean implements Serializable{
         localUser.setPassword(this.newPassword);
         
         System.out.println(localUser.getUsername() + " " + localUser.isCalendarVisible() + " " + localUser.getEmail());
+        
+        localUser.setId(um.getLoggedUser().getId());
+        
+        // Temporary corrections
+        
+        localUser = um.getLoggedUser();
+        
+                localUser.setCalendarVisible(um.getLoggedUser().isCalendarVisible());
+        
+        localUser.setEmail(
+                ("NULL".equals(this.email)) ? 
+                        um.getLoggedUser().getEmail()
+                        :
+                        this.email
+        );
+        
+        localUser.setPassword(this.newPassword);
+        
         try {
-            userFacade.updateData( um.getLoggedUser() , this.previousPassword );
+            userFacade.updateData( localUser , this.previousPassword );
         }
         catch (BusinessException ex) {
+            System.out.println(ex.toString());
             return "/Error";
         }
         

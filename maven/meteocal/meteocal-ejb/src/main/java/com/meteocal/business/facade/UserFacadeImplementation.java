@@ -22,11 +22,13 @@ public class UserFacadeImplementation implements UserFacade {
     
     @EJB
     private UserDAO userDAO;
+    
+    boolean correct;
 
     public void save(User u) {
         if(u.isValid()) {
             u.setGroupName(Group.USER.getName());
-            u.encryptPassword();
+            u.setPassword(User.encryptPassword(u.getPassword()));
             userDAO.save(u);
         }
         
@@ -46,6 +48,8 @@ public class UserFacadeImplementation implements UserFacade {
         if(!checkPassword(u, oldPassword))
             throw new BusinessException(BusinessException.WRONG_PASSWORD);
         
+        u.setPassword(User.encryptPassword(u.getPassword()));
+        
         userDAO.update(u);
     }
 
@@ -59,6 +63,8 @@ public class UserFacadeImplementation implements UserFacade {
 
     private boolean checkPassword(User u, String password) {
         User userDBEntry = userDAO.find(u.getId());
-        return userDBEntry.getPassword() == password;
+
+        correct = userDBEntry.getPassword().equals(User.encryptPassword(password));
+        return userDBEntry.getPassword().equals(User.encryptPassword(password));
     }
 }
