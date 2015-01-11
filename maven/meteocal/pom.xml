@@ -31,7 +31,7 @@
     <repositories>
         <repository>
             <id>meteocal-maven-libraries-ejb</id>
-            <url>file://${user.dir}\lib</url>
+            <url>file://${user.dir}/lib</url>
         </repository>
     </repositories>
 </project>
