@@ -57,13 +57,16 @@ public class User {
     @OneToMany(mappedBy="user")
     private List<Invitation> invitations;
     
-    @ManyToMany
-    @JoinTable(name="PARTICIPATION",
-            joinColumns = {@JoinColumn(name = "userID", 
-                              referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "eventID", 
-                              referencedColumnName = "id")})
-    private List<Event> participatingTo;    
+//    @ManyToMany
+//    @JoinTable(name="PARTICIPATION",
+//            joinColumns = {@JoinColumn(name = "userID", 
+//                              referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "eventID", 
+//                              referencedColumnName = "id")})
+//    private List<Event> participatingTo;   
+    
+    @ManyToMany(mappedBy="participants", fetch = FetchType.EAGER)
+    private List<Event> participatingTo;
     
     @OneToMany(mappedBy="user")
     private List<NotificationView> notificationViews;
@@ -98,7 +101,7 @@ public class User {
         this.participatingTo = participatingTo;
     }
     
-    public void partecipateTo(Event e) {
+    public void participateTo(Event e) {
         // TODO check event is not already in list
         
         getParticipatingTo().add(e);

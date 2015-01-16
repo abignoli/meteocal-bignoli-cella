@@ -58,7 +58,7 @@ public class Event {
     @OneToMany(mappedBy="event")
     private List<Notification> notifications;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="PARTICIPATION",
             joinColumns = {@JoinColumn(name = "eventID", 
                               referencedColumnName = "id")},
@@ -122,11 +122,91 @@ public class Event {
     }
 
     public List<User> getParticipants() {
+        if(participants == null)
+            participants = new ArrayList<User>();
+        
         return participants;
     }
 
     public void setParticipants(List<User> participants) {
         this.participants = participants;
+    }
+    
+    public void addParticipant(User u) {
+        // TODO check user not already participant
+        this.getParticipants().add(u);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean isIndoor() {
+        return indoor;
+    }
+
+    public void setIndoor(boolean indoor) {
+        this.indoor = indoor;
+    }
+
+    public boolean isPrivateEvent() {
+        return privateEvent;
+    }
+
+    public void setPrivateEvent(boolean privateEvent) {
+        this.privateEvent = privateEvent;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public List<WeatherForecast> getWeatherForecasts() {
+        return weatherForecasts;
+    }
+
+    public void setWeatherForecasts(List<WeatherForecast> weatherForecasts) {
+        this.weatherForecasts = weatherForecasts;
     }
     
     

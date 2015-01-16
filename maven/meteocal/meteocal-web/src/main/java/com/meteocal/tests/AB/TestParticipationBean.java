@@ -34,6 +34,7 @@ public class TestParticipationBean {
     
     public void testCreateParticipation() {
         testCreatePartecipationEJB.testCreateParticipation();
+        testCreatePartecipationEJB.checkResults();
     }
     
 }
