@@ -133,8 +133,21 @@ public class Event {
     }
     
     public void addParticipant(User u) {
-        // TODO check user not already participant
-        this.getParticipants().add(u);
+        List<User> participants = this.getParticipants();
+        
+        if(!participants.contains(u)) {
+            participants.add(u);
+            u.getParticipatingTo().add(this);
+        }
+    }
+    
+    public void removeParticipant(User u) {
+        List<User> participants = this.getParticipants();
+        
+        // If u is in the participants list, he gets removed and the list of events he's participanting to gets updated
+        if(participants.remove(u)) {
+            u.getParticipatingTo().remove(this);
+        }
     }
 
     public String getDescription() {

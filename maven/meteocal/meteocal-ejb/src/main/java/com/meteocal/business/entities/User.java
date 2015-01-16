@@ -101,10 +101,12 @@ public class User {
         this.participatingTo = participatingTo;
     }
     
-    public void participateTo(Event e) {
-        // TODO check event is not already in list
-        
-        getParticipatingTo().add(e);
+    public void addParticipationTo(Event e) {
+        e.addParticipant(this);
+    }
+    
+    public void removeParticipationTo(Event e) {
+        e.removeParticipant(this);
     }
 
     public void setId(int id) {

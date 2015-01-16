@@ -96,12 +96,19 @@ public class ParticipationTest {
         }
     }
     
+    public void testRemove() {
+        User retrievedU2 = userDAO.findByUsername("up2");
+        if(retrievedU2.getParticipatingTo().size() > 0)
+        retrievedU2.removeParticipationTo(retrievedU2.getParticipatingTo().get(0));
+    }
+    
     public void checkResults() {
         User retrievedU2 = userDAO.findByUsername("up2");
 //        The refresh calls makes the difference in being able to access the events the user decided to participate to
 //        This is probably related to the fact that the entity was previously managed in this persistence context
         em.refresh(retrievedU2);
         retrievedU2.getParticipatingTo();
+        System.out.println("U2 is participating to " + retrievedU2.getParticipatingTo().size() + " events.");
 
 
         Query query = em.createQuery("select e from Event e where e.name = :eventName");
