@@ -31,8 +31,6 @@ and open the template in the editor.
                     <p:outputLabel value="Email" for="email" />
                     <p:autoComplete id="email" value="#{settingsEditingBean.editedUser.email}" emptyMessage="not required" />
                     
-                    <p:separator/>
-                    
                     <h:outputText value="Previous Password " />
                     <p:password id="previousPassword" value="#{settingsEditingBean.previousPassword}" />
                     
@@ -40,7 +38,7 @@ and open the template in the editor.
                     <p:password id="newPassword" value="#{settingsEditingBean.editedUser.password}" feedback="true" />
                     
                     <h:outputText value="Password Confirmation: " />
-                    <p:password id="passwordConfirmation" value="#{settingsEditingBean.confirmationPassword}" feedback="true" match="newPassword"/>
+                    <p:password id="passwordConfirmation" value="#{settingsEditingBean.confirmationPassword}" feedback="true" />
                     
                     <p:commandButton value="Save" icon="ui-icon-check" action="#{settingsEditingBean.saveSettings()}"/>
                 </h:panelGrid>

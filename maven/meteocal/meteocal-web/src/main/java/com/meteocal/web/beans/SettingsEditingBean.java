@@ -12,8 +12,7 @@ import com.meteocal.business.security.UserManager;
 import com.meteocal.web.utility.Cache;
 import com.meteocal.web.utility.Dictionary;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException; 
 import javax.enterprise.context.RequestScoped;
@@ -27,10 +26,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SettingsEditingBean implements Serializable{
-    
-    public SettingsEditingBean() {
-    }
-        
+
     @EJB
     private UserFacade userFacade;
     
@@ -38,13 +34,20 @@ public class SettingsEditingBean implements Serializable{
     private UserManager um;
     
     @Inject 
-    Cache session;
+    private Cache session;
     
-    private String confirmationPassword;
-    private String previousPassword;
-    private User editedUser = um.getLoggedUser(); 
+    private String confirmationPassword,previousPassword;
+    private User editedUser;
+
+        
+    @PostConstruct
+    public void init(){
+        System.out.println("In Init");
+        this.setEditedUser(um.getLoggedUser());
+    }
     
     public User getEditedUser(){
+        editedUser = um.getLoggedUser();    
         return this.editedUser;
     }
     
@@ -73,12 +76,14 @@ public class SettingsEditingBean implements Serializable{
             
             if( editedUser.getPassword().length() == 0 ){
                 System.out.println("Calling userFacade");
-                userFacade.updateData(this.editedUser);
+                userFacade.updateData(editedUser);
             }
             else{
-                System.out.println("Second case: even the password was edited");
+                System.out.println("Second case: even the password was edited!");
+                System.out.println("email: " + editedUser.getEmail() + " user " + editedUser.getUsername());
+                System.out.println("old" + previousPassword + " new  " + um.getLoggedUser().getPassword() + " conf " + this.confirmationPassword);
                 
-                if(this.confirmationPassword.equals(um.getLoggedUser().getPassword())){
+                if(confirmationPassword.equals(um.getLoggedUser().getPassword())){
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
                     session.setErrorType(true);

@@ -34,7 +34,7 @@
             <form-error-page>/Index.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-    <security-constraint>
+    <!--<security-constraint>
         <web-resource-collection>
             <web-resource-name>Logged User</web-resource-name>
             <description/>
@@ -43,5 +43,5 @@
         <auth-constraint>
             <role-name>USER</role-name>
         </auth-constraint>
-    </security-constraint>
+    </security-constraint>-->
 </web-app>
