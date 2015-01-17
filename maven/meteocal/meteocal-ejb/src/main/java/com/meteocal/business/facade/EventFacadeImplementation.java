@@ -140,7 +140,7 @@ public class EventFacadeImplementation implements EventFacade {
     /**
      * {@inheritDoc}
      */
-    public UserEventVisibility getVisibilityOnEvent(int userID, int eventID) throws NotFoundException {
+    public UserEventVisibility getVisibilityOverEvent(int userID, int eventID) throws NotFoundException {
         Event event = eventDAO.retrieve(eventID);
         User user = userDAO.retrieve(userID);
         

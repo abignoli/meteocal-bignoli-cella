@@ -40,7 +40,7 @@ public interface EventFacade {
      * @throws NotFoundException 
      * If the requested userID or eventID doesn't exist
      */
-    public UserEventVisibility getVisibilityOnEvent(int userID, int eventID) throws NotFoundException;
+    public UserEventVisibility getVisibilityOverEvent(int userID, int eventID) throws NotFoundException;
     
     
 }

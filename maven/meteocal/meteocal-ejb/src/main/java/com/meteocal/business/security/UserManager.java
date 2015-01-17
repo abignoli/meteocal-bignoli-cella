@@ -55,7 +55,7 @@ public class UserManager {
      * @throws NotFoundException 
      * If the requested eventID doesn't exist
      */
-    public UserEventVisibility getVisibilityOnEvent(int eventID) throws NotFoundException {
-        return eventFacade.getVisibilityOnEvent(getLoggedUser().getId(), eventID);
+    public UserEventVisibility getVisibilityOverEvent(int eventID) throws NotFoundException {
+        return eventFacade.getVisibilityOverEvent(getLoggedUser().getId(), eventID);
     }
 }
