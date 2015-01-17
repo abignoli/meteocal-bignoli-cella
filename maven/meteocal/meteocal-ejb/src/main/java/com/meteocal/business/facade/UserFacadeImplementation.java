@@ -28,29 +28,77 @@ public class UserFacadeImplementation implements UserFacade {
     public void save(User u) {
         if(u.isValid()) {
             u.setGroupName(Group.USER.getName());
-            u.setPassword(User.encryptPassword(u.getPassword()));
+            u.setAndEncryptPassword(u.getPassword());
             userDAO.save(u);
         }
         
         // TODO what if user not valid
     }
 
+    /**
+     * Updates user data for the database entry identified by the ID of the user u.
+     * The updated fields are:
+     * 
+     * Email
+     * Calendar visibility
+     * 
+     * Any other field is ignored.
+     * 
+     * @param u 
+     * The entity containing the updated data, as well as the ID of the entity to update
+     * @throws BusinessException 
+     */
     public void updateData(User u) throws BusinessException {
-        // Check if password has been modified, if this is the case the method will return since to modify the password the old one is required
-        if(!checkPassword(u, u.getPassword()))
-            throw new BusinessException(BusinessException.MISSING_PASSWORD);
         
-        userDAO.update(u);
+        User dbEntry = userDAO.retrieve(u.getId());
+        setUserData(dbEntry, u);
+        
+//        userDAO.update(u);
     }
     
+    /**
+     * Updates user data for the database entry identified by the ID of the user u.
+     * The updated fields are:
+     * 
+     * Email
+     * Password
+     * Calendar visibility
+     * 
+     * Any other field is ignored.
+     * 
+     * @param u 
+     * The entity containing the updated data, as well as the ID of the entity to update
+     * @param oldPassword
+     * @throws BusinessException 
+     */
     public void updateData(User u, String oldPassword) throws BusinessException {
         // Check if provided current password is correct
-        if(!checkPassword(u, oldPassword))
+        if(!checkPassword(u.getId(), oldPassword))
             throw new BusinessException(BusinessException.WRONG_PASSWORD);
         
-        u.setPassword(User.encryptPassword(u.getPassword()));
+        User dbEntry = userDAO.retrieve(u.getId());
+        setUserData(dbEntry, u);
+        dbEntry.setAndEncryptPassword(u.getPassword());
         
-        userDAO.update(u);
+//        userDAO.update(u);
+    }
+    
+    /**
+     * Sets user data for the managed entity dbEntry using data provided by updated.
+     * The updated fields are:
+     * 
+     * Email
+     * Calendar visibility
+     * 
+     * Any other field is ignored.
+     * 
+     * @param dbEntry 
+     * @param updated
+     * @throws BusinessException 
+     */
+    private void setUserData(User dbEntry, User updated) {
+        dbEntry.setEmail(updated.getEmail());
+        dbEntry.setCalendarVisible(updated.isCalendarVisible());
     }
 
     public void remove(User u) {
@@ -61,10 +109,7 @@ public class UserFacadeImplementation implements UserFacade {
         return userDAO.findByUsername(username);
     }
 
-    private boolean checkPassword(User u, String password) {
-        User userDBEntry = userDAO.find(u.getId());
-
-        correct = userDBEntry.getPassword().equals(User.encryptPassword(password));
-        return userDBEntry.getPassword().equals(User.encryptPassword(password));
+    private boolean checkPassword(int userID, String password) throws BusinessException {
+        return userDAO.retrieve(userID).getPassword().equals(User.encryptPassword(password));
     }
 }

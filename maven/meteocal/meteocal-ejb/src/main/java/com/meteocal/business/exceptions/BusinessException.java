@@ -13,6 +13,7 @@ public class BusinessException extends Exception {
     
     public static String MISSING_PASSWORD = "[SECURITY] Current password is required to perform this operation.";
     public static String WRONG_PASSWORD = "[SECURITY] The given password doesn't match the current database entry.";
+    public static String NON_EXISTING_DATABASE_ENTRY = "[DATABASE QUERY] The requested entity doesn't exist in the database.";
 
     /**
      * Creates a new instance of <code>BusinessException</code> without detail

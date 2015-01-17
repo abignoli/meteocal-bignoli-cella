@@ -23,9 +23,9 @@ public class TestEditEntityBean {
     private EditEntityTest testEditEntityEJB;
 
     public void test() {
-        String uname = "testsUser";
-        testEditEntityEJB.createUser(uname);
+        String uname = testEditEntityEJB.createUser();
         User u = testEditEntityEJB.getUser(uname);
-        u.setUsername("notInitialUsername");
+        u.setUsername("NOT " + uname);
+        testEditEntityEJB.mergeTest(u);
     }
 }

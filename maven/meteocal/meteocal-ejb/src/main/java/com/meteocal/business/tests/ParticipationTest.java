@@ -82,7 +82,7 @@ public class ParticipationTest {
 //            Works because Event is the owner of the relationship
             e.addParticipant(u2);
 
-            em.flush();
+//            em.flush();
             System.out.print("[TESTCREATEPARTECIPATION] PARTECIPATION REGISTERED");
         } catch (ConstraintViolationException cve) {
             System.out.println("[TESTCREATEPARTECIPATION] PARTECIPATION - CONSTRAINT VIOLATION EXCEPTION");
@@ -99,7 +99,7 @@ public class ParticipationTest {
     public void testRemove() {
         User retrievedU2 = userDAO.findByUsername("up2");
         if(retrievedU2.getParticipatingTo().size() > 0)
-        retrievedU2.removeParticipationTo(retrievedU2.getParticipatingTo().get(0));
+        retrievedU2.removeParticipatingTo(retrievedU2.getParticipatingTo().get(0));
     }
     
     public void checkResults() {
