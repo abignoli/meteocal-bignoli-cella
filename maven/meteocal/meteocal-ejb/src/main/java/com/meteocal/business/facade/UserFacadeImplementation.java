@@ -8,6 +8,7 @@ package com.meteocal.business.facade;
 import com.meteocal.business.dao.UserDAO;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.data.Group;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -48,7 +49,7 @@ public class UserFacadeImplementation implements UserFacade {
      * The entity containing the updated data, as well as the ID of the entity to update
      * @throws BusinessException 
      */
-    public void updateData(User u) throws BusinessException {
+    public void updateData(User u) throws NotFoundException {
         
         User dbEntry = userDAO.retrieve(u.getId());
         setUserData(dbEntry, u);
@@ -109,7 +110,7 @@ public class UserFacadeImplementation implements UserFacade {
         return userDAO.findByUsername(username);
     }
 
-    private boolean checkPassword(int userID, String password) throws BusinessException {
+    private boolean checkPassword(int userID, String password) throws NotFoundException {
         return userDAO.retrieve(userID).getPassword().equals(User.encryptPassword(password));
     }
 }

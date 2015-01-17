@@ -6,8 +6,11 @@
 package com.meteocal.business.security;
 
 import com.meteocal.business.entities.User;
+import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.shared.data.Group;
+import com.meteocal.business.shared.security.UserEventVisibility;
 import java.security.Principal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -25,6 +28,9 @@ public class UserManager {
     @EJB
     UserFacade userFacade;
     
+    @EJB
+    EventFacade eventFacade;
+    
     @Inject
     Principal principal;
     
@@ -39,5 +45,17 @@ public class UserManager {
 
     public User getLoggedUser() {
         return userFacade.findByUsername(principal.getName());
+    }
+    
+    /**
+     * Gets the type of visibility that the logged user has over the event identified by eventID.
+     * 
+     * @param eventID
+     * @return
+     * @throws NotFoundException 
+     * If the requested eventID doesn't exist
+     */
+    public UserEventVisibility getVisibilityOnEvent(int eventID) throws NotFoundException {
+        return eventFacade.getVisibilityOnEvent(getLoggedUser().getId(), eventID);
     }
 }

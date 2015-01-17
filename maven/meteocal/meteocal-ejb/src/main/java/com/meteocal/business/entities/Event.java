@@ -119,9 +119,9 @@ public class Event {
     public void addInvited(User u) {
         List<User> invited = this.getInvited();
 
-        if (!invited.contains(u)) {
+        if (!isInvited(u)) {
             invited.add(u);
-            u.getInvitedTo().add(this);
+            u.getParticipatingTo().add(this);
         }
     }
 
@@ -135,6 +135,16 @@ public class Event {
             invitedUser.removeInvitedToFromList(this);
             u.removeInvitedToFromList(this);
         }
+    }
+    
+    public boolean isInvited(User u) {
+        for (User invited : getInvited()) {
+            if (invited.getId() == u.getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     public User findInvited(User u) {

@@ -6,6 +6,7 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -81,11 +82,11 @@ public abstract class DAObase<T> {
         return null;
     }
     
-    public T retrieve(Object primaryKey) throws BusinessException {
+    public T retrieve(Object primaryKey) throws NotFoundException {
         T result = find(primaryKey);
         
         if(result == null)
-            throw new BusinessException(BusinessException.NON_EXISTING_DATABASE_ENTRY + " - Class: " + databaseEntityClass.getName() + " Key: " + primaryKey.toString());
+            throw new NotFoundException(NotFoundException.GENERIC_NOT_FOUND + " - Class: " + databaseEntityClass.getName() + " Key: " + primaryKey.toString());
         
         return result;
     }

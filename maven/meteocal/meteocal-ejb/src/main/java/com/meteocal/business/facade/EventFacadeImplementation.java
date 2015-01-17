@@ -10,6 +10,8 @@ import com.meteocal.business.dao.UserDAO;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.shared.security.UserEventVisibility;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -133,6 +135,25 @@ public class EventFacadeImplementation implements EventFacade {
         dbEntry.setPrivateEvent(updated.isPrivateEvent());
 
         // TODO Add event state, datetime
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserEventVisibility getVisibilityOnEvent(int userID, int eventID) throws NotFoundException {
+        Event event = eventDAO.retrieve(eventID);
+        User user = userDAO.retrieve(userID);
+        
+        if(event.getCreator().getId() == user.getId())
+            return UserEventVisibility.CREATOR;
+        
+        if(event.isInvited(user))
+            return UserEventVisibility.VIEWER;
+        
+        if(event.isPrivateEvent())
+            return UserEventVisibility.NO_VISIBILITY;
+        else
+            return UserEventVisibility.VIEWER;
     }
 
 
