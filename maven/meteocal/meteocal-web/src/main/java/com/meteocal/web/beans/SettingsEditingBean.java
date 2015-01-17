@@ -12,8 +12,10 @@ import com.meteocal.business.security.UserManager;
 import com.meteocal.web.utility.Cache;
 import com.meteocal.web.utility.Dictionary;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
+import javax.ejb.EJBException; 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,16 +40,16 @@ public class SettingsEditingBean implements Serializable{
     @Inject 
     Cache session;
     
-    private String password;
+    private String confirmationPassword;
     private String previousPassword;
-    private User user = um.getLoggedUser(); 
+    private User editedUser = um.getLoggedUser(); 
     
-    public User getUser(){
-        return this.user;
+    public User getEditedUser(){
+        return this.editedUser;
     }
     
-    public void setUser(User u){
-        this.user = u;
+    public void setEditedUser(User u){
+        this.editedUser = u;
     }
     
     public String getPreviousPassword(){
@@ -58,46 +60,26 @@ public class SettingsEditingBean implements Serializable{
         this.previousPassword = value;
     }
     
-    public String getPassword(){
-        return this.password;
+    public String getConfirmationPassword(){
+        return this.confirmationPassword;
     }
     
-    public void setPassword(String value){
-        this.password = value;
+    public void setConfirmationPassword(String value){
+        this.confirmationPassword = value;
     }    
 
     public String saveSettings(){
-            System.out.println("init saveSettings");
-            User localUser;
-            
-            System.out.println("define localUser");
-            localUser = um.getLoggedUser();
-            localUser.setUsername(um.getLoggedUser().getUsername());
-            localUser.setEmail(um.getLoggedUser().getEmail());
-            localUser.setPassword(um.getLoggedUser().getPassword());
-            localUser.setId(um.getLoggedUser().getId());
-            localUser.setCalendarVisible(um.getLoggedUser().isCalendarVisible());
-            localUser.setInvitations(um.getLoggedUser().getInvitations());
-            localUser.setNotificationViews(um.getLoggedUser().getNotificationViews());
-            localUser.setNotifications(um.getLoggedUser().getNotifications());
-            localUser.setParticipatingTo(um.getLoggedUser().getParticipatingTo());
-            localUser.setInvitedTo(um.getLoggedUser().getInvitedTo());
-            localUser.setCreatedEvents(um.getLoggedUser().getCreatedEvents());
-            localUser.setGroupName(um.getLoggedUser().getGroupName());
-            
-            System.out.println("username: " + localUser.getUsername() + " visibility: " + localUser.isCalendarVisible() + " \nemail: " + localUser.getEmail() + " password: " + localUser.getPassword());
-
         try {
             
-            if( this.password.length() == 0 ){
+            if( editedUser.getPassword().length() == 0 ){
                 System.out.println("Calling userFacade");
-                userFacade.updateData(localUser);
+                userFacade.updateData(this.editedUser);
             }
             else{
                 System.out.println("Second case: even the password was edited");
                 
-                if(this.password.equals(um.getLoggedUser().getPassword())){
-                    userFacade.updateData(localUser,previousPassword);
+                if(this.confirmationPassword.equals(um.getLoggedUser().getPassword())){
+                    userFacade.updateData(editedUser ,previousPassword);
                 }else{
                     session.setErrorType(true);
                     session.setErrorType(Dictionary.NOTMATCHEDPASSWORD);
@@ -106,19 +88,19 @@ public class SettingsEditingBean implements Serializable{
             }
             System.out.println("update done");
         }
-        catch (BusinessException ex) {
-            System.out.println("CATCH Business");
-            System.out.println(ex.toString());
-            System.out.println(ex.getLocalizedMessage());
-            System.out.println(ex.getMessage());
-            System.out.println(ex.initCause(ex));
-            return "/Error";
-        }
         catch(EJBException e){
             System.out.println("CATCH EJB");
-            System.out.println(e.toString());
+            session.setErrorType(true);
+            session.setErrorType(Dictionary.EXCEPTION);
             return "/Error";
             
+        }
+        catch (BusinessException ex) {
+            System.out.println("CATCH BusinessException");
+            session.setErrorType(true);
+            session.setErrorType(Dictionary.EXCEPTION);
+            return "/Error";
+            //Logger.getLogger(SettingsEditingBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "/protected/personal/HomeCalendarMonth";
     }

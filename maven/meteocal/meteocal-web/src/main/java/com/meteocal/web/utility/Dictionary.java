@@ -12,5 +12,6 @@ package com.meteocal.web.utility;
 public class Dictionary {
     
     public static final int NOTMATCHEDPASSWORD = 1;
+    public static final int EXCEPTION = 2;
 
 }

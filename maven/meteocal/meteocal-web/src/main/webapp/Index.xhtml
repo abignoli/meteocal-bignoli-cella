@@ -24,7 +24,7 @@
                     <p:outputLabel value="Password" for="passwordRegistration"/>
                     <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" />
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
-                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" match="passwordRegistration" />
+                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}"/>
                     <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"  />
                     <p:messages id="messagesRegistration" showDetail="true" autoUpdate="true" closable="true" />
                 </h:panelGrid>
