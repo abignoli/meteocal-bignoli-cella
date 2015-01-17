@@ -11,6 +11,7 @@ import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.UserEventVisibility;
+import com.meteocal.business.shared.security.UserUserVisibility;
 import java.security.Principal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -57,5 +58,17 @@ public class UserManager {
      */
     public UserEventVisibility getVisibilityOverEvent(int eventID) throws NotFoundException {
         return eventFacade.getVisibilityOverEvent(getLoggedUser().getId(), eventID);
+    }
+    
+    /**
+     * Gets the type of visibility that the logged user has over the user identified by userID.
+     * 
+     * @param userID
+     * @return
+     * @throws NotFoundException 
+     * If the requested userID doesn't exist
+     */
+    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException {
+        return userFacade.getVisibilityOverUser(userID);
     }
 }

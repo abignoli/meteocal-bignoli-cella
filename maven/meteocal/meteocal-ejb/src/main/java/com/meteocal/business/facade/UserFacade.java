@@ -7,6 +7,8 @@ package com.meteocal.business.facade;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.shared.security.UserUserVisibility;
 import javax.ejb.Local;
 
 /**
@@ -25,5 +27,7 @@ public interface UserFacade {
     public abstract void remove(User u);
 
     public abstract User findByUsername(String username);
+
+    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
 
 }

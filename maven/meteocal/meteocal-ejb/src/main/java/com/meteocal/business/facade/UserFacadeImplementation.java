@@ -10,6 +10,7 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.data.Group;
+import com.meteocal.business.shared.security.UserUserVisibility;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -112,5 +113,14 @@ public class UserFacadeImplementation implements UserFacade {
 
     private boolean checkPassword(int userID, String password) throws NotFoundException {
         return userDAO.retrieve(userID).getPassword().equals(User.encryptPassword(password));
+    }
+
+    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException {
+        User user = userDAO.retrieve(userID);
+        
+        if(user.isCalendarVisible())
+            return UserUserVisibility.VISIBLE;
+        else
+            return UserUserVisibility.NOT_VISIBLE;
     }
 }

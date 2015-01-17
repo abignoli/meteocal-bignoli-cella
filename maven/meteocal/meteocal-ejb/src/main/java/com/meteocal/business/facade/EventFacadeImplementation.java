@@ -76,6 +76,8 @@ public class EventFacadeImplementation implements EventFacade {
      */
     public void updateScheduling(int eventID, int start, int end) throws BusinessException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        // TODO Create notification
     }
 
     /**
@@ -102,6 +104,8 @@ public class EventFacadeImplementation implements EventFacade {
     public void updateData(Event e) throws BusinessException {
         Event dbEntry = eventDAO.retrieve(e.getId());
         setEventData(dbEntry, e);
+        
+        // TODO Create notification
     }
 
     /**

@@ -5,6 +5,7 @@
  */
 package com.meteocal.business.entities;
 
+import com.meteocal.business.entities.shared.NotificationType;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,6 +46,15 @@ public class Notification {
                 @JoinColumn(name = "userID",
                         referencedColumnName = "id")})
     private List<User> notificatedUsers;
+    
+    @NotNull
+    private NotificationType type;
+    
+    // TODO check if ManyToOne or OneToOne
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name="WEATHERCONDITION", referencedColumnName = "ID")
+    private WeatherForecast weatherForecast;
 
     // TODO Add all other parameters
     public int getId() {
@@ -88,4 +98,13 @@ public class Notification {
             u.getNotifications().remove(this);
         }
     }
+
+    public NotificationType getType() {
+        return type;
+    }
+
+    public void setType(NotificationType type) {
+        this.type = type;
+    }
+
 }
