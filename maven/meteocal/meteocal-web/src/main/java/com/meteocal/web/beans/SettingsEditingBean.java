@@ -9,13 +9,16 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
+import com.meteocal.web.utility.Cache;
+import com.meteocal.web.utility.Dictionary;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
+/** 
  *
  * @author Leo
  */
@@ -32,61 +35,75 @@ public class SettingsEditingBean implements Serializable{
     @EJB
     private UserManager um;
     
-    private boolean calendarVisibility;
+    @Inject 
+    Cache session;
+    
+    private String password;
     private String previousPassword;
-    private String newPassword;
-    private String email="NULL";
+    private User user = um.getLoggedUser(); 
     
-    public boolean getCalendarVisibility(){
-        return this.calendarVisibility;
+    public User getUser(){
+        return this.user;
     }
     
-    public void setCalendarVisibility(boolean value){
-        this.calendarVisibility = value;
+    public void setUser(User u){
+        this.user = u;
     }
     
-    public String getNewPassword(){
-        return this.newPassword;
-    }
-    
-    public void setNewPassword(String value){
-        this.newPassword = value;
-    }    
-
     public String getPreviousPassword(){
         return this.previousPassword;
     }
     
     public void setPreviousPassword(String value){
         this.previousPassword = value;
-    }  
-    
-    public String getEmail(){
-        return this.email;
     }
     
-    public void setEmail(String value){
-        this.email = value;
+    public String getPassword(){
+        return this.password;
     }
     
-    public String saveCalendarVisibility(){
-            System.out.println("init saveVisibility");
+    public void setPassword(String value){
+        this.password = value;
+    }    
+
+    public String saveSettings(){
+            System.out.println("init saveSettings");
             User localUser;
             
             System.out.println("define localUser");
             localUser = um.getLoggedUser();
             localUser.setUsername(um.getLoggedUser().getUsername());
-            localUser.setCalendarVisible(this.getCalendarVisibility());
             localUser.setEmail(um.getLoggedUser().getEmail());
             localUser.setPassword(um.getLoggedUser().getPassword());
+            localUser.setId(um.getLoggedUser().getId());
+            localUser.setCalendarVisible(um.getLoggedUser().isCalendarVisible());
+            localUser.setInvitations(um.getLoggedUser().getInvitations());
+            localUser.setNotificationViews(um.getLoggedUser().getNotificationViews());
+            localUser.setNotifications(um.getLoggedUser().getNotifications());
+            localUser.setParticipatingTo(um.getLoggedUser().getParticipatingTo());
+            localUser.setInvitedTo(um.getLoggedUser().getInvitedTo());
+            localUser.setCreatedEvents(um.getLoggedUser().getCreatedEvents());
+            localUser.setGroupName(um.getLoggedUser().getGroupName());
             
             System.out.println("username: " + localUser.getUsername() + " visibility: " + localUser.isCalendarVisible() + " \nemail: " + localUser.getEmail() + " password: " + localUser.getPassword());
-        
+
         try {
-            localUser.setId(um.getLoggedUser().getId());
-            System.out.println("Calling userFacade");
-            userFacade.updateData(localUser);
             
+            if( this.password.length() == 0 ){
+                System.out.println("Calling userFacade");
+                userFacade.updateData(localUser);
+            }
+            else{
+                System.out.println("Second case: even the password was edited");
+                
+                if(this.password.equals(um.getLoggedUser().getPassword())){
+                    userFacade.updateData(localUser,previousPassword);
+                }else{
+                    session.setErrorType(true);
+                    session.setErrorType(Dictionary.NOTMATCHEDPASSWORD);
+                    return "/protected/personal/SettingsEdit";
+                }
+            }
             System.out.println("update done");
         }
         catch (BusinessException ex) {
@@ -103,51 +120,6 @@ public class SettingsEditingBean implements Serializable{
             return "/Error";
             
         }
-        return "/protected/personal/HomeCalendarMonth";
-    }
-    
-    public String saveAccountInformation(){
-        User localUser = new User();
-        
-        
-        localUser.setCalendarVisible(um.getLoggedUser().isCalendarVisible());
-        
-        localUser.setEmail(
-                ("NULL".equals(this.email)) ? 
-                        um.getLoggedUser().getEmail()
-                        :
-                        this.email
-        );
-        
-        localUser.setPassword(this.newPassword);
-        
-        System.out.println(localUser.getUsername() + " " + localUser.isCalendarVisible() + " " + localUser.getEmail());
-        
-        localUser.setId(um.getLoggedUser().getId());
-        
-        // Temporary corrections
-        
-        localUser = um.getLoggedUser();
-        
-                localUser.setCalendarVisible(um.getLoggedUser().isCalendarVisible());
-        
-        localUser.setEmail(
-                ("NULL".equals(this.email)) ? 
-                        um.getLoggedUser().getEmail()
-                        :
-                        this.email
-        );
-        
-        localUser.setPassword(this.newPassword);
-        
-        try {
-            userFacade.updateData( localUser , this.previousPassword );
-        }
-        catch (BusinessException ex) {
-            System.out.println(ex.toString());
-            return "/Error";
-        }
-        
         return "/protected/personal/HomeCalendarMonth";
     }
 }
