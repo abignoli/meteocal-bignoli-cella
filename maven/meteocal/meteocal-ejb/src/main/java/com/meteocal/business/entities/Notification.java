@@ -53,7 +53,7 @@ public class Notification {
     // TODO check if ManyToOne or OneToOne
     @NotNull
     @ManyToOne(fetch=FetchType.EAGER)
-    @PrimaryKeyJoinColumn(name="WEATHERCONDITION", referencedColumnName = "ID")
+    @PrimaryKeyJoinColumn(name="WEATHERFORECAST", referencedColumnName = "ID")
     private WeatherForecast weatherForecast;
 
     // TODO Add all other parameters

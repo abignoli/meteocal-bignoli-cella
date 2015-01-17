@@ -37,7 +37,7 @@ public class WeatherForecast {
     @JoinColumn(name="EVENTID", referencedColumnName = "ID")
     private Event event;
     
-    @OneToMany(mappedBy = "weatherCondition")
+    @OneToMany(mappedBy = "weatherForecast")
     private List<Notification> notifications;
     
     // TODO add start and end datetime
