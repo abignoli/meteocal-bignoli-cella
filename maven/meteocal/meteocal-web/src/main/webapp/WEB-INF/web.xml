@@ -8,20 +8,31 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>humanity</param-value>
     </context-param>
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>interceptor</servlet-name>
+        <url-pattern>/protected/*</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
+    <servlet>
+        <servlet-name>interceptor</servlet-name>
+        <servlet-class>com.meteocal.web.utility.HighestPriorityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    </servlet>
     <welcome-file-list>
         <welcome-file>Index.xhtml</welcome-file>
     </welcome-file-list>
@@ -33,14 +44,4 @@
             <form-error-page>/Index.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-    <!--<security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Logged User</web-resource-name>
-            <description/>
-            <url-pattern>/protected/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>USER</role-name>
-        </auth-constraint>
-    </security-constraint>-->
 </web-app>
