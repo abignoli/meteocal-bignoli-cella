@@ -47,7 +47,6 @@ public class SettingsEditingBean implements Serializable{
     }
     
     public User getEditedUser(){
-        editedUser = um.getLoggedUser();    
         return this.editedUser;
     }
     
