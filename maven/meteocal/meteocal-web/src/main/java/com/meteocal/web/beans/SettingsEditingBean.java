@@ -81,9 +81,9 @@ public class SettingsEditingBean implements Serializable{
             else{
                 System.out.println("Second case: even the password was edited!");
                 System.out.println("email: " + editedUser.getEmail() + " user " + editedUser.getUsername());
-                System.out.println("old" + previousPassword + " new  " + um.getLoggedUser().getPassword() + " conf " + this.confirmationPassword);
+                System.out.println("old" + previousPassword + " new  " + editedUser.getPassword() + " conf " + this.confirmationPassword);
                 
-                if(confirmationPassword.equals(um.getLoggedUser().getPassword())){
+                if(confirmationPassword.equals(editedUser.getPassword())){
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
                     session.setErrorType(true);
