@@ -6,6 +6,9 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.Notification;
+import com.meteocal.business.entities.User;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.Stateless;
 
 /**

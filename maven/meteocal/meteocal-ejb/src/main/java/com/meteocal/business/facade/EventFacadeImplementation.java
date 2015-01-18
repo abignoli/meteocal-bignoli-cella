@@ -31,6 +31,9 @@ public class EventFacadeImplementation implements EventFacade {
     @EJB
     private UserDAO userDAO;
     
+    @EJB
+    private NotificationFacade notificationFacade;
+    
     public Event create(Event e) {
         eventDAO.save(e);
         return e;
@@ -89,7 +92,7 @@ public class EventFacadeImplementation implements EventFacade {
         e.setSuggestedChangeStart(null);
         e.setSuggestedChangeEnd(null);
         
-        // TODO Create notification
+        notificationFacade.createNotificationForEventChange(eventID);
         
         // TODO Clean weather forecasts
         
@@ -116,24 +119,24 @@ public class EventFacadeImplementation implements EventFacade {
      * The entity containing the updated data, as well as the ID of the entity to update
      * @throws BusinessException 
      */
-    public void updateData(Event e) throws NotFoundException, InvalidInputException {
+    public void updateData(Event e) throws BusinessException {
         Event dbEntry = eventDAO.retrieve(e.getId());
         
         dbEntry.setEventData(e);
         
-        // TODO Create notification
+        notificationFacade.createNotificationForEventChange(e.getId());
         
         // TODO Clean weather forecasts
         
         // TODO Check event weather conditions
     }
     
-    public void cancel(int eventID) throws NotFoundException, InvalidInputException {
+    public void cancel(int eventID) throws BusinessException {
         Event e = eventDAO.retrieve(eventID);
         
         e.cancel();
         
-        // TODO create cancel notification
+        notificationFacade.createNotificationForEventCancel(eventID);
     }
 
     /**

@@ -33,9 +33,9 @@ public interface EventFacade {
     
     public abstract void updateScheduling(int eventID, LocalDateTime start, LocalDateTime end) throws BusinessException;
     
-    public abstract void updateData(Event e) throws NotFoundException, InvalidInputException;
+    public abstract void updateData(Event e) throws BusinessException;
     
-    public void cancel(int eventID) throws NotFoundException, InvalidInputException;
+    public void cancel(int eventID) throws BusinessException;
     
     /**
      * Gets the type of visibility that the user identified by userID has over the event identified by eventID.
