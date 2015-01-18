@@ -39,9 +39,9 @@ public class FilterEvent {
     
     private final String context = HttpUtility.getRequest().getContextPath();
     private final String indexPath = context + "/Index.xhtml";
-    private final String creatorPath = context + "/Index.xhtml";
-    private final String viewerPath = context + "/Index.xhtml";
-    private final String noVisibilityPath = context + "/Index.xhtml";
+    private final String creatorPath = context + "/protected/event/EventPageCreator.xhtml";
+    private final String viewerPath = context + "/protected/event/EventPageViewer.xhtml";
+    private final String noVisibilityPath = context + "/protected/event/EventPageNoVisibility.xhtml";
 
     @PostConstruct
     public void init() {
