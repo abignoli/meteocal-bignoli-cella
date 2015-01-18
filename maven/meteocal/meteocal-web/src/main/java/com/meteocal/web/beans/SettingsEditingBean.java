@@ -82,8 +82,7 @@ public class SettingsEditingBean implements Serializable{
                 if(confirmationPassword.equals(editedUser.getPassword())){
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
-                    httpUtility.setErrorCode(Dictionary.NOTMATCHEDPASSWORD);
-                    
+                    HttpUtility.getSession().setAttribute("errorType",""+Dictionary.NOTMATCHEDPASSWORD);
                     return "/protected/personal/SettingsEdit";
                 }
             }
@@ -91,13 +90,13 @@ public class SettingsEditingBean implements Serializable{
         }
         catch(EJBException e){
             System.out.println("CATCH EJB");
-            httpUtility.setErrorCode(Dictionary.EXCEPTION);
+            HttpUtility.getSession().setAttribute("errorType",""+Dictionary.EXCEPTION);
             return "/Error";
             
         }
         catch (BusinessException ex) {
             System.out.println("CATCH BusinessException");
-            httpUtility.setErrorCode(Dictionary.EXCEPTION);
+            HttpUtility.getSession().setAttribute("errorType",""+Dictionary.EXCEPTION);
             return "/Error";
             //Logger.getLogger(SettingsEditingBean.class.getName()).log(Level.SEVERE, null, ex);
         }

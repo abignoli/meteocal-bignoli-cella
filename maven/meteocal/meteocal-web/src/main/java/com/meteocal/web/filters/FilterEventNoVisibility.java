@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.utility;
+package com.meteocal.web.filters;
 
 /**
  *
  * @author Leo
  */
-public class Dictionary {
-    public static final int NOERROR = 0;
-    public static final int NOTMATCHEDPASSWORD = 1;
-    public static final int EXCEPTION = 2;
-
+public class FilterEventNoVisibility {
+    
 }

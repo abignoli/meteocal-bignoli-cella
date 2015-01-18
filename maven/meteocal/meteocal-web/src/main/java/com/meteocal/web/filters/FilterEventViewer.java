@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.utility;
+package com.meteocal.web.filters;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.security.UserManager;
+import com.meteocal.web.utility.HttpUtility;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -26,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ManagedBean
 @RequestScoped
-public class FilterBean implements Serializable {
-
+public class FilterEventViewer {
     @EJB
     private UserManager um; 
 
@@ -42,8 +41,8 @@ public class FilterBean implements Serializable {
     private void setUser(User user){
         this.loggedUser = user;
     }
-    
-    public void isAdmin(ComponentSystemEvent event) {
+     
+    public void check(ComponentSystemEvent event) {
         System.out.println("in isAdmin");
         HttpServletRequest request = HttpUtility.getRequest();
         HttpServletResponse response = HttpUtility.getResponse();
@@ -72,10 +71,10 @@ public class FilterBean implements Serializable {
             }
         }
         catch (ServletException ex) {
-            Logger.getLogger(FilterBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex) {
-            Logger.getLogger(FilterBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -86,16 +85,5 @@ public class FilterBean implements Serializable {
 
     private boolean isNotLogged() {
         return logica();
-    }
-//        fc.getExternalContext().getUserPrincipal();
-//        System.out.println("role: " + fc.getExternalContext().getSessionMap().get("role"));
-//        
-//	if (!"admin".equals(fc.getExternalContext().getSessionMap().get("role"))){
-// 
-//		ConfigurableNavigationHandler nav 
-//		   = (ConfigurableNavigationHandler) 
-//			fc.getApplication().getNavigationHandler();
-// 
-//		nav.performNavigation("access-denied");
-//	}
+    }       
 }

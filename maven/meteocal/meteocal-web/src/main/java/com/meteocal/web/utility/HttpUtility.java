@@ -5,7 +5,11 @@
  */
 package com.meteocal.web.utility;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -49,20 +53,37 @@ public class HttpUtility {
         return getURI().replace("/meteocal-web","");
     }
     
-    public int getErrorCode() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return  (int) session.getAttribute("errorCode");
+    public static void logout(){
+        String contextPath;
+        getSession().invalidate();
+            contextPath = getRequest().getContextPath();
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml");
+        }
+        catch (IOException ex) {
+            Logger.getLogger(HttpUtility.class.getName()).log(Level.SEVERE, "Logout Failed : HttpUtility-logout", ex);
+        }
+        
     }
-    public int getEventID() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return  (int) session.getAttribute("eventID");
+    
+    public static void dispatcher(String url){
+        try {
+            getRequest().getRequestDispatcher(url).forward(getRequest(), getResponse());
+        }
+        catch (ServletException ex) {
+            Logger.getLogger(HttpUtility.class.getName()).log(Level.SEVERE, "dispatcher failed: HttpUtility - dispatcher", ex);
+        }
+        catch (IOException ex) {
+            Logger.getLogger(HttpUtility.class.getName()).log(Level.SEVERE, "dispatcher failed: HttpUtility - dispatcher", ex);
+        }
     }
-    public void setErrorCode(int err){
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        session.setAttribute("errorCode",err);
-    }
-    public void setEventID(int event){    
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        session.setAttribute("eventID",event);
+    
+    public static void redirect(String url){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url);
+        }
+        catch (IOException ex) {
+            Logger.getLogger(HttpUtility.class.getName()).log(Level.SEVERE, "redirect failed : HttpUtility-redirect", ex);
+        }
     }
 }

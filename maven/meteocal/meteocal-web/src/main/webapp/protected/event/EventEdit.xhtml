@@ -15,7 +15,8 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
-        <div id="header">
+        <f:event listener="#{filterEventEdit.isAdmin}" type="preRenderView" />
+        <h1>HELLO WORLD</h1><div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
         <h:form>

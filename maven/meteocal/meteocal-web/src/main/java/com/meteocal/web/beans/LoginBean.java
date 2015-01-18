@@ -5,6 +5,8 @@
  */
 package com.meteocal.web.beans;
 
+import com.meteocal.web.utility.Dictionary;
+import com.meteocal.web.utility.HttpUtility;
 import java.io.IOException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -53,7 +55,6 @@ public class LoginBean{
         
         System.out.println("Login user: " + this.username + " psw: "+  this.password + " !");
         try {
-            
             request.login(this.username, this.password);
             } 
             catch (ServletException e) {
@@ -61,6 +62,9 @@ public class LoginBean{
                 System.out.println("user" + e.toString());
             return "/Error";
         }
+        HttpUtility.getSession().setAttribute("logged","yes");
+        HttpUtility.getSession().setAttribute("comingFromRedirect", "no");
+                    HttpUtility.getSession().setAttribute("errorType",""+Dictionary.NOERROR);
         
         return "/protected/personal/HomeCalendarMonth";
     }
@@ -70,6 +74,7 @@ public class LoginBean{
         String contextPath;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpUtility.getSession().setAttribute("logged","no");
         request.getSession().invalidate();
         try {
             contextPath = request.getContextPath();
