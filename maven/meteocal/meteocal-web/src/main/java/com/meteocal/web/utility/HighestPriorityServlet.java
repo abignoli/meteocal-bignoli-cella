@@ -6,7 +6,6 @@
 package com.meteocal.web.utility;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet
 public class HighestPriorityServlet extends HttpServlet {
-
+    
+    private String relativePath;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,12 +32,31 @@ public class HighestPriorityServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(logica()) {
-            System.out.println("Showing a");
-            request.getRequestDispatcher("/a.html").forward(request, response);
+        
+        System.out.println("URI: " +request.getRequestURI());
+        System.out.println("URL: " + request.getRequestURL());
+        System.out.println("server name: " + request.getServerName());
+        System.out.println("replace: " + request.getRequestURI().replace("/meteocal-web",""));
+        System.out.println("pathInfo: " + request.getPathInfo());
+        
+        relativePath = request.getRequestURI().replace("/meteocal-web","");
+        
+        if("/protected/personal/Settings.xhtml".equals(relativePath))
+            System.out.println("Match!");
+        
+        request.getRequestDispatcher("/protected/personal/Settings.xhtml").forward(request, response);
+        
+        
+        if(isNotLogged()) {
+            System.out.println("I'm not logged");
+            request.getRequestDispatcher(relativePath).forward(request, response);
         } else {
-            System.out.println("Showing b");
-            request.getRequestDispatcher("/b.html").forward(request, response);
+            System.out.println("I'm logged, and I've to check the visibility");
+            if( logica() ){
+                request.getRequestDispatcher(relativePath).forward(request, response);
+            }else{
+                request.getRequestDispatcher(relativePath).forward(request, response);
+            }
         }
     }
 
@@ -82,5 +102,9 @@ public class HighestPriorityServlet extends HttpServlet {
     private boolean logica(){
         int a=(int) (Math.random() * 10);
         return a%2 == 0;
+    }
+    
+    private boolean isNotLogged(){
+        return logica();
     }
 }

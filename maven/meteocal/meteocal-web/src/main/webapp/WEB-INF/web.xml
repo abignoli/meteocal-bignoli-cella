@@ -8,34 +8,47 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>humanity</param-value>
     </context-param>
-    
-    <servlet-mapping>
+    <!--    <servlet-mapping>
         <servlet-name>interceptor</servlet-name>
         <url-pattern>/protected/*</url-pattern>
-    </servlet-mapping>
-    
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    
+    <!--    
     <servlet>
         <servlet-name>interceptor</servlet-name>
         <servlet-class>com.meteocal.web.utility.HighestPriorityServlet</servlet-class>
-    </servlet>
+    </servlet>-->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
+    
     <welcome-file-list>
         <welcome-file>Index.xhtml</welcome-file>
     </welcome-file-list>
+    
+<!--    <security-constraint>
+        <display-name>Constraint1</display-name>
+        <web-resource-collection>
+            <web-resource-name>Protected Area</web-resource-name>
+            <description>Restricted access - logged only</description>
+            <url-pattern>/protected/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>USER</role-name>
+        </auth-constraint>
+    </security-constraint>
+-->    
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>meteocal-authentication-realm</realm-name>
@@ -44,4 +57,9 @@
             <form-error-page>/Index.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+<!--    
+    <security-role>
+        <description/>
+        <role-name>USER</role-name>
+    </security-role>-->
 </web-app>

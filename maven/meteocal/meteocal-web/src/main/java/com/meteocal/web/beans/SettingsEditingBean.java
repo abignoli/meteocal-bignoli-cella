@@ -9,14 +9,13 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
-import com.meteocal.web.utility.Cache;
+import com.meteocal.web.utility.HttpUtility;
 import com.meteocal.web.utility.Dictionary;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException; 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /** 
@@ -33,8 +32,7 @@ public class SettingsEditingBean implements Serializable{
     @EJB
     private UserManager um;
     
-    @Inject 
-    private Cache session;
+    private HttpUtility httpUtility;
     
     private String confirmationPassword,previousPassword;
     private User editedUser;
@@ -42,7 +40,6 @@ public class SettingsEditingBean implements Serializable{
         
     @PostConstruct
     public void init(){
-        System.out.println("In Init");
         this.setEditedUser(um.getLoggedUser());
     }
     
@@ -85,8 +82,8 @@ public class SettingsEditingBean implements Serializable{
                 if(confirmationPassword.equals(editedUser.getPassword())){
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
-                    session.setErrorType(true);
-                    session.setErrorType(Dictionary.NOTMATCHEDPASSWORD);
+                    httpUtility.setErrorCode(Dictionary.NOTMATCHEDPASSWORD);
+                    
                     return "/protected/personal/SettingsEdit";
                 }
             }
@@ -94,15 +91,13 @@ public class SettingsEditingBean implements Serializable{
         }
         catch(EJBException e){
             System.out.println("CATCH EJB");
-            session.setErrorType(true);
-            session.setErrorType(Dictionary.EXCEPTION);
+            httpUtility.setErrorCode(Dictionary.EXCEPTION);
             return "/Error";
             
         }
         catch (BusinessException ex) {
             System.out.println("CATCH BusinessException");
-            session.setErrorType(true);
-            session.setErrorType(Dictionary.EXCEPTION);
+            httpUtility.setErrorCode(Dictionary.EXCEPTION);
             return "/Error";
             //Logger.getLogger(SettingsEditingBean.class.getName()).log(Level.SEVERE, null, ex);
         }
