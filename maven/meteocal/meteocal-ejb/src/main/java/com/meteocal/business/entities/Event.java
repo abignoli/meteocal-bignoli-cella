@@ -5,6 +5,8 @@
  */
 package com.meteocal.business.entities;
 
+import com.meteocal.business.entities.shared.EventStatus;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -28,8 +30,19 @@ public class Event {
 
     @NotNull(message = "Event description cannot be empty")
     private String description;
+    
+//    TODO remove comment
+//    @NotNull
+    private LocalDateTime start;
 
-    // TODO add start and end datetime
+//    TODO remove comment
+//    @NotNull
+    private LocalDateTime end;
+    
+//    TODO remove comment
+//    @NotNull    
+    private EventStatus status = EventStatus.PLANNED;
+    
     private String country;
 
     private String city;
@@ -41,8 +54,8 @@ public class Event {
     // TODO Bad Weather Conditions set
     private boolean privateEvent;
 
-    // TODO Enum with Event State
     // TODO Suggested schedule change datetime
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATORID", referencedColumnName = "ID")
     private User creator;
@@ -281,4 +294,29 @@ public class Event {
         this.weatherForecasts = weatherForecasts;
     }
 
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+    
+    
 }
