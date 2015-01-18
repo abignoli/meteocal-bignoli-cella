@@ -7,8 +7,10 @@ package com.meteocal.business.facade;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.security.UserEventVisibility;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -21,15 +23,19 @@ public interface EventFacade {
     
     public abstract Event find(int eventID);
     
+    public abstract void addInvited(int eventID, int userID) throws BusinessException;
+    
     public abstract void addParticipant(int eventID, int userID) throws BusinessException;
     
     public abstract void removeParticipant(int eventID, int userID) throws BusinessException;
     
     public abstract void toggleParticipant(int eventID, int userID) throws BusinessException;
     
-    public abstract void updateScheduling(int eventID, int start, int end) throws BusinessException;
+    public abstract void updateScheduling(int eventID, LocalDateTime start, LocalDateTime end) throws BusinessException;
     
-    public abstract void updateData(Event e) throws BusinessException;
+    public abstract void updateData(Event e) throws NotFoundException, InvalidInputException;
+    
+    public void cancel(int eventID) throws NotFoundException, InvalidInputException;
     
     /**
      * Gets the type of visibility that the user identified by userID has over the event identified by eventID.

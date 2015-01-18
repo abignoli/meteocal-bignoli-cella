@@ -5,10 +5,15 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.entities.Event;
+import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
+
 /**
  *
  * @author USUARIO
  */
 public interface NotificationFacade {
-    
+    public void createNotificationForEventChange(int eventID) throws NotFoundException;
+    public void createNotificationForEventCancel(int eventID) throws BusinessException;
 }

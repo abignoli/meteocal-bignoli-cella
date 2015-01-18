@@ -5,10 +5,17 @@
  */
 package com.meteocal.business.dao;
 
+import com.meteocal.business.entities.Notification;
+import javax.ejb.Stateless;
+
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
-public class NotificationDAO {
+@Stateless
+public class NotificationDAO extends DAObase<Notification> {
     
+    public NotificationDAO() {
+	super(Notification.class);
+    }
 }
