@@ -9,9 +9,12 @@ import com.meteocal.business.dao.EventDAO;
 import com.meteocal.business.dao.UserDAO;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.security.UserEventVisibility;
+import java.time.LocalDateTime;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -27,6 +30,9 @@ public class EventFacadeImplementation implements EventFacade {
     
     @EJB
     private UserDAO userDAO;
+    
+    @EJB
+    private NotificationFacade notificationFacade;
     
     public Event create(Event e) {
         eventDAO.save(e);
@@ -64,7 +70,7 @@ public class EventFacadeImplementation implements EventFacade {
     
     
     /**
-     * Updates just schedule data.
+     * Updates just schedule data about the start and the end of the event.
      * 
      * Any other field is ignored.
      * 
@@ -74,10 +80,23 @@ public class EventFacadeImplementation implements EventFacade {
      * @param end
      * @throws BusinessException 
      */
-    public void updateScheduling(int eventID, int start, int end) throws BusinessException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateScheduling(int eventID, LocalDateTime start, LocalDateTime end) throws BusinessException {
+    
+        Event.validateScheduling(start, end);
         
-        // TODO Create notification
+        Event e = eventDAO.retrieve(eventID);
+        
+        e.setStart(start);
+        e.setEnd(end);
+        
+        e.setSuggestedChangeStart(null);
+        e.setSuggestedChangeEnd(null);
+        
+        notificationFacade.createNotificationForEventChange(eventID);
+        
+        // TODO Clean weather forecasts
+        
+        // TODO Check event weather conditions
     }
 
     /**
@@ -91,7 +110,6 @@ public class EventFacadeImplementation implements EventFacade {
      * Address
      * Indoor flag
      * Privacy flag
-     * State
      * Start
      * End
      * 
@@ -103,42 +121,22 @@ public class EventFacadeImplementation implements EventFacade {
      */
     public void updateData(Event e) throws BusinessException {
         Event dbEntry = eventDAO.retrieve(e.getId());
-        setEventData(dbEntry, e);
         
-        // TODO Create notification
+        dbEntry.setEventData(e);
+        
+        notificationFacade.createNotificationForEventChange(e.getId());
+        
+        // TODO Clean weather forecasts
+        
+        // TODO Check event weather conditions
     }
-
-    /**
-     * Sets event data for the managed entity dbEntry using data provided by updated.
-     * The updated fields are:
-     * 
-     * Name
-     * Description
-     * Country
-     * City
-     * Address
-     * Indoor flag
-     * Privacy flag
-     * State
-     * Start
-     * End
-     * 
-     * Any other field is ignored.
-     * 
-     * @param dbEntry 
-     * @param updated
-     * @throws BusinessException 
-     */
-    private void setEventData(Event dbEntry, Event updated) {
-        dbEntry.setName(updated.getName());
-        dbEntry.setDescription(updated.getDescription());
-        dbEntry.setCountry(updated.getCountry());
-        dbEntry.setCity(updated.getCity());
-        dbEntry.setAddress(updated.getAddress());
-        dbEntry.setIndoor(updated.isIndoor());
-        dbEntry.setPrivateEvent(updated.isPrivateEvent());
-
-        // TODO Add event state, datetime
+    
+    public void cancel(int eventID) throws BusinessException {
+        Event e = eventDAO.retrieve(eventID);
+        
+        e.cancel();
+        
+        notificationFacade.createNotificationForEventCancel(eventID);
     }
 
     /**
@@ -159,6 +157,17 @@ public class EventFacadeImplementation implements EventFacade {
         else
             return UserEventVisibility.VIEWER;
     }
+
+    @Override
+    public void addInvited(int eventID, int userID) throws BusinessException {
+        Event e = eventDAO.retrieve(eventID);
+        User u = userDAO.retrieve(userID);
+        
+        if(!e.addInvited(u))
+            throw new BusinessException(InvalidInputException.USER_ALREADY_INVITED);
+    }
+
+
 
 
 

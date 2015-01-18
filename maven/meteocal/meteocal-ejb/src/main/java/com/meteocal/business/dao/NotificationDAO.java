@@ -5,10 +5,20 @@
  */
 package com.meteocal.business.dao;
 
+import com.meteocal.business.entities.Notification;
+import com.meteocal.business.entities.User;
+import java.util.HashMap;
+import java.util.Map;
+import javax.ejb.Stateless;
+
 /**
  *
- * @author USUARIO
+ * @author Andrea Bignoli
  */
-public class NotificationDAO {
+@Stateless
+public class NotificationDAO extends DAObase<Notification> {
     
+    public NotificationDAO() {
+	super(Notification.class);
+    }
 }

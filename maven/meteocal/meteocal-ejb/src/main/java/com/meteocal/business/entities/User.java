@@ -78,7 +78,7 @@ public class User {
 //            inverseJoinColumns = {@JoinColumn(name = "notificationID", 
 //                              referencedColumnName = "id")})
 //    private List<Notification> notifications;   
-    @ManyToMany(mappedBy = "", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "notificatedUsers", fetch = FetchType.EAGER)
     private List<Notification> notifications;
 
     @NotNull

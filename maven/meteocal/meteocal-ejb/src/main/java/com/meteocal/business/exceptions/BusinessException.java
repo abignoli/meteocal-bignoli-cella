@@ -14,6 +14,8 @@ public class BusinessException extends Exception {
     public static final String MISSING_PASSWORD = "[SECURITY] Current password is required to perform this operation.";
     public static final String WRONG_PASSWORD = "[SECURITY] The given password doesn't match the current database entry.";
 
+    public static final String INCONSISTENT_NOTIFICATION_CANCEL = "[NOTIFICATION CREATION] Requested notification cancel for a non canceled event.";
+    
     /**
      * Creates a new instance of <code>BusinessException</code> without detail
      * message.

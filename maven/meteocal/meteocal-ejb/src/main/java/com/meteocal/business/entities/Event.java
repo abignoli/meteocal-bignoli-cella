@@ -6,8 +6,11 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.EventStatus;
+import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.exceptions.InvalidInputException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -52,9 +55,28 @@ public class Event {
     private boolean indoor;
 
     // TODO Bad Weather Conditions set
+    
     private boolean privateEvent;
 
-    // TODO Suggested schedule change datetime
+    private LocalDateTime suggestedChangeStart;
+    
+    private LocalDateTime suggestedChangeEnd;
+    
+    
+    
+    
+    
+    @ElementCollection(targetClass = WeatherCondition.class) 
+    @CollectionTable(name = "ADVERSE_CONDITIONS",
+        joinColumns = @JoinColumn(name = "eventID",
+                        referencedColumnName = "id"))
+    @Column(name = "adverseCondition")
+    @Enumerated(EnumType.STRING)
+    EnumSet<WeatherCondition> adverseConditions;
+
+    
+    
+    
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATORID", referencedColumnName = "ID")
@@ -129,16 +151,31 @@ public class Event {
         this.invited = invited;
     }
 
-    public void addInvited(User u) {
+    /**
+     *
+     * @param u
+     * @return
+     * True if the user isn't already the creator or an invited, false otherwise
+     */
+    public boolean addInvited(User u) {
         List<User> invited = this.getInvited();
 
-        if (!isInvited(u)) {
+        if (!isInvited(u) && creator.getId() != u.getId()) {
             invited.add(u);
             u.getParticipatingTo().add(this);
+            return true;
         }
+        
+        return false;
     }
 
-    public void removeInvited(User u) {
+    /**
+     *
+     * @param u
+     * @return
+     * True if the user is invited, false otherwise
+     */
+    public boolean removeInvited(User u) {
         List<User> invited = this.getInvited();
         
         User invitedUser = findInvited(u);
@@ -147,7 +184,10 @@ public class Event {
             invited.remove(invitedUser);
             invitedUser.removeInvitedToFromList(this);
             u.removeInvitedToFromList(this);
+            return true;
         }
+        
+        return false;
     }
     
     public boolean isInvited(User u) {
@@ -182,16 +222,31 @@ public class Event {
         this.participants = participants;
     }
 
-    public void addParticipant(User u) {
+    /**
+     *
+     * @param u
+     * @return
+     * True if the user isn't already the creator or a participant, false otherwise
+     */
+    public boolean addParticipant(User u) {
         List<User> participants = this.getParticipants();
 
         if (!isParticipant(u)) {
             participants.add(u);
             u.getParticipatingTo().add(this);
+            return true;
         }
+        
+        return false;
     }
 
-    public void removeParticipant(User u) {
+    /**
+     *
+     * @param u
+     * @return
+     * True if the user is a participant, false otherwise
+     */
+    public boolean removeParticipant(User u) {
         List<User> participants = this.getParticipants();
         User participant = findParticipant(u);
 
@@ -199,7 +254,10 @@ public class Event {
             participants.remove(participant);
             participant.removeParticipatingToFromList(this);
             u.removeParticipatingToFromList(this);
+            return true;
         }
+        
+        return false;
     }
 
     public boolean isParticipant(User u) {
@@ -316,6 +374,82 @@ public class Event {
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getSuggestedChangeStart() {
+        return suggestedChangeStart;
+    }
+
+    public void setSuggestedChangeStart(LocalDateTime suggestedChangeStart) {
+        this.suggestedChangeStart = suggestedChangeStart;
+    }
+
+    public LocalDateTime getSuggestedChangeEnd() {
+        return suggestedChangeEnd;
+    }
+
+    public void setSuggestedChangeEnd(LocalDateTime suggestedChangeEnd) {
+        this.suggestedChangeEnd = suggestedChangeEnd;
+    }
+
+    public EnumSet<WeatherCondition> getAdverseConditions() {
+        return adverseConditions;
+    }
+
+    public void setAdverseConditions(EnumSet<WeatherCondition> adverseConditions) {
+        this.adverseConditions = adverseConditions;
+    }
+
+    public static void validateScheduling(LocalDateTime start, LocalDateTime end) throws InvalidInputException {
+        if(start == null) 
+            throw new InvalidInputException(InvalidInputException.EVENT_VALIDATION_NO_START);
+        
+        if(end == null) 
+            throw new InvalidInputException(InvalidInputException.EVENT_VALIDATION_NO_END);
+        
+        if(!end.isAfter(start))
+            throw new InvalidInputException(InvalidInputException.EVENT_START_AFTER_END);
+    }
+    
+    public void cancel() throws InvalidInputException {
+        if(status != EventStatus.PLANNED)
+            throw new InvalidInputException(InvalidInputException.EVENT_CANCEL_INVALID_STATE);
+    }
+
+    /**
+     * Sets event data for this entity dbEntry using data provided by updated.
+     * The updated fields are:
+     * 
+     * Name
+     * Description
+     * Country
+     * City
+     * Address
+     * Indoor flag
+     * Privacy flag
+     * Start
+     * End
+     * Adverse weather conditions set
+     * 
+     * Any other field is ignored.
+     * 
+     * @param updated
+     * @throws BusinessException 
+     */
+    public void setEventData(Event updated) throws InvalidInputException {
+        if(status != EventStatus.PLANNED)
+            throw new InvalidInputException(InvalidInputException.EVENT_CHANGE_INVALID_STATE);
+        
+        setName(updated.getName());
+        setDescription(updated.getDescription());
+        setCountry(updated.getCountry());
+        setCity(updated.getCity());
+        setAddress(updated.getAddress());
+        setIndoor(updated.isIndoor());
+        setPrivateEvent(updated.isPrivateEvent());
+        setStart(updated.getStart());
+        setEnd(updated.getEnd());
+        setAdverseConditions(updated.getAdverseConditions());
     }
     
     
