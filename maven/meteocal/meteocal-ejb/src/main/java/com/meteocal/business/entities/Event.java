@@ -6,8 +6,10 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.EventStatus;
+import com.meteocal.business.entities.shared.WeatherCondition;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -52,9 +54,28 @@ public class Event {
     private boolean indoor;
 
     // TODO Bad Weather Conditions set
+    
     private boolean privateEvent;
 
-    // TODO Suggested schedule change datetime
+    private LocalDateTime suggestedChangeStart;
+    
+    private LocalDateTime suggestedChangeEnd;
+    
+    
+    
+    
+    
+    @ElementCollection(targetClass = WeatherCondition.class) 
+    @CollectionTable(name = "ADVERSE_CONDITIONS",
+        joinColumns = @JoinColumn(name = "eventID",
+                        referencedColumnName = "id"))
+    @Column(name = "adverseCondition")
+    @Enumerated(EnumType.STRING)
+    EnumSet<WeatherCondition> adverseConditions;
+
+    
+    
+    
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATORID", referencedColumnName = "ID")
@@ -316,6 +337,30 @@ public class Event {
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getSuggestedChangeStart() {
+        return suggestedChangeStart;
+    }
+
+    public void setSuggestedChangeStart(LocalDateTime suggestedChangeStart) {
+        this.suggestedChangeStart = suggestedChangeStart;
+    }
+
+    public LocalDateTime getSuggestedChangeEnd() {
+        return suggestedChangeEnd;
+    }
+
+    public void setSuggestedChangeEnd(LocalDateTime suggestedChangeEnd) {
+        this.suggestedChangeEnd = suggestedChangeEnd;
+    }
+
+    public EnumSet<WeatherCondition> getAdverseConditions() {
+        return adverseConditions;
+    }
+
+    public void setAdverseConditions(EnumSet<WeatherCondition> adverseConditions) {
+        this.adverseConditions = adverseConditions;
     }
     
     
