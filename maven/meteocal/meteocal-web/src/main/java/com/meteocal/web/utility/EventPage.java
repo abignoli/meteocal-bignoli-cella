@@ -75,14 +75,14 @@ public class EventPage extends HttpServlet {
         try {
             request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
 
-//
-//            if (isNotLogged()) {
-//                SYSO_Testing.syso("I'm not logged");
-//                response.sendRedirect(indexPath);
-//                SYSO_Testing.syso("something wrong!!");
-//            }
-//            else {
-//                String username = loggedUser.getUsername();
+            if (isNotLogged()) {
+                SYSO_Testing.syso("I'm not logged");
+                response.sendRedirect(indexPath);
+                SYSO_Testing.syso("something wrong!!");
+            }
+            else {
+                
+                String username = loggedUser.getUsername();
 ////                try {
 ////                    visibility = um.getVisibilityOverEvent(eventID);
 ////                }
@@ -90,11 +90,14 @@ public class EventPage extends HttpServlet {
 ////                    Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
 ////                    SessionUtility.redirect("/Index.xhtml");
 ////                }
-//                visibility = CREATOR;
-//                SYSO_Testing.syso("Username " + username);
-//                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
-//                if (visibility == CREATOR) {
-//                    SYSO_Testing.syso("creator");
+                visibility = CREATOR;
+                SYSO_Testing.syso("Username " + username);
+                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
+              
+                if (visibility == CREATOR) {
+                    SYSO_Testing.syso("creator");
+                    request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
+
 //                    sessionUtility.setComingFromDispatcher();
 //                    sessionUtility.setEventID(eventID);
 //                    try {
@@ -106,20 +109,20 @@ public class EventPage extends HttpServlet {
 //                        SYSO_Testing.syso("secondTryCatch");
 //                        Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
 //                    }
-//                }
-//                else {
-//                    if (visibility == VIEWER) {
-//                        SYSO_Testing.syso("viewer");
+                }
+                else {
+                    if (visibility == VIEWER) {
+                        SYSO_Testing.syso("viewer");
 //                        sessionUtility.setComingFromDispatcher();
 //                        request.getRequestDispatcher(viewerPath).forward(request, response);
-//                    }
-//                    else {// NO VISIBILITY
-//                        SYSO_Testing.syso("no Visibility");
+                    }
+                    else {// NO VISIBILITY
+                        SYSO_Testing.syso("no Visibility");
 //                        sessionUtility.setComingFromDispatcher();
 //                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
-//                    }
-//                } 
-//            }
+                    }
+                } 
+            }
         }
         catch (NullPointerException ec) {
             Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ec);
