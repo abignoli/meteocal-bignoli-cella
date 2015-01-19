@@ -28,7 +28,6 @@ import javax.inject.Inject;
  * @author ate
  */
 @Stateless
-@Local
 public class UserManagerImplementation implements UserManager {
 
     @EJB

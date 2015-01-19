@@ -15,6 +15,7 @@ import com.meteocal.business.shared.security.UserEventVisibility;
 import com.meteocal.business.shared.security.UserUserVisibility;
 import java.security.Principal;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author Andrea Bignoli
  */
+@Local
 public interface UserManager {
 
     public void register(User user);
