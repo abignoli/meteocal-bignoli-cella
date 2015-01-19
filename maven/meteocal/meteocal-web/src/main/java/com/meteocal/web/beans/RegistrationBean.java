@@ -7,32 +7,40 @@ package com.meteocal.web.beans;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.facade.UserFacade;
-import com.meteocal.business.security.UserManager;
+import com.meteocal.business.security.UserManager; 
+import com.meteocal.web.utility.SessionUtility;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
  *
  * @author USUARIO
  */
-@Named
+@ManagedBean
 @RequestScoped
-//Is a Session Bean
-public class RegistrationBean {
+public class RegistrationBean implements Serializable{
+ 
+        
+    @PostConstruct
+    public void init(){
+        System.out.println("init-RegistrationBean");
+        setUser(new User());
+    }
     
     @EJB
     UserManager um;
     
-
+    @Inject
+    SessionUtility sessionUtility;
+    
     private String passwordConfirmation;
     private User userToRegister;
-    
-    @PostConstruct
-    public void init(){
-        userToRegister = new User();
-    }
+
     
     /**
      * Creates a new instance of LoginBean
@@ -63,10 +71,10 @@ public class RegistrationBean {
     public String register(){
         if( passwordMatching() ){
             System.out.println("Starting registration!");
+            System.out.println("name: " + userToRegister.getUsername() + " psw: " + userToRegister.getPassword());
+            //I've to use a try-catch or a boolean function in order to check if the username is available
             um.register(userToRegister);
-            
             System.out.println("Registration complete!");
-            //protected/personal/HomeCalendarMonth
             return "Index";
         }
         else 

@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +46,9 @@ public class FilterBean implements Serializable {
     
     public void isAdmin(ComponentSystemEvent event) {
         System.out.println("in isAdmin");
-        HttpServletRequest request = HttpUtility.getRequest();
-        HttpServletResponse response = HttpUtility.getResponse();
+        HttpServletRequest request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        
 
         String username = um.getLoggedUser().getUsername();
         System.out.println("Username " + loggedUser.getUsername());

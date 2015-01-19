@@ -9,13 +9,14 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
-import com.meteocal.web.utility.HttpUtility;
+import com.meteocal.web.utility.SessionUtility;
 import com.meteocal.web.utility.Dictionary;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException; 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /** 
@@ -32,7 +33,8 @@ public class SettingsEditingBean implements Serializable{
     @EJB
     private UserManager um;
     
-    private HttpUtility httpUtility;
+    @Inject
+    private SessionUtility sessionUtility;
     
     private String confirmationPassword,previousPassword;
     private User editedUser;
@@ -82,7 +84,7 @@ public class SettingsEditingBean implements Serializable{
                 if(confirmationPassword.equals(editedUser.getPassword())){
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
-                    HttpUtility.getSession().setAttribute("errorType",""+Dictionary.NOTMATCHEDPASSWORD);
+                    sessionUtility.setError(Dictionary.NOTMATCHEDPASSWORD);
                     return "/protected/personal/SettingsEdit";
                 }
             }
@@ -90,13 +92,13 @@ public class SettingsEditingBean implements Serializable{
         }
         catch(EJBException e){
             System.out.println("CATCH EJB");
-            HttpUtility.getSession().setAttribute("errorType",""+Dictionary.EXCEPTION);
+            sessionUtility.setError(Dictionary.EXCEPTION);
             return "/Error";
             
         }
         catch (BusinessException ex) {
             System.out.println("CATCH BusinessException");
-            HttpUtility.getSession().setAttribute("errorType",""+Dictionary.EXCEPTION);
+            sessionUtility.setError(Dictionary.EXCEPTION);
             return "/Error";
             //Logger.getLogger(SettingsEditingBean.class.getName()).log(Level.SEVERE, null, ex);
         }

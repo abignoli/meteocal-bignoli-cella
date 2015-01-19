@@ -18,14 +18,14 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class TestEditEntityBean {
-
+ 
     @EJB
     private EditEntityTest testEditEntityEJB;
 
     public void test() {
-        String uname = testEditEntityEJB.createUser();
-        User u = testEditEntityEJB.getUser(uname);
-        u.setUsername("NOT " + uname);
-        testEditEntityEJB.mergeTest(u);
+//        String uname = testEditEntityEJB.createUser();
+//        User u = testEditEntityEJB.getUser(uname);
+//        u.setUsername("NOT " + uname);
+//        testEditEntityEJB.mergeTest(u);
     }
 }

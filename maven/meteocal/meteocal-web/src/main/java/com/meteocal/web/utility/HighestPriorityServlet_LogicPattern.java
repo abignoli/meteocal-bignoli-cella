@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Leo
  */
 @WebServlet
-public class HighestPriorityServlet extends HttpServlet {
+public class HighestPriorityServlet_LogicPattern extends HttpServlet {
     
     private String relativePath;
     

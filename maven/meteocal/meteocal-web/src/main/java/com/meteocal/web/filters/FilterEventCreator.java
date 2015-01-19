@@ -5,14 +5,19 @@
  */
 package com.meteocal.web.filters;
 
-import com.meteocal.business.entities.User;
-import com.meteocal.business.security.UserManager;
-import com.meteocal.web.utility.HttpUtility; 
+import com.meteocal.web.utility.SessionUtility; 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent; 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -21,30 +26,42 @@ import javax.faces.event.ComponentSystemEvent;
 @ManagedBean
 @RequestScoped
 public class FilterEventCreator {
-    @EJB
-    private UserManager um; 
+    
+    @Inject
+    private SessionUtility sessionUtility;
 
-    private User loggedUser;
-    private final String context = HttpUtility.getRequest().getContextPath();
+    private String loggedUser;
+    HttpServletRequest request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        
+    private final String context = request.getContextPath();
     private final String indexPath = context + "/Index.xhtml";
     
     @PostConstruct
     public void init(){
-        this.setUser(um.getLoggedUser());
+        this.setUser(sessionUtility.getLoggedUser());        
+        request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+       
     }
     
-    private void setUser(User user){
+    private void setUser(String user){
         this.loggedUser = user;
     }
      
     public void check(ComponentSystemEvent event) {
-        if(amIComingFromRedirect()){
-            HttpUtility.getSession().setAttribute("comingFromRedirect", "no");
+        if(amIComingFromDispatcher()){
+            System.out.println("FilterEventCreator in this case, everything it's ok");
         }
         else{
-            System.out.println("I'm not coming from redirect");
-            HttpUtility.logout();
-            HttpUtility.redirect(indexPath);
+            try {
+                System.out.println("I'm not coming from redirect");
+                sessionUtility.sessionLogout();
+                response.sendRedirect(indexPath);
+            }
+            catch (IOException ex) {
+                Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -53,7 +70,7 @@ public class FilterEventCreator {
         return a % 2 == 0;
     }
 
-    private boolean amIComingFromRedirect() {
-        return HttpUtility.getSession().getAttribute("comingFromRedirect").equals("yes");
-    }       
+    private boolean amIComingFromDispatcher() {
+        return sessionUtility.getComingFromDispatcher();
+    }
 }
