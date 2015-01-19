@@ -54,79 +54,75 @@ public class EventPage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         this.setUser(um.getLoggedUser());
-        final String context = request.getContextPath();
-        final String indexPath = context + "/Index.xhtml";
-        final String creatorPath = context + "/WEB-INF/HiddenPages/EventPageCreator.xhtml";
-        final String viewerPath = context + "/WEB-INF/HiddenPages/EventPageViewer.xhtml";
-        final String noVisibilityPath = context + "/WEB-INF/HiddenPages/EventPageNoVisibility.xhtml";
+        final String indexPath =  "/Index.xhtml";
+        final String creatorPath =  "/WEB-INF/HiddenPages/EventPageCreator.xhtml";
+        final String viewerPath =  "/WEB-INF/HiddenPages/EventPageViewer.xhtml";
+        final String noVisibilityPath =  "/WEB-INF/HiddenPages/EventPageNoVisibility.xhtml";
 
         //eventID = SessionUtility.getQueryString().split("=")[1];
         int eventID = 1;
         boolean comingFromRedirect;
         UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
 
-        SYSO_Testing.syso("in EventPage: check");
+
         String relativePath = request.getRequestURI().replace("/meteocal-web", "");
 
         SYSO_Testing.syso("URI: " + request.getRequestURI());
         SYSO_Testing.syso("relativePath: " + relativePath);
 
         try {
+            request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
 
-            if (isNotLogged()) {
-                SYSO_Testing.syso("I'm not logged");
-                response.sendRedirect(indexPath);
-                SYSO_Testing.syso("something wrong!!");
-            }
-            else {
-                String username = loggedUser.getUsername();
-//                try {
-//                    visibility = um.getVisibilityOverEvent(eventID);
+//
+//            if (isNotLogged()) {
+//                SYSO_Testing.syso("I'm not logged");
+//                response.sendRedirect(indexPath);
+//                SYSO_Testing.syso("something wrong!!");
+//            }
+//            else {
+//                String username = loggedUser.getUsername();
+////                try {
+////                    visibility = um.getVisibilityOverEvent(eventID);
+////                }
+////                catch (NotFoundException ex) {
+////                    Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
+////                    SessionUtility.redirect("/Index.xhtml");
+////                }
+//                visibility = CREATOR;
+//                SYSO_Testing.syso("Username " + username);
+//                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
+//                if (visibility == CREATOR) {
+//                    SYSO_Testing.syso("creator");
+//                    sessionUtility.setComingFromDispatcher();
+//                    sessionUtility.setEventID(eventID);
+//                    try {
+//                        SYSO_Testing.syso("pre-dispatcher");
+//                        request.getRequestDispatcher(creatorPath).forward(request, response);
+//                        SYSO_Testing.syso("post-dispatcher");
+//                    }
+//                    catch (IOException ex) {
+//                        SYSO_Testing.syso("secondTryCatch");
+//                        Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
 //                }
-//                catch (NotFoundException ex) {
-//                    Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
-//                    SessionUtility.redirect("/Index.xhtml");
-//                }
-                visibility = CREATOR;
-                SYSO_Testing.syso("Username " + username);
-                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
-                if (visibility == CREATOR) {
-                    SYSO_Testing.syso("creator");
-                    sessionUtility.setComingFromDispatcher();
-                    sessionUtility.setEventID(eventID);
-                    try {
-                        SYSO_Testing.syso("pre-dispatcher");
-                        request.getRequestDispatcher(creatorPath).forward(request, response);
-                        SYSO_Testing.syso("post-dispatcher");
-                    }
-                    catch (IOException ex) {
-                        SYSO_Testing.syso("secondTryCatch");
-                        Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                else {
-                    if (visibility == VIEWER) {
-                        SYSO_Testing.syso("viewer");
-                        sessionUtility.setComingFromDispatcher();
-                        request.getRequestDispatcher(viewerPath).forward(request, response);
-                    }
-                    else {// NO VISIBILITY
-                        SYSO_Testing.syso("no Visibility");
-                        sessionUtility.setComingFromDispatcher();
-                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
-                    }
-                } 
-            }
+//                else {
+//                    if (visibility == VIEWER) {
+//                        SYSO_Testing.syso("viewer");
+//                        sessionUtility.setComingFromDispatcher();
+//                        request.getRequestDispatcher(viewerPath).forward(request, response);
+//                    }
+//                    else {// NO VISIBILITY
+//                        SYSO_Testing.syso("no Visibility");
+//                        sessionUtility.setComingFromDispatcher();
+//                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
+//                    }
+//                } 
+//            }
         }
         catch (NullPointerException ec) {
             Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ec);
-        }
-        catch (IOException ex) {
-            Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (ServletException ex) {
-            Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
