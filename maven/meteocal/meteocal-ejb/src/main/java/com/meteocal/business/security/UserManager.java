@@ -27,36 +27,40 @@ import javax.persistence.PersistenceContext;
 public interface UserManager {
 
     public void register(User user);
-    
+
     public void unregister();
 
     public User getLoggedUser();
-    
+
     /**
-     * Gets the type of visibility that the logged user has over the event identified by eventID.
-     * 
+     * Gets the type of visibility that the logged user has over the event
+     * identified by eventID.
+     *
      * @param eventID
      * @return
-     * @throws NotFoundException 
-     * If the requested eventID doesn't exist
+     * @throws NotFoundException If the requested eventID doesn't exist
      */
     public UserEventVisibility getVisibilityOverEvent(int eventID) throws NotFoundException;
-    
+
     /**
-     * Gets the type of visibility that the logged user has over the user identified by userID.
-     * 
+     * Gets the type of visibility that the logged user has over the user
+     * identified by userID.
+     *
      * @param userID
      * @return
-     * @throws NotFoundException 
-     * If the requested userID doesn't exist
+     * @throws NotFoundException If the requested userID doesn't exist
      */
     public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
-    
+
     public void addParticipation(int eventID) throws BusinessException;
-    
+
     public void removeParticipation(int eventID) throws BusinessException;
-    
+
     public void toggleParticipation(int eventID) throws BusinessException;
-    
-    public void setAsSeen(int notificationID) throws NotFoundException;
+
+    public int getNotSeenInvitationsCount();
+
+    public int getNotSeenNotificationsCount();
+
+    public void setNotificationAsSeen(int notificationID) throws NotFoundException;
 }
