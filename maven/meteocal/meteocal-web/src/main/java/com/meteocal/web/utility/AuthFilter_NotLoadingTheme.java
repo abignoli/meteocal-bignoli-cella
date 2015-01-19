@@ -4,31 +4,31 @@
  * and open the template in the editor.
  */
 package com.meteocal.web.utility;
-//import com.meteocal.business.security.UserManager;
-//import java.io.IOException;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-//import javax.ejb.EJB;
-//import javax.servlet.Filter;
-//import javax.servlet.FilterChain;
-//import javax.servlet.FilterConfig;
-//import javax.servlet.ServletException;
-//import javax.servlet.ServletRequest;
-//import javax.servlet.ServletResponse;
-//import javax.servlet.annotation.WebFilter;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpSession;
+import com.meteocal.business.security.UserManager;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Leo
- *
-@WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})*/
+ */
+@WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
 
-//                                      implements Filter 
-public class AuthFilter_NotLoadingTheme {
-
+//                                      //implements Filter
+public class AuthFilter_NotLoadingTheme  {
+//
 //    @EJB
 //    UserManager um;
 //        
@@ -40,8 +40,7 @@ public class AuthFilter_NotLoadingTheme {
 //         
 //    }
 // 
-//    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain){
+//    public void processRequest(ServletRequest request, ServletResponse response, FilterChain chain){
 //        HttpServletRequest req = (HttpServletRequest) request;
 //        HttpServletResponse res = (HttpServletResponse) response;
 //        HttpSession ses = req.getSession(false);
@@ -76,4 +75,9 @@ public class AuthFilter_NotLoadingTheme {
 //    public void destroy() {
 //         
 //    } 
+//
+//    @Override
+//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 }

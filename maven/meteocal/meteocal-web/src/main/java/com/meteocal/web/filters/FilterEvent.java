@@ -48,9 +48,9 @@ public class FilterEvent {
         
     private final String context = request.getContextPath();
     private final String indexPath = context + "/Index.xhtml";
-    private final String creatorPath = context + "/protected/event/EventPageCreator.xhtml";
-    private final String viewerPath = context + "/protected/event/EventPageViewer.xhtml";
-    private final String noVisibilityPath = context + "/protected/event/EventPageNoVisibility.xhtml";
+    private final String creatorPath = context + "/WEB-INF/HiddenPages/EventPageCreator.xhtml";
+    private final String viewerPath = context + "/WEB-INF/HiddenPages/EventPageViewer.xhtml";
+    private final String noVisibilityPath = context + "/WEB-INF/HiddenPages/EventPageNoVisibility.xhtml";
 
     @PostConstruct
     public void init() {
@@ -101,7 +101,7 @@ public class FilterEvent {
                     sessionUtility.setEventID(eventID);
                     try {
                         SYSO_Testing.syso("pre-dispatcher");
-                        response.sendRedirect(creatorPath);
+                        request.getRequestDispatcher(creatorPath).forward(request, response);
                         SYSO_Testing.syso("post-dispatcher");
                     }
                     catch (IOException ex) {
