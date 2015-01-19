@@ -45,26 +45,26 @@ public class FilterBean implements Serializable {
     }
     
     public void isAdmin(ComponentSystemEvent event) {
-        System.out.println("in isAdmin");
+        SYSO_Testing.syso("in isAdmin");
         HttpServletRequest request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
 
         String username = um.getLoggedUser().getUsername();
-        System.out.println("Username " + loggedUser.getUsername());
+        SYSO_Testing.syso("Username " + loggedUser.getUsername());
         
         String relativePath = request.getRequestURI().replace("/meteocal-web", "");
-        System.out.println("URI: " + request.getRequestURI());
-        System.out.println("relativePath: " + relativePath);
+        SYSO_Testing.syso("URI: " + request.getRequestURI());
+        SYSO_Testing.syso("relativePath: " + relativePath);
         
         try {
             if (isNotLogged()) {
-                System.out.println("I'm not logged");
+                SYSO_Testing.syso("I'm not logged");
                     request.getRequestDispatcher(indexPath).forward(request, response);
-                System.out.println("somethin wrong!!");
+                SYSO_Testing.syso("somethin wrong!!");
             }
             else {
-                System.out.println("I'm logged, and I've to check the visibility");
+                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
                 if (logica()) {
                     request.getRequestDispatcher(relativePath).forward(request, response);
                 }

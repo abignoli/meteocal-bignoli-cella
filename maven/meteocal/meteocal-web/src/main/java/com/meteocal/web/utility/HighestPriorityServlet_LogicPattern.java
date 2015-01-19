@@ -33,25 +33,26 @@ public class HighestPriorityServlet_LogicPattern extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        System.out.println("URI: " +request.getRequestURI());
-        System.out.println("URL: " + request.getRequestURL());
-        System.out.println("server name: " + request.getServerName());
-        System.out.println("replace: " + request.getRequestURI().replace("/meteocal-web",""));
-        System.out.println("pathInfo: " + request.getPathInfo());
+        SYSO_Testing.syso("in HighestPriorityServlet: processRequest");
+        SYSO_Testing.syso("URI: " +request.getRequestURI());
+        SYSO_Testing.syso("URL: " + request.getRequestURL());
+        SYSO_Testing.syso("server name: " + request.getServerName());
+        SYSO_Testing.syso("replace: " + request.getRequestURI().replace("/meteocal-web",""));
+        SYSO_Testing.syso("pathInfo: " + request.getPathInfo());
         
         relativePath = request.getRequestURI().replace("/meteocal-web","");
         
         if("/protected/personal/Settings.xhtml".equals(relativePath))
-            System.out.println("Match!");
+            SYSO_Testing.syso("Match!");
         
         request.getRequestDispatcher("/protected/personal/Settings.xhtml").forward(request, response);
         
         
         if(isNotLogged()) {
-            System.out.println("I'm not logged");
+            SYSO_Testing.syso("I'm not logged");
             request.getRequestDispatcher(relativePath).forward(request, response);
         } else {
-            System.out.println("I'm logged, and I've to check the visibility");
+            SYSO_Testing.syso("I'm logged, and I've to check the visibility");
             if( logica() ){
                 request.getRequestDispatcher(relativePath).forward(request, response);
             }else{

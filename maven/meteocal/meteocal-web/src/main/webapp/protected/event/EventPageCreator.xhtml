@@ -60,8 +60,10 @@ and open the template in the editor.
             </h:panelGrid>
         </p:fieldset>
         <p:fieldset>
-            <p:inputText value="Participants"></p:inputText>
-            <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add Participant"></p:commandButton>
+            <h:form>
+                <p:inputText value="Participants"></p:inputText>
+                <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add Participant"></p:commandButton>
+            </h:form>
         </p:fieldset>
     </body>
 </html>

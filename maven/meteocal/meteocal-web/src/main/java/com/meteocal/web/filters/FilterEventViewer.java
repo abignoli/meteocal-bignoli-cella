@@ -5,12 +5,12 @@
  */
 package com.meteocal.web.filters;
 
+import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -53,11 +53,11 @@ public class FilterEventViewer {
      
     public void check(ComponentSystemEvent event) {
         if(amIComingFromDispatcher()){
-            System.out.println("FilterEventCreator in this case, everything it's ok");
+            SYSO_Testing.syso("FilterEventCreator in this case, everything it's ok");
         }
         else{
             try {
-                System.out.println("I'm not coming from redirect");
+                SYSO_Testing.syso("I'm not coming from redirect");
                 sessionUtility.sessionLogout();
                 response.sendRedirect(indexPath);
             }

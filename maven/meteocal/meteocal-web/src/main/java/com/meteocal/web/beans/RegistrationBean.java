@@ -8,6 +8,7 @@ package com.meteocal.web.beans;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager; 
+import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -28,7 +29,7 @@ public class RegistrationBean implements Serializable{
         
     @PostConstruct
     public void init(){
-        System.out.println("init-RegistrationBean");
+        SYSO_Testing.syso("init-RegistrationBean");
         setUser(new User());
     }
     
@@ -70,11 +71,12 @@ public class RegistrationBean implements Serializable{
     
     public String register(){
         if( passwordMatching() ){
-            System.out.println("Starting registration!");
-            System.out.println("name: " + userToRegister.getUsername() + " psw: " + userToRegister.getPassword());
+            SYSO_Testing.clean();
+            SYSO_Testing.syso("Starting registration!");
+            SYSO_Testing.syso("name: " + userToRegister.getUsername() + " psw: " + userToRegister.getPassword());
             //I've to use a try-catch or a boolean function in order to check if the username is available
             um.register(userToRegister);
-            System.out.println("Registration complete!");
+            SYSO_Testing.syso("Registration complete!");
             return "Index";
         }
         else 

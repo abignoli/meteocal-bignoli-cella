@@ -8,7 +8,7 @@ package com.meteocal.web.utility;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 //import java.io.IOException;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 //import javax.servlet.http.HttpSession;
 
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -40,7 +41,7 @@ public class SessionUtility implements Serializable {
    
     public void addUser(String username) {
         loggedUserName = username;
-        System.out.println("User added in cache");
+        SYSO_Testing.syso("User added in cache");
     }
 
     public String getLoggedUser() {
@@ -48,9 +49,13 @@ public class SessionUtility implements Serializable {
     }
 
     public void sessionLogout() {
-        System.out.println("logout from Session bean");
+        SYSO_Testing.syso("starting logout from Session bean");
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         loggedUserName = null;
         error = false;
+        request.getSession().invalidate();
+        
     }
 
     public void setError(int value) {
@@ -70,6 +75,11 @@ public class SessionUtility implements Serializable {
         error = false;
     }
 
+
+    public void setNotComingFromDispatcher() {
+        comingFromDispatcher = false;
+    }
+    
     public void setComingFromDispatcher() {
         comingFromDispatcher = true;
     }

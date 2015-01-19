@@ -10,6 +10,7 @@ import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
 import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
+import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -69,18 +70,18 @@ public class FilterEvent {
         boolean comingFromRedirect;
         UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
 
-        System.out.println("in EventPage: check");
+        SYSO_Testing.syso("in EventPage: check");
         String relativePath = request.getRequestURI().replace("/meteocal-web", "");
 
-        System.out.println("URI: " + request.getRequestURI());
-        System.out.println("relativePath: " + relativePath);
+        SYSO_Testing.syso("URI: " + request.getRequestURI());
+        SYSO_Testing.syso("relativePath: " + relativePath);
 
         try {
 
             if (isNotLogged()) {
-                System.out.println("I'm not logged");
+                SYSO_Testing.syso("I'm not logged");
                 response.sendRedirect(indexPath);
-                System.out.println("something wrong!!");
+                SYSO_Testing.syso("something wrong!!");
             }
             else {
                 String username = loggedUser.getUsername();
@@ -92,30 +93,30 @@ public class FilterEvent {
 //                    SessionUtility.redirect("/Index.xhtml");
 //                }
                 visibility = CREATOR;
-                System.out.println("Username " + username);
-                System.out.println("I'm logged, and I've to check the visibility");
+                SYSO_Testing.syso("Username " + username);
+                SYSO_Testing.syso("I'm logged, and I've to check the visibility");
                 if (visibility == CREATOR) {
-                    System.out.println("creator");
+                    SYSO_Testing.syso("creator");
                     sessionUtility.setComingFromDispatcher();
                     sessionUtility.setEventID(eventID);
                     try {
-                        System.out.println("pre-dispatcher");
+                        SYSO_Testing.syso("pre-dispatcher");
                         response.sendRedirect(creatorPath);
-                        System.out.println("post-dispatcher");
+                        SYSO_Testing.syso("post-dispatcher");
                     }
                     catch (IOException ex) {
-                        System.out.println("secondTryCatch");
+                        SYSO_Testing.syso("secondTryCatch");
                         Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 else {
                     if (visibility == VIEWER) {
-                        System.out.println("viewer");
+                        SYSO_Testing.syso("viewer");
                         sessionUtility.setComingFromDispatcher();
                         request.getRequestDispatcher(viewerPath).forward(request, response);
                     }
                     else {// NO VISIBILITY
-                        System.out.println("no Visibility");
+                        SYSO_Testing.syso("no Visibility");
                         sessionUtility.setComingFromDispatcher();
                         request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
                     }

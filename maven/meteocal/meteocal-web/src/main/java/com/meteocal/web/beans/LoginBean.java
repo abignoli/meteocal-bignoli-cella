@@ -5,9 +5,9 @@
  */
 package com.meteocal.web.beans;
 
+import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.IOException;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -57,24 +57,24 @@ public class LoginBean {
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
-        System.out.println("Try to login user: " + this.username + " with psw: " + this.password + " !");
+        SYSO_Testing.clean();  
+        SYSO_Testing.syso("Try to login user: " + this.username + " with psw: " + this.password + " !");
         try {
             request.login(this.username, this.password);
         }
         catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
-            System.out.println("user" + e.toString());
+            SYSO_Testing.syso("user" + e.toString());
             return "/Error";
         }
-        System.out.println("Login successful");
+        SYSO_Testing.syso("Login successful");
         sessionUtility.addUser(username);
 
         return "/protected/personal/HomeCalendarMonth";
     }
 
     public void logout() {
-        System.out.println("starting logout!");
+        SYSO_Testing.syso("starting logout!");
         
         String contextPath;
         
