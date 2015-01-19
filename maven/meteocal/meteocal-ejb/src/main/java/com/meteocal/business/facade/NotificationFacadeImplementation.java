@@ -7,9 +7,11 @@ package com.meteocal.business.facade;
 
 import com.meteocal.business.dao.EventDAO;
 import com.meteocal.business.dao.NotificationDAO;
+import com.meteocal.business.dao.NotificationViewDAO;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.Notification;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.keys.NotificationViewID;
 import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.NotificationType;
 import com.meteocal.business.exceptions.BusinessException;
@@ -26,6 +28,9 @@ public class NotificationFacadeImplementation implements NotificationFacade {
     
     @EJB
     NotificationDAO notificationDAO;
+    
+    @EJB
+    NotificationViewDAO notificationViewDAO;
     
     @EJB
     EventDAO eventDAO;
@@ -66,6 +71,13 @@ public class NotificationFacadeImplementation implements NotificationFacade {
         notificationDAO.save(cancelNotification);
         
         linkParticipants(cancelNotification);
+    }
+
+    @Override
+    public void setAsSeen(int userID, int notificationID) throws NotFoundException {
+        NotificationViewID notificationViewKey = new NotificationViewID(userID,notificationID);
+        
+        notificationViewDAO.retrieve(notificationViewKey).setSeen(true);
     }
 
     

@@ -24,8 +24,6 @@ public class UserFacadeImplementation implements UserFacade {
     
     @EJB
     private UserDAO userDAO;
-    
-    boolean correct;
 
     public void save(User u) {
         if(u.isValid()) {
@@ -123,4 +121,6 @@ public class UserFacadeImplementation implements UserFacade {
         else
             return UserUserVisibility.NOT_VISIBLE;
     }
+
+
 }

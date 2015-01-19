@@ -16,4 +16,5 @@ import com.meteocal.business.exceptions.NotFoundException;
 public interface NotificationFacade {
     public void createNotificationForEventChange(int eventID) throws NotFoundException;
     public void createNotificationForEventCancel(int eventID) throws BusinessException;
+    public void setAsSeen(int userID, int notificationID) throws NotFoundException;
 }

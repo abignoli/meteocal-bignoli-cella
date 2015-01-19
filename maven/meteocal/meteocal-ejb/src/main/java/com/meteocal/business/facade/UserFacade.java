@@ -30,4 +30,5 @@ public interface UserFacade {
 
     public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
 
+
 }

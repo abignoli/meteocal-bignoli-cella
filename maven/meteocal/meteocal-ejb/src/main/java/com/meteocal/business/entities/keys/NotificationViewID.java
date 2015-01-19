@@ -15,6 +15,30 @@ public class NotificationViewID implements Serializable {
     private int userID;
     private int notificationID;
 
+    public NotificationViewID() {
+    }
+
+    public NotificationViewID(int userID, int notificationID) {
+        this.userID = userID;
+        this.notificationID = notificationID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getNotificationID() {
+        return notificationID;
+    }
+
+    public void setNotificationID(int notificationID) {
+        this.notificationID = notificationID;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

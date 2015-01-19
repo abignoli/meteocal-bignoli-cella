@@ -6,6 +6,7 @@
 package com.meteocal.business.security;
 
 import com.meteocal.business.entities.User;
+import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
@@ -23,30 +24,13 @@ import javax.persistence.PersistenceContext;
  *
  * @author Andrea Bignoli
  */
-@Stateless
-public class UserManager {
-    
-    @EJB
-    UserFacade userFacade;
-    
-    @EJB
-    EventFacade eventFacade;
-    
-    @Inject
-    Principal principal;
-    
-    public void register(User user) {
-        user.setGroupName(Group.USER.getName());
-        userFacade.save(user);
-    }
-    
-    public void unregister() {
-        userFacade.remove(getLoggedUser());
-    }
+public interface UserManager {
 
-    public User getLoggedUser() {
-        return userFacade.findByUsername(principal.getName());
-    }
+    public void register(User user);
+    
+    public void unregister();
+
+    public User getLoggedUser();
     
     /**
      * Gets the type of visibility that the logged user has over the event identified by eventID.
@@ -56,9 +40,7 @@ public class UserManager {
      * @throws NotFoundException 
      * If the requested eventID doesn't exist
      */
-    public UserEventVisibility getVisibilityOverEvent(int eventID) throws NotFoundException {
-        return eventFacade.getVisibilityOverEvent(getLoggedUser().getId(), eventID);
-    }
+    public UserEventVisibility getVisibilityOverEvent(int eventID) throws NotFoundException;
     
     /**
      * Gets the type of visibility that the logged user has over the user identified by userID.
@@ -68,7 +50,13 @@ public class UserManager {
      * @throws NotFoundException 
      * If the requested userID doesn't exist
      */
-    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException {
-        return userFacade.getVisibilityOverUser(userID);
-    }
+    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
+    
+    public void addParticipation(int eventID) throws BusinessException;
+    
+    public void removeParticipation(int eventID) throws BusinessException;
+    
+    public void toggleParticipation(int eventID) throws BusinessException;
+    
+    public void setAsSeen(int notificationID) throws NotFoundException;
 }
