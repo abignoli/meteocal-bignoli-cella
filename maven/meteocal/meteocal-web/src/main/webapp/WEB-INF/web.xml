@@ -12,31 +12,35 @@
         <servlet-name>interceptor</servlet-name>
         <url-pattern>/protected/*</url-pattern>
     </servlet-mapping>-->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>Event</servlet-name>
+        <servlet-class>com.meteocal.web.utility.EventPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Event</servlet-name>
+        <url-pattern>/EventPage</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>
-            -1
-        </session-timeout>
+        <session-timeout>-1</session-timeout>
     </session-config>
     <!--    
     <servlet>
         <servlet-name>interceptor</servlet-name>
         <servlet-class>com.meteocal.web.utility.HighestPriorityServlet</servlet-class>
     </servlet>-->
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    
     <welcome-file-list>
         <welcome-file>Index.xhtml</welcome-file>
     </welcome-file-list>
-    
-<!--    <security-constraint>
+    <!--    <security-constraint>
         <display-name>Constraint1</display-name>
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
@@ -48,7 +52,7 @@
             <role-name>USER</role-name>
         </auth-constraint>
     </security-constraint>
--->    
+-->
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>meteocal-authentication-realm</realm-name>
@@ -57,7 +61,7 @@
             <form-error-page>/Index.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-<!--    
+    <!--    
     <security-role>
         <description/>
         <role-name>USER</role-name>

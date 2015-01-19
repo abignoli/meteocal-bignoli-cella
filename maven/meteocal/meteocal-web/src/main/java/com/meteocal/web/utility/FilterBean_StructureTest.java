@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ManagedBean
 @RequestScoped
-public class FilterBean implements Serializable {
+public class FilterBean_StructureTest implements Serializable {
 
     @EJB
     private UserManager um; 
@@ -74,10 +74,10 @@ public class FilterBean implements Serializable {
             }
         }
         catch (ServletException ex) {
-            Logger.getLogger(FilterBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilterBean_StructureTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex) {
-            Logger.getLogger(FilterBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilterBean_StructureTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
