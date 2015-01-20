@@ -7,13 +7,16 @@ package com.meteocal.web.beans;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -23,31 +26,29 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class EventManagementBean implements Serializable {
-    private User u;
+    private List<Event> events;
+    private String username;
+    
+    @Inject
+    SessionUtility sessionUtility;
     
     @EJB
-    UserManager um;
+    EventFacade ef;
 
     @PostConstruct
     public void init(){
-        u = um.getLoggedUser();
+        username = sessionUtility.getLoggedUser();
     }
     
     public List<Event> getEvents(){
-        
-        /*
-            List<Event> participatingTo = u.getParticipatingTo();
-        
-        System.out.println("events list: " + participatingTo.size());
-        return participatingTo;
-                
-        */
-        List<Event> participatingTo = new ArrayList<>();
-        participatingTo.add(new Event());
-        participatingTo.add(new Event());
-        participatingTo.add(new Event());
-        return participatingTo;
+        return events;
     }
+    
+    public void setEvents(List<Event> newEvents){
+        this.events = newEvents;
+    }
+    
+    
                 
     
 }

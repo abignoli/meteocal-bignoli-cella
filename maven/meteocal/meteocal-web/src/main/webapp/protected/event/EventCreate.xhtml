@@ -21,58 +21,51 @@ and open the template in the editor.
         <h:form>
             <p:panel id="privacyPanel" header="Event Creation" footer="Creation form" style="margin-top:70px" class="panelForm">     
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
-                    
-                    <p:outputLabel value="Name" for="name" />
-                    <p:autoComplete id="name" value="#{eventCreationBean.createdEvent.name}" emptyMessage="Event's name" />
-                    
-                    <p:outputLabel value="Address" for="address" />
-                    <p:autoComplete id="address" value="#{eventCreationBean.createdEvent.address}" emptyMessage="Road , N" />
-                    
-                    <p:outputLabel value="City" for="city" />
-                    <p:autoComplete id="city" value="#{eventCreationBean.createdEvent.city}" emptyMessage="City" />
-                    
-                    <p:outputLabel value="Country" for="country" />
-                    <p:autoComplete id="country" value="#{eventCreationBean.createdEvent.country}" emptyMessage="Country" />
-                    
-                    
-                    <h:outputText id="display" style="columns: 2"/>
-                    <p:inputTextarea id="description" rows="5" cols="30" counter="display" maxlength="250" counterTemplate="Description: {0} characters remaining." autoResize="true" value="#{eventCreationBean.createdEvent.description}"/>
-                   
-                        
-                    <h:outputText value="Adverse Conditions: " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.adverseConditions}">
-                        <f:selectItem itemLabel="Indoor" itemValue="true" />
-                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
-                    </p:selectOneButton>
-                                        
-                    <h:outputText value="Event beginning: " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.start}">
-                        <f:selectItem itemLabel="Indoor" itemValue="true" />
-                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
-                    </p:selectOneButton>     
-                    
-                    <h:outputText value="Event conclusion: " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.end}">
-                        <f:selectItem itemLabel="Indoor" itemValue="true" />
-                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
-                    </p:selectOneButton>
-                                        
 
-                    <br/>
-                        
+                    <p:outputLabel value="Name" for="name" />
+                    <p:inputText id="name" value="#{eventCreationBean.createdEvent.name}" />
+
+                    <p:outputLabel value="Address" for="address" />
+                    <p:inputText id="address" value="#{eventCreationBean.createdEvent.address}" />
+
+                    <p:outputLabel value="City" for="city" />
+                    <p:inputText id="city" value="#{eventCreationBean.createdEvent.city}" />
+
+                    <p:outputLabel value="Country" for="country" />
+                    <p:inputText id="country" value="#{eventCreationBean.createdEvent.country}" />
+
+
+                    <h:outputText value="Description"/>
+                    <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventCreationBean.createdEvent.description}"/>
+
+
+                    <h:outputText value="Adverse Conditions: " />
+                    <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.conv}">
+                        <f:selectItems value="#{eventCreationBean.weatherConditions}" />
+                    </p:selectManyButton>
+ <!--                 
+                    <h:outputText value="Event beginning: " />
+                    <p:calendar id="startingTime" value="{eventCreationBean.createdEvent.start}" pattern="MM/dd/yyyy HH:mm:ss" converter="TimeConverter" />  
+                    
+                    <h:outputText value="Event beginning: " />
+                    <p:calendar id="endingTime" value="{eventCreationBean.createdEvent.end}" pattern="MM/dd/yyyy HH:mm:ss" converter="TimeConverter"/>  
+ -->       
+
                     <h:outputText value="Location: " />
                     <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />
                         <f:selectItem itemLabel="Outdoor" itemValue="false" />
                     </p:selectOneButton>
-                    
+
                     <h:outputText value="Privacy Mode " />
                     <p:selectOneButton value="#{eventCreationBean.createdEvent.privateEvent}">
                         <f:selectItem itemLabel="Private" itemValue="true" />
                         <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
-                    
-                    <p:commandButton value="Create" icon="ui-icon-check" action="#{eventCreationBean.create()}"/>
+                        
+                    <br/>
+                        
+                    <p:commandButton value="Create" action="#{eventCreationBean.create()}"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

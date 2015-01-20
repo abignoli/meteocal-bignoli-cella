@@ -18,16 +18,59 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
-        
+
         <h:form>    
-            <p:dataList value="#{eventManagementBean.events}" var="event" type="ordered">
-                <f:facet name="header">
-                    Data List applyed on Event
-                </f:facet>
-                 #{event.id} , #{event.name} , #{event.participants}
-            </p:dataList>
+            <p:dataTable var="event" value="#{dtBasicView.events}">
+                <p:column headerText="Id">
+                    <h:outputText value="#{event.id}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{event.color}" />
+                </p:column>
+
+                <p:column headerText="Address">
+                    <h:outputText value="#{event.year}" />
+                </p:column>
+
+                <p:column headerText="City">
+                    <h:outputText value="#{event.brand}" />
+                </p:column>
+
+                <p:column headerText="Country">
+                    <h:outputText value="#{event.color}" />
+                </p:column>
+                
+                <p:column headerText="Description">
+                    <h:outputText value="#{event.id}" />
+                </p:column>
+
+                <p:column headerText="Start">
+                    <h:outputText value="#{event.year}" />
+                </p:column>
+
+                <p:column headerText="End">
+                    <h:outputText value="#{event.brand}" />
+                </p:column>
+
+                <p:column headerText="Indoor">
+                    <h:outputText value="#{event.color}" />
+                </p:column>
+                
+                <p:column headerText="Private">
+                    <h:outputText value="#{event.id}" />
+                </p:column>
+
+                <p:column headerText="Status">
+                    <h:outputText value="#{event.year}" />
+                </p:column>
+
+                <p:column headerText="Creator">
+                    <h:outputText value="#{event.brand}" />
+                </p:column>
+            </p:dataTable>
         </h:form>
-        
-        
+
+
     </body>
 </html>
