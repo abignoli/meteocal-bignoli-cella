@@ -22,7 +22,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,10 +46,10 @@ public class FilterEvent {
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String indexPath = context + "/Index.xhtml";
-    private final String creatorPath = context + "/WEB-INF/HiddenPages/EventPageCreator.xhtml";
-    private final String viewerPath = context + "/WEB-INF/HiddenPages/EventPageViewer.xhtml";
-    private final String noVisibilityPath = context + "/WEB-INF/HiddenPages/EventPageNoVisibility.xhtml";
+    private final String errorPath = context + "/Error.xhtml";
+    private final String creatorPath = context + "/protected/event/EventPageCreator.xhtml";
+    private final String viewerPath = context + "/protected/event/EventPageViewer.xhtml";
+    private final String noVisibilityPath = context + "/protected/event/EventPageNoVisibility.xhtml";
 
     @PostConstruct
     public void init() {
@@ -80,7 +79,7 @@ public class FilterEvent {
 
             if (isNotLogged()) {
                 SYSO_Testing.syso("I'm not logged");
-                response.sendRedirect(indexPath);
+                response.sendRedirect(errorPath);
                 SYSO_Testing.syso("something wrong!!");
             }
             else {
@@ -100,9 +99,9 @@ public class FilterEvent {
                     sessionUtility.setComingFromDispatcher();
                     sessionUtility.setEventID(eventID);
                     try {
-                        SYSO_Testing.syso("pre-dispatcher");
-                        request.getRequestDispatcher(creatorPath).forward(request, response);
-                        SYSO_Testing.syso("post-dispatcher");
+                        SYSO_Testing.syso("pre-redirect");
+                        response.sendRedirect(creatorPath);
+                        SYSO_Testing.syso("post-redirect");
                     }
                     catch (IOException ex) {
                         SYSO_Testing.syso("secondTryCatch");
@@ -113,15 +112,15 @@ public class FilterEvent {
                     if (visibility == VIEWER) {
                         SYSO_Testing.syso("viewer");
                         sessionUtility.setComingFromDispatcher();
-                        request.getRequestDispatcher(viewerPath).forward(request, response);
+                        response.sendRedirect(viewerPath);
                     }
                     else {// NO VISIBILITY
                         SYSO_Testing.syso("no Visibility");
                         sessionUtility.setComingFromDispatcher();
-                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
+                        response.sendRedirect(noVisibilityPath);  
                     }
                 } 
-            }
+            } 
         }
         catch (NullPointerException ec) {
             Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ec);
@@ -129,12 +128,10 @@ public class FilterEvent {
         catch (IOException ex) {
             Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (ServletException ex) {
-            Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     private boolean isNotLogged() {
+        if(this.loggedUser == null) return true;
         return !sessionUtility.getLoggedUser().equals(this.loggedUser.getUsername());
     }
 }
