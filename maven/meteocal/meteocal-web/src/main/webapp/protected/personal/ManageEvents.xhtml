@@ -20,21 +20,21 @@ and open the template in the editor.
         </div>
 
         <h:form>    
-            <p:dataTable var="event" value="#{dtBasicView.events}">
+            <p:dataTable var="event" value="#{eventManagementBean.events}">
                 <p:column headerText="Id">
                     <h:outputText value="#{event.id}" />
                 </p:column>
 
                 <p:column headerText="Name">
-                    <h:outputText value="#{event.color}" />
+                    <h:outputText value="#{event.name}" />
                 </p:column>
 
                 <p:column headerText="Address">
-                    <h:outputText value="#{event.year}" />
+                    <h:outputText value="#{event.address}" />
                 </p:column>
 
                 <p:column headerText="City">
-                    <h:outputText value="#{event.brand}" />
+                    <h:outputText value="#{event.city}" />
                 </p:column>
 
                 <p:column headerText="Country">
@@ -42,31 +42,31 @@ and open the template in the editor.
                 </p:column>
                 
                 <p:column headerText="Description">
-                    <h:outputText value="#{event.id}" />
+                    <h:outputText value="#{event.description}" />
                 </p:column>
 
                 <p:column headerText="Start">
-                    <h:outputText value="#{event.year}" />
+                    <h:outputText value="#{event.start}" />
                 </p:column>
 
                 <p:column headerText="End">
-                    <h:outputText value="#{event.brand}" />
+                    <h:outputText value="#{event.end}" />
                 </p:column>
 
                 <p:column headerText="Indoor">
-                    <h:outputText value="#{event.color}" />
+                    <h:outputText value="#{event.indoor}" />
                 </p:column>
                 
                 <p:column headerText="Private">
-                    <h:outputText value="#{event.id}" />
+                    <h:outputText value="#{event.isPrivate}" />
                 </p:column>
 
                 <p:column headerText="Status">
-                    <h:outputText value="#{event.year}" />
+                    <h:outputText value="#{event.status}" />
                 </p:column>
 
                 <p:column headerText="Creator">
-                    <h:outputText value="#{event.brand}" />
+                    <h:outputText value="#{event.creator}" />
                 </p:column>
             </p:dataTable>
         </h:form>

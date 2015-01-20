@@ -8,6 +8,7 @@ package com.meteocal.web.beans;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class EventManagementBean implements Serializable {
     SessionUtility sessionUtility;
     
     @EJB
-    EventFacade ef;
+    UserManager uf;
 
     @PostConstruct
     public void init(){

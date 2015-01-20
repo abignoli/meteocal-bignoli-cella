@@ -11,16 +11,17 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Events Page</title>
+        <title>My Event</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
+
     <body>
-        <!--<f:event listener="{filterEventViewer.check}" type="preRenderView" />-->
+        <f:event listener="#{filterEventCreator.check}" type="preRenderView" />
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml">
             </ui:include>
         </div>
-        <p:fieldset legend="Event " toggleable="true" toggleSpeed="500">
+        <p:fieldset legend="Your Event " toggleable="true" toggleSpeed="500">
             <p:ajax event="toggle" />
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputText value="Here there are all the available informations as far as an event concerns. ">
@@ -52,9 +53,21 @@ and open the template in the editor.
 
                         <h:outputText value="Private" />
                         <h:outputText value="Y/N" />
+
+                        <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit"/>
+
+
                     </h:panelGrid>
                 </h:form>
             </h:panelGrid>
         </p:fieldset>
+        <p:fieldset>
+            <h:form>
+                <p:inputText value="Participants"></p:inputText>
+                <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add 
+                                 Participant"></p:commandButton>
+            </h:form>
+        </p:fieldset>
     </body>
+
 </html>

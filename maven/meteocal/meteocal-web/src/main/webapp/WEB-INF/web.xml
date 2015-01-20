@@ -8,26 +8,14 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>humanity</param-value>
     </context-param>
-    <!--    <servlet-mapping>
-        <servlet-name>interceptor</servlet-name>
-        <url-pattern>/protected/*</url-pattern>
-    </servlet-mapping>-->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>Event</servlet-name>
-        <servlet-class>com.meteocal.web.utility.EventPage</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Event</servlet-name>
-        <url-pattern>/EventPage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>-1</session-timeout>

@@ -11,9 +11,7 @@ import com.meteocal.business.facade.EventFacade;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -32,15 +30,15 @@ public class EventCreationBean implements Serializable {
     private EventFacade ef;
 
     private WeatherConditionsConverter conv;
-    private List<WeatherCondition> weatherConditions;
-    private EnumSet<WeatherCondition> listChoiche;
+    private EnumSet<WeatherCondition> listChoiche,weatherConditions;
     private Event createdEvent;
     private boolean indoor, privateEvent;
 
     @PostConstruct
     public void init() {
         conv = new WeatherConditionsConverter();
-        weatherConditions = new ArrayList<WeatherCondition>();
+        weatherConditions = EnumSet.noneOf(WeatherCondition.class);
+        listChoiche = EnumSet.noneOf(WeatherCondition.class);
         weatherConditions.add(WeatherCondition.SUN);
         weatherConditions.add(WeatherCondition.SNOW);
         weatherConditions.add(WeatherCondition.RAIN);
@@ -53,11 +51,10 @@ public class EventCreationBean implements Serializable {
     }
 
     public String create() {
-
-        SYSO_Testing.clean();
+        SYSO_Testing.syso("in create()");
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
-        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().toString() + " endTime: " + createdEvent.getEnd());
+        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() + " endTime: " + createdEvent.getEnd());
 
         ef.create(getCreatedEvent());
 
@@ -72,11 +69,11 @@ public class EventCreationBean implements Serializable {
         this.createdEvent = event;
     }
 
-    public List<WeatherCondition> getWeatherConditions() {
+    public EnumSet<WeatherCondition> getWeatherConditions() {
         return weatherConditions;
     }
 
-    public void setWeatherConditions(List<WeatherCondition> conditions) {
+    public void setWeatherConditions(EnumSet<WeatherCondition> conditions) {
         weatherConditions = conditions;
     }
 
