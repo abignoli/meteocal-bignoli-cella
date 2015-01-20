@@ -43,13 +43,12 @@ and open the template in the editor.
                     <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.weatherConv}">
                         <f:selectItems value="#{eventCreationBean.weatherConditions}" />
                     </p:selectManyButton>
- <!--                 
+          
                     <h:outputText value="Event beginning: " />
-                    <p:calendar id="startingTime" value="{eventCreationBean.createdEvent.start}" pattern="MM/dd/yyyy HH:mm:ss" converter="TimeConverter" />  
+                    <p:calendar id="startingTime" value="#{eventCreationBean.createdEvent.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
                     
                     <h:outputText value="Event beginning: " />
-                    <p:calendar id="endingTime" value="{eventCreationBean.createdEvent.end}" pattern="MM/dd/yyyy HH:mm:ss" converter="TimeConverter"/>  
- -->       
+                    <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
 
                     <h:outputText value="Location: " />
                     <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">

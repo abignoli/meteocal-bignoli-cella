@@ -56,6 +56,7 @@ public class EventCreationBean implements Serializable {
         SYSO_Testing.syso("in create()");
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
+        SYSO_Testing.syso("start: " + createdEvent.getStart().toString() + "end" + createdEvent.getEnd().toString());
         SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() );
         try {
             ef.create(getCreatedEvent());
