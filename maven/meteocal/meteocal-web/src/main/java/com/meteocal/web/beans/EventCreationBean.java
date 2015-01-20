@@ -31,7 +31,7 @@ public class EventCreationBean implements Serializable {
     private EventFacade ef;
 
     private WeatherConditionsConverter conv;
-    private EnumSet<WeatherCondition> listChoiche,weatherConditions;
+    private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
     private boolean indoor, privateEvent;
 
@@ -44,10 +44,8 @@ public class EventCreationBean implements Serializable {
         weatherConditions.add(WeatherCondition.SNOW);
         weatherConditions.add(WeatherCondition.RAIN);
         weatherConditions.add(WeatherCondition.CLOUDS);
-        try{
-            this.setEvent(new Event());
-        }catch(BusinessException e){
-        }
+        this.setEvent(new Event());
+
     }
 
     private void setEvent(Event event) {
@@ -59,9 +57,11 @@ public class EventCreationBean implements Serializable {
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
         SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() + " endTime: " + createdEvent.getEnd());
-
-        ef.create(getCreatedEvent());
-
+        try {
+            ef.create(getCreatedEvent());
+        }
+        catch (BusinessException e) {
+        }
         return "/EventPage";
     }
 
