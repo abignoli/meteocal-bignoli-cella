@@ -30,7 +30,7 @@
                     <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" />
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
                     <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}"/>
-                    <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"  />
+                    <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"/>
                     <p:messages id="messagesRegistration" showDetail="true" autoUpdate="true" closable="true" />
                 </h:panelGrid>
             </p:panel>
@@ -40,7 +40,7 @@
             <p:panel id="loginPanel" header="Second Option - Login" footer="Login form" style="margin-bottom:20px"  class="panelForm">
                 <h:panelGrid columns="2" id="loginGrid">
                     <p:outputLabel value="Username" for="userLogin" />
-                    <p:inputText id="userLogin" value="#{loginBean.name}" />
+                    <p:inputText id="userLogin" value="#{loginBean.username}" />
                     <p:outputLabel value="Password" for="pswLog"/>
                     <p:password id="pswLog" value="#{loginBean.password}" />
                     <p:commandButton action="#{loginBean.login()}" value="Login" type="submit" ajax="false" styleClass="block" />

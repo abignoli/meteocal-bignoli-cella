@@ -73,6 +73,7 @@ public class EventPage extends HttpServlet {
         SYSO_Testing.syso("relativePath: " + relativePath);
 
         try {
+            SYSO_Testing.syso("in try");
 //            request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
 
             if (isNotLogged()) {
@@ -82,8 +83,10 @@ public class EventPage extends HttpServlet {
                 return;
             }
             else {
+                SYSO_Testing.syso("in else");
                 
                 String username = loggedUser.getUsername();
+                SYSO_Testing.syso("after getUsername");
 ////                try {
 ////                    visibility = um.getVisibilityOverEvent(eventID);
 ////                }
@@ -92,12 +95,13 @@ public class EventPage extends HttpServlet {
 ////                    SessionUtility.redirect("/Index.xhtml");
 ////                }
                 visibility = CREATOR;
-                SYSO_Testing.syso("Username " + username);
                 SYSO_Testing.syso("I'm logged, and I've to check the visibility");
-              
+                SYSO_Testing.syso("Username " + username);
+                
                 if (visibility == CREATOR) {
-                    SYSO_Testing.syso("creator");
-                    request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
+                    SYSO_Testing.syso("case i'm the creator");
+                    response.sendRedirect("/WEB-INF/HiddenPages/EventPageCreator.xhtml");
+                    SYSO_Testing.syso("post dispatcher EventPage");
                     return;
                     
 //                    sessionUtility.setComingFromDispatcher();
@@ -125,6 +129,7 @@ public class EventPage extends HttpServlet {
                     }
                 } 
                 
+                SYSO_Testing.syso("after else");
 //                return;
             }
         }
@@ -151,6 +156,7 @@ public class EventPage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        return;
     }
 
     /**
@@ -165,6 +171,7 @@ public class EventPage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        return;
     }
 
     /**

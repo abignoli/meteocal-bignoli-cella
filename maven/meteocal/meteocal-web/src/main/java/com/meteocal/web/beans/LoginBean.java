@@ -38,7 +38,7 @@ public class LoginBean {
     public LoginBean() {
     }
 
-    public void setName(String name) {
+    public void setUsername(String name) {
         this.username = name;
     }
 
@@ -46,7 +46,7 @@ public class LoginBean {
         this.password = password;
     }
 
-    public String getName() {
+    public String getUsername() {
         return this.username;
     }
 

@@ -19,6 +19,6 @@ public class SYSO_Testing {
     
     public static void clean(){
         for(int i = 0 ; i < 10 ; i++)
-            syso("");
+            System.out.println(" ");
     }
 }

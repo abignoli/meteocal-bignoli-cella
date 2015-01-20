@@ -18,7 +18,8 @@ and open the template in the editor.
     <body>
         <f:event listener="{filterEventCreator.check}" type="preRenderView" />
         <div id="header">
-            <ui:include src="/Components/TopBar.xhtml"></ui:include>
+            <ui:include src="/Components/TopBar.xhtml">
+            </ui:include>
         </div>
         <p:fieldset legend="Your Event " toggleable="true" toggleSpeed="500">
             <p:ajax event="toggle" />

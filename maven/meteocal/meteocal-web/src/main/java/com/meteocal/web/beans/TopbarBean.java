@@ -28,15 +28,19 @@ public class TopbarBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        SYSO_Testing.syso(sessionUtility.getLoggedUser());
+        SYSO_Testing.syso("topbar_init: " + sessionUtility.getLoggedUser());
+        SYSO_Testing.syso("it's setting:" + sessionUtility.getLoggedUser());
+        this.setUsername(sessionUtility.getLoggedUser());
+        SYSO_Testing.syso("now the field has value: " + this.getUsername());
     }
     
     public String getUsername(){
+        SYSO_Testing.syso("topbarBean_getter: " + username );
         return this.username;
     }
     
     private void setUsername(String user){
-        SYSO_Testing.syso("topbarBean: username " + user );
+        SYSO_Testing.syso("topbarBean_setter: " + user );
         this.username = user;
     }
 

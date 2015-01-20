@@ -23,36 +23,56 @@ and open the template in the editor.
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     
                     <p:outputLabel value="Name" for="name" />
-                    <p:autoComplete id="name" value="#{eventCreationBean.name}" emptyMessage="Event's name" />
+                    <p:autoComplete id="name" value="#{eventCreationBean.createdEvent.name}" emptyMessage="Event's name" />
                     
                     <p:outputLabel value="Address" for="address" />
-                    <p:autoComplete id="address" value="#{eventCreationBean.address}" emptyMessage="Road , N" />
+                    <p:autoComplete id="address" value="#{eventCreationBean.createdEvent.address}" emptyMessage="Road , N" />
                     
                     <p:outputLabel value="City" for="city" />
-                    <p:autoComplete id="city" value="#{eventCreationBean.city}" emptyMessage="City" />
+                    <p:autoComplete id="city" value="#{eventCreationBean.createdEvent.city}" emptyMessage="City" />
                     
                     <p:outputLabel value="Country" for="country" />
-                    <p:autoComplete id="country" value="#{eventCreationBean.country}" emptyMessage="Country" />
+                    <p:autoComplete id="country" value="#{eventCreationBean.createdEvent.country}" emptyMessage="Country" />
                     
-                    <p:outputLabel value="Description" for="description" />
-                    <p:inputTextarea id="description" rows="5" cols="30" counter="display" maxlength="250" counterTemplate="{0} characters remaining." autoResize="true" value="#{eventCreationBean.description}"/>
+                    
                     <h:outputText id="display" style="columns: 2"/>
+                    <p:inputTextarea id="description" rows="5" cols="30" counter="display" maxlength="250" counterTemplate="Description: {0} characters remaining." autoResize="true" value="#{eventCreationBean.createdEvent.description}"/>
+                   
+                        
+                    <h:outputText value="Adverse Conditions: " />
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.adverseConditions}">
+                        <f:selectItem itemLabel="Indoor" itemValue="true" />
+                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
+                    </p:selectOneButton>
+                                        
+                    <h:outputText value="Event beginning: " />
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.start}">
+                        <f:selectItem itemLabel="Indoor" itemValue="true" />
+                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
+                    </p:selectOneButton>     
                     
+                    <h:outputText value="Event conclusion: " />
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.end}">
+                        <f:selectItem itemLabel="Indoor" itemValue="true" />
+                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
+                    </p:selectOneButton>
+                                        
+
                     <br/>
                         
                     <h:outputText value="Location: " />
-                    <p:selectOneButton value="#{eventCreationBean.indoor}">
-                    <f:selectItem itemLabel="Indoor" itemValue="1" />
-                    <f:selectItem itemLabel="Outdoor" itemValue="0" />
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}">
+                        <f:selectItem itemLabel="Indoor" itemValue="true" />
+                        <f:selectItem itemLabel="Outdoor" itemValue="false" />
                     </p:selectOneButton>
                     
                     <h:outputText value="Privacy Mode " />
-                    <p:selectOneButton value="#{eventCreationBean.privateEvent}">
-                    <f:selectItem itemLabel="Private" itemValue="1" />
-                    <f:selectItem itemLabel="Public" itemValue="0" />
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.privateEvent}">
+                        <f:selectItem itemLabel="Private" itemValue="true" />
+                        <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
                     
-                    <p:commandButton value="Create" icon="ui-icon-check" action="#{eventCreationBean.eventCreation()}"/>
+                    <p:commandButton value="Create" icon="ui-icon-check" action="#{eventCreationBean.create()}"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

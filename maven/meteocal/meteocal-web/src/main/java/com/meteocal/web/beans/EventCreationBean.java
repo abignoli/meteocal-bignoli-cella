@@ -5,6 +5,10 @@
  */
 package com.meteocal.web.beans;
 
+import com.meteocal.business.entities.Event;
+import com.meteocal.business.facade.EventFacade;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -12,73 +16,41 @@ import javax.inject.Named;
  *
  * @author Leo
  */
-@RequestScoped
 @Named
+@RequestScoped
 public class EventCreationBean {
-    private String address,city,country,name,description;
+    
+    @EJB
+    private EventFacade ef;
+    
+    private Event createdEvent;
 
     private boolean indoor, privateEvent;
     
-    public EventCreationBean(){
+    
+    @PostConstruct
+    public void init(){
+        this.setEvent(new Event());
     }
 
     public String eventCreation(){
         return "/protected/event/EventPageCreator";
     }
     
-    public String getAddress() {
-        return address;
+    private void setEvent(Event event) {
+        this.createdEvent = event;
     }
-
-    public String getCity() {
-        return city;
+    
+    public String create(){
+        ef.create(getCreatedEvent());
+        return "/EventPage";
     }
-
-    public String getCountry() {
-        return country;
+    
+    public Event getCreatedEvent(){
+        return this.createdEvent;
     }
-
-    public String getName() {
-        return name;
+    
+    public void setCreatedEvent(Event event){
+        this.createdEvent = event;
     }
-
-    public boolean isIndoor() {
-        return indoor;
-    }
-
-    public boolean isPrivateEvent() {
-        return privateEvent;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setIndoor(boolean indoor) {
-        this.indoor = indoor;
-    }
-
-    public void setPrivateEvent(boolean privateEvent) {
-        this.privateEvent = privateEvent;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }    
 }
