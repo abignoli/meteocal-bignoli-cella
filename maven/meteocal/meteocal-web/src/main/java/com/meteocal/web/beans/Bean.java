@@ -1,6 +1,7 @@
 package com.meteocal.web.beans;
 
 import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.web.converters.BooleanConverter;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
 import java.io.Serializable;
@@ -19,12 +20,13 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class Bean implements Serializable{
-    private WeatherConditionsConverter conv;
+    private WeatherConditionsConverter weatherConverter;
+    private BooleanConverter booleanConverter;
     private List<WeatherCondition> weatherConditions,listChoiche;
     
     @PostConstruct
     public void init(){
-        conv = new WeatherConditionsConverter();
+        weatherConverter = new WeatherConditionsConverter();
         weatherConditions = new ArrayList<WeatherCondition>();
         listChoiche = new ArrayList<WeatherCondition>();
         weatherConditions.add(WeatherCondition.SUN);
@@ -49,8 +51,12 @@ public class Bean implements Serializable{
         listChoiche = conditions;
     }
     
-    public Converter getConv(){
-        return conv;
+    public Converter getWeatherConv(){
+        return weatherConverter;
+    }
+    
+    public Converter getBooleanConv(){
+        return booleanConverter;
     }
     
     public void mostra(){

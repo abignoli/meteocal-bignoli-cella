@@ -30,14 +30,14 @@ public class EventCreationBean implements Serializable {
     @EJB
     private EventFacade ef;
 
-    private WeatherConditionsConverter conv;
+    private WeatherConditionsConverter weatherConv;
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
     private boolean indoor, privateEvent;
 
     @PostConstruct
     public void init() {
-        conv = new WeatherConditionsConverter();
+        weatherConv = new WeatherConditionsConverter();
         weatherConditions = EnumSet.noneOf(WeatherCondition.class);
         listChoiche = EnumSet.noneOf(WeatherCondition.class);
         weatherConditions.add(WeatherCondition.SUN);
@@ -56,11 +56,12 @@ public class EventCreationBean implements Serializable {
         SYSO_Testing.syso("in create()");
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
-        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() + " endTime: " + createdEvent.getEnd());
+        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() );
         try {
             ef.create(getCreatedEvent());
         }
         catch (BusinessException e) {
+            SYSO_Testing.syso(e.getMessage());
         }
         return "/EventPage";
     }
@@ -89,13 +90,17 @@ public class EventCreationBean implements Serializable {
         listChoiche = conditions;
     }
 
-    public Converter getConv() {
-        return conv;
+    public Converter getWeatherConv() {
+        return weatherConv;
     }
 
     public void mostra() {
         for (WeatherCondition date : listChoiche) {
             SYSO_Testing.syso("bean. " + date);
         }
+    }
+    
+    public void metodoDiProva(){
+        SYSO_Testing.syso("prova listener");
     }
 }

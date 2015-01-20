@@ -40,7 +40,7 @@ and open the template in the editor.
 
 
                     <h:outputText value="Adverse Conditions: " />
-                    <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.conv}">
+                    <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.weatherConv}">
                         <f:selectItems value="#{eventCreationBean.weatherConditions}" />
                     </p:selectManyButton>
  <!--                 
@@ -52,19 +52,18 @@ and open the template in the editor.
  -->       
 
                     <h:outputText value="Location: " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}">
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />
                         <f:selectItem itemLabel="Outdoor" itemValue="false" />
                     </p:selectOneButton>
 
                     <h:outputText value="Privacy Mode " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.privateEvent}">
+                    <p:selectOneButton value="#{eventCreationBean.createdEvent.privateEvent}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Private" itemValue="true" />
                         <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
                         
-                    <br/>
-                        
+                    <br/>    
                     <p:commandButton value="Create" action="#{eventCreationBean.create()}"/>
                 </h:panelGrid>
             </p:panel>

@@ -45,4 +45,9 @@
         <converter-id>TimeConverter</converter-id>
         <converter-class>com.meteocal.web.converters.TimeConverter</converter-class>
     </converter>
+    <converter>
+        <description>A converter for booleans</description>
+        <converter-id>BooleanConverter</converter-id>
+        <converter-class>com.meteocal.web.converters.BooleanConverter</converter-class>
+    </converter>
 </faces-config>

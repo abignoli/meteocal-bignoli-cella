@@ -22,19 +22,19 @@ public class WeatherConditionsConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        EnumSet<WeatherCondition> ret = EnumSet.noneOf(WeatherCondition.class);
+        WeatherCondition ret = null;
         switch(value.toUpperCase()){
             case "CLOUDS":
-                ret.add(WeatherCondition.CLOUDS);
+                ret = WeatherCondition.CLOUDS;
                 break;
             case "RAIN":
-                ret.add(WeatherCondition.RAIN);
+                ret = WeatherCondition.RAIN;
                 break;
             case "SNOW":
-                ret.add(WeatherCondition.SNOW);
+                ret = WeatherCondition.SNOW;
                 break;
             case "SUN":
-                ret.add(WeatherCondition.SUN);
+                ret = WeatherCondition.SUN;
                 break;
         }
         SYSO_Testing.syso("getAsObj." + ret.toString());
