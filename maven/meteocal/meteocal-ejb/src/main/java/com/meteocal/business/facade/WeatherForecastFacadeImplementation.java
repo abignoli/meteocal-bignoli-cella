@@ -5,10 +5,31 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.dao.WeatherForecastDAO;
+import com.meteocal.business.entities.WeatherForecast;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
 /**
  *
  * @author USUARIO
  */
-public class WeatherForecastFacadeImplementation {
+@Stateless
+public class WeatherForecastFacadeImplementation implements WeatherForecastFacade {
+
+    @EJB
+    WeatherForecastDAO weatherForecastDAO;
+    
+    @Override
+    public void disable(WeatherForecast wf) {
+        weatherForecastDAO.delete(wf);
+    }
+
+    @Override
+    public List<WeatherForecast> askWeatherForecasts(LocalDateTime start, LocalDateTime end) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

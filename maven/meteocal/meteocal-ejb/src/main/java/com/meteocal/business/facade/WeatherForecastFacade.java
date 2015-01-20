@@ -5,10 +5,18 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.entities.WeatherForecast;
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  *
  * @author USUARIO
  */
 public interface WeatherForecastFacade {
+
+    public void disable(WeatherForecast wf);
+
+    public List<WeatherForecast> askWeatherForecasts(LocalDateTime start, LocalDateTime end);
     
 }

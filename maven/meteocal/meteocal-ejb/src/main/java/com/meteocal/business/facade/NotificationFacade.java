@@ -17,4 +17,5 @@ public interface NotificationFacade {
     public void createNotificationForEventChange(int eventID) throws NotFoundException;
     public void createNotificationForEventCancel(int eventID) throws BusinessException;
     public void setAsSeen(int userID, int notificationID) throws NotFoundException;
+    public void createNotificationForWeatherConditions(int eventID, boolean newForecastsGood) throws NotFoundException;
 }

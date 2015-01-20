@@ -16,6 +16,8 @@ public class BusinessException extends Exception {
 
     public static final String INCONSISTENT_NOTIFICATION_CANCEL = "[NOTIFICATION CREATION] Requested notification cancel for a non canceled event.";
     
+    public static String EVENT_CREATION_INTERNAL_PROCESSING = "[EVENT CREATION] Event creation internall processing: couldn't find creator.";
+    
     /**
      * Creates a new instance of <code>BusinessException</code> without detail
      * message.

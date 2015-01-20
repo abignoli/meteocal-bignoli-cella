@@ -25,60 +25,77 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class NotificationFacadeImplementation implements NotificationFacade {
-    
+
     @EJB
     NotificationDAO notificationDAO;
-    
+
     @EJB
     NotificationViewDAO notificationViewDAO;
-    
+
     @EJB
     EventDAO eventDAO;
 
     public void createNotificationForEventChange(int eventID) throws NotFoundException {
         Notification changeNotification = new Notification();
         Event e = eventDAO.retrieve(eventID);
-        
+
         changeNotification.setEvent(e);
         changeNotification.setType(NotificationType.EVENT_CHANGE);
-        
+
         notificationDAO.save(changeNotification);
+
+        notificateParticipantsAndCreator(changeNotification);
+    }
+
+    private void notificateParticipantsAndCreator(Notification notification) {
+        // Notificate Creator
+        notificateUser(notification, notification.getEvent().getCreator());
         
-        linkParticipants(changeNotification);
+        for (User participant : notification.getEvent().getParticipants()) {
+            notificateUser(notification, participant);
+        }
     }
 
-    private void linkParticipants(Notification notification) {
-        for(User participant: notification.getEvent().getParticipants())
-            linkParticipant(notification, participant);
-    }
-
-    private void linkParticipant(Notification notification, User participant) {
+    private void notificateUser(Notification notification, User participant) {
         notification.addNotificatedUser(participant);
     }
-
 
     public void createNotificationForEventCancel(int eventID) throws BusinessException {
         Notification cancelNotification = new Notification();
         Event e = eventDAO.retrieve(eventID);
-        
+
         cancelNotification.setEvent(e);
-        
-        if(e.getStatus() != EventStatus.CANCELED)
+
+        if (e.getStatus() != EventStatus.CANCELED) {
             throw new BusinessException(BusinessException.INCONSISTENT_NOTIFICATION_CANCEL);
-            
+        }
+
         cancelNotification.setType(NotificationType.EVENT_CANCEL);
-        
+
         notificationDAO.save(cancelNotification);
-        
-        linkParticipants(cancelNotification);
+
+        notificateParticipantsAndCreator(cancelNotification);
     }
 
     @Override
     public void setAsSeen(int userID, int notificationID) throws NotFoundException {
-        NotificationViewID notificationViewKey = new NotificationViewID(userID,notificationID);
-        
+        NotificationViewID notificationViewKey = new NotificationViewID(userID, notificationID);
+
         notificationViewDAO.retrieve(notificationViewKey).setSeen(true);
     }
 
-    
+    @Override
+    public void createNotificationForWeatherConditions(int eventID, boolean newForecastsGood) throws NotFoundException {
+        Notification weatherNotification = new Notification();
+        Event e = eventDAO.retrieve(eventID);
+
+        weatherNotification.setEvent(e);
+        weatherNotification.setType(NotificationType.WEATHER_NOTIFICATION);
+        weatherNotification.setGoodWeather(newForecastsGood);
+        
+        notificationDAO.save(weatherNotification);
+
+        notificateParticipantsAndCreator(weatherNotification);
+    }
+
 }

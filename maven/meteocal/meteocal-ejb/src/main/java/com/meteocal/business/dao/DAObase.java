@@ -91,6 +91,12 @@ public abstract class DAObase<T> {
         return result;
     }
     
+    public boolean exists(Object primaryKey) {
+        T result = find(primaryKey);
+        
+        return result != null;
+    }
+    
     public List<T> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(databaseEntityClass);

@@ -6,8 +6,11 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.NotificationType;
+import com.meteocal.business.entities.shared.WeatherCondition;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,11 +53,7 @@ public class Notification {
     @NotNull
     private NotificationType type;
     
-    // TODO check if ManyToOne or OneToOne
-    @NotNull
-    @ManyToOne(fetch=FetchType.EAGER)
-    @PrimaryKeyJoinColumn(name="WEATHERFORECAST", referencedColumnName = "ID")
-    private WeatherForecast weatherForecast;
+    private boolean goodWeather;
 
     // TODO Add all other parameters
     public int getId() {
@@ -107,4 +106,14 @@ public class Notification {
         this.type = type;
     }
 
+    public boolean isGoodWeather() {
+        return goodWeather;
+    }
+
+    public void setGoodWeather(boolean goodWeather) {
+        this.goodWeather = goodWeather;
+    }
+
+    
+    
 }

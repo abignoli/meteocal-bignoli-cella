@@ -111,6 +111,43 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<WeatherForecast> weatherForecasts;
 
+    public Event() {
+    }
+    
+    /**
+     * Create a new event based on the provided one. The updated fields are:
+     * 
+     * Name
+     * Description
+     * Country
+     * City
+     * Address
+     * Indoor flag
+     * Privacy flag
+     * Adverse weather conditions set
+     * Start
+     * End
+     * 
+     * The status is set to EventStatus.PLANNED.
+     * 
+     * This constructor doesn't perform any validation on input data.
+     * 
+     * @param e 
+     */
+    public Event(Event e) {
+        name = e.getName();
+        description = e.getDescription();
+        country = e.getCountry();
+        city = e.getCity();
+        address = e.getAddress();
+        indoor = e.isIndoor();
+        privateEvent = e.isPrivateEvent();
+        adverseConditions = e.getAdverseConditions();
+        start = e.getStart();
+        end = e.getEnd();
+        status = EventStatus.PLANNED;
+    }
+
     public int getId() {
         return id;
     }
@@ -393,6 +430,9 @@ public class Event {
     }
 
     public EnumSet<WeatherCondition> getAdverseConditions() {
+        if(adverseConditions == null)
+            adverseConditions = EnumSet.noneOf(WeatherCondition.class);
+        
         return adverseConditions;
     }
 
@@ -401,14 +441,23 @@ public class Event {
     }
 
     public static void validateScheduling(LocalDateTime start, LocalDateTime end) throws InvalidInputException {
+        if(!isSchedulingValid(start, end))
+            throw new InvalidInputException(InvalidInputException.EVENT_START_AFTER_END);
+    }
+    
+    public static boolean isSchedulingValid(LocalDateTime start, LocalDateTime end) {
+        boolean valid = true;
+        
         if(start == null) 
-            throw new InvalidInputException(InvalidInputException.EVENT_VALIDATION_NO_START);
+            valid = false;
         
         if(end == null) 
-            throw new InvalidInputException(InvalidInputException.EVENT_VALIDATION_NO_END);
+            valid = false;
         
         if(!end.isAfter(start))
-            throw new InvalidInputException(InvalidInputException.EVENT_START_AFTER_END);
+            valid = false;
+        
+        return valid;
     }
     
     public void cancel() throws InvalidInputException {
@@ -427,8 +476,6 @@ public class Event {
      * Address
      * Indoor flag
      * Privacy flag
-     * Start
-     * End
      * Adverse weather conditions set
      * 
      * Any other field is ignored.
@@ -447,9 +494,52 @@ public class Event {
         setAddress(updated.getAddress());
         setIndoor(updated.isIndoor());
         setPrivateEvent(updated.isPrivateEvent());
-        setStart(updated.getStart());
-        setEnd(updated.getEnd());
         setAdverseConditions(updated.getAdverseConditions());
+    }
+
+    public boolean areCurrentForecastsGood() throws InvalidInputException {
+        return areForecastsGood(getWeatherForecasts());
+    }
+
+    public boolean areForecastsGood(List<WeatherForecast> weatherForecasts) throws InvalidInputException {
+        if(weatherForecasts == null)
+            throw new InvalidInputException(InvalidInputException.EVENT_GOOD_WEATHER_CONDITIONS_CHECK);
+        
+        // TODO weather condition null?
+        for(WeatherForecast wf: weatherForecasts)
+            if(adverseConditions.contains(wf.getWeatherCondition()))
+                return false;
+        
+        return true;
+    }
+
+//    SHOULDN NOT NEED THIS:
+//    public EnumSet<WeatherCondition> adverseConditionsInForecasts(List<WeatherForecast> newForecasts) {
+//        EnumSet<WeatherCondition> result = EnumSet.noneOf(WeatherCondition.class);
+//        
+//        for(WeatherForecast wf: weatherForecasts)
+//            if(adverseConditions.contains(wf.getWeatherCondition()))
+//                result.add(wf.getWeatherCondition());
+//        
+//        return result;
+//    }
+
+    public boolean hasDifferentScheduling(LocalDateTime start, LocalDateTime end) {
+        return this.start != start || this.end != end;
+    }
+
+    public void clearSuggestedChange() {
+            setSuggestedChangeStart(null);
+            setSuggestedChangeEnd(null);
+    }
+
+    public boolean validForSave() {
+        boolean valid = true;
+        
+        if(!isSchedulingValid(start, end))
+            valid = false;
+        
+        return valid;
     }
     
     

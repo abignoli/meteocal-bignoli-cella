@@ -6,9 +6,12 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.WeatherCondition;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,16 +39,14 @@ public class WeatherForecast {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="EVENTID", referencedColumnName = "ID")
     private Event event;
-    
-    @OneToMany(mappedBy = "weatherForecast")
-    private List<Notification> notifications;
-    
-    // TODO add start and end datetime
-    
-    // TODO add weather condition enum
-    
-    @Column(columnDefinition = "boolean default true")
-    private boolean inUse;
+ 
+//    TODO remove comment
+//    @NotNull
+    private LocalDateTime start;
+
+//    TODO remove comment
+//    @NotNull
+    private LocalDateTime end;
 
     public int getId() {
         return id;
@@ -71,21 +72,23 @@ public class WeatherForecast {
         this.event = event;
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
-    public boolean isInUse() {
-        return inUse;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setInUse(boolean inUse) {
-        this.inUse = inUse;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
+
+
     
     
 }

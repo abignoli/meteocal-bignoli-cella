@@ -27,6 +27,8 @@ public interface UserFacade {
     public abstract void remove(User u);
 
     public abstract User findByUsername(String username);
+    
+    public abstract boolean isUsernameInUse(String username);
 
     public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
 

@@ -122,5 +122,10 @@ public class UserFacadeImplementation implements UserFacade {
             return UserUserVisibility.NOT_VISIBLE;
     }
 
+    @Override
+    public boolean isUsernameInUse(String username) {
+        return findByUsername(username) != null;
+    }
+
 
 }

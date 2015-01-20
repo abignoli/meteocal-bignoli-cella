@@ -20,6 +20,10 @@ public class InvalidInputException extends BusinessException {
     
     public static String USER_ALREADY_INVITED = "[EVENT INVITATION] User is already invited";
     
+    public static String EVENT_GOOD_WEATHER_CONDITIONS_CHECK = "[EVENT - GOOD WEATHER CONDITIONS CHECK] No weather conditions, can't check compatibility.";
+    public static String EVENT_CREATION_INVALID = "[EVENT CREATION] Provided data is invalid";
+    public static String EVENT_CREATION_NO_LOGGED_USER = "[EVENT CREATION] No user is logged in, cannot create the event.";
+    
     /**
      * Creates a new instance of <code>NotFound</code> without detail message.
      */
