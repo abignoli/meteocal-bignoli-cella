@@ -7,6 +7,7 @@ package com.meteocal.web.beans;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
@@ -43,7 +44,10 @@ public class EventCreationBean implements Serializable {
         weatherConditions.add(WeatherCondition.SNOW);
         weatherConditions.add(WeatherCondition.RAIN);
         weatherConditions.add(WeatherCondition.CLOUDS);
-        this.setEvent(new Event());
+        try{
+            this.setEvent(new Event());
+        }catch(BusinessException e){
+        }
     }
 
     private void setEvent(Event event) {
