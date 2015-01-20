@@ -73,12 +73,13 @@ public class EventPage extends HttpServlet {
         SYSO_Testing.syso("relativePath: " + relativePath);
 
         try {
-            request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
+//            request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
 
             if (isNotLogged()) {
                 SYSO_Testing.syso("I'm not logged");
                 response.sendRedirect(indexPath);
                 SYSO_Testing.syso("something wrong!!");
+                return;
             }
             else {
                 
@@ -97,7 +98,8 @@ public class EventPage extends HttpServlet {
                 if (visibility == CREATOR) {
                     SYSO_Testing.syso("creator");
                     request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
-
+                    return;
+                    
 //                    sessionUtility.setComingFromDispatcher();
 //                    sessionUtility.setEventID(eventID);
 //                    try {
@@ -122,6 +124,8 @@ public class EventPage extends HttpServlet {
 //                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
                     }
                 } 
+                
+//                return;
             }
         }
         catch (NullPointerException ec) {
