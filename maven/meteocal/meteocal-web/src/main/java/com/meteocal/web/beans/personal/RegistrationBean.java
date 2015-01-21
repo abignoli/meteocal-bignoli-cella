@@ -36,6 +36,9 @@ public class RegistrationBean implements Serializable{
     @EJB
     UserManager um;
     
+    @EJB
+    UserFacade uf;
+    
     @Inject
     SessionUtility sessionUtility;
     

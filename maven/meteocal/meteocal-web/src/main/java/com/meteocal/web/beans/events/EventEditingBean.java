@@ -5,6 +5,7 @@
  */
 package com.meteocal.web.beans.events;
 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -14,7 +15,7 @@ import javax.inject.Named;
  */
 @RequestScoped
 @Named
-public class EventEditingBean {
+public class EventEditingBean implements Serializable{
     private String address,city,country,name,description;
 
     private boolean indoor, privateEvent;

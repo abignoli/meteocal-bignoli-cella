@@ -10,12 +10,37 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Invitation Management</title>
+        <title>Invitations Management</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
+        <div>
+            
+        <h:form>    
+            <p:dataTable var="invitation" value="#{invitationManagementBean.notifications}">
+                <p:column headerText="DateTime">
+                    <h:outputText value="#{invitation.event.id}" />
+                </p:column>
+               
+                <p:column headerText="Event Name">
+                    <h:outputText value="#{invitation.event.name}" />
+                </p:column>
+
+                <p:column headerText="Referred User">
+                    <h:outputText value="#{invitation.user.username}" />
+                </p:column>
+
+                <p:column headerText="GoodWeather">
+                    <h:outputText value="#{invitation.seen}" />
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+        </div>
     </body>
 </html>
+

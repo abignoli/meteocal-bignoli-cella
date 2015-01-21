@@ -30,18 +30,17 @@ import javax.servlet.http.HttpServletRequest;
 public class SessionUtility implements Serializable {
  
     private String loggedUserName, loggedUserPassword;
-    private int errorCode, eventID;
-    private boolean error, comingFromDispatcher;
+    private int errorCode;
+    private boolean error;
 
     @PostConstruct
     public void init() {
         error = false;
-        comingFromDispatcher = false;
     }
    
     public void addUser(String username) {
         loggedUserName = username;
-        SYSO_Testing.syso("User added in cache");
+        SYSO_Testing.syso("SessionUtility_addUser: "+loggedUserName + " added in cache");
     }
 
     public String getLoggedUser() {
@@ -49,7 +48,7 @@ public class SessionUtility implements Serializable {
     }
 
     public void sessionLogout() {
-        SYSO_Testing.syso("starting logout from Session bean");
+        SYSO_Testing.syso("SessionUtility_logout");
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         loggedUserName = null;
@@ -75,25 +74,8 @@ public class SessionUtility implements Serializable {
         error = false;
     }
 
-
-    public void setNotComingFromDispatcher() {
-        comingFromDispatcher = false;
-    }
-    
-    public void setComingFromDispatcher() {
-        comingFromDispatcher = true;
-    }
-
-    public boolean getComingFromDispatcher() {
-        return comingFromDispatcher;
-    }
-
-    public int getEventID() {
-        return eventID;
-    }
-
-    public void setEventID(int id) {
-        eventID = id;
+    public boolean isThereAnActiveSession(){
+        return this.loggedUserName != null;
     }
 }
 /*     

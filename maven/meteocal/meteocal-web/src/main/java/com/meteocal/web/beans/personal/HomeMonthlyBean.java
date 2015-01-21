@@ -5,15 +5,25 @@
  */
 package com.meteocal.web.beans.personal;
 
+import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  *
@@ -23,7 +33,12 @@ import org.primefaces.model.ScheduleModel;
 @RequestScoped
 public class HomeMonthlyBean implements Serializable{
     private ScheduleModel visibleEvents = new DefaultScheduleModel();
- 
+    private ScheduleEvent selectedEvent;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    
+    @Inject
+    SessionUtility sessionUtility;
     
     @PostConstruct
     public void init(){
@@ -32,7 +47,9 @@ public class HomeMonthlyBean implements Serializable{
         visibleEvents.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), nextDay9Am()));
         visibleEvents.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", today1Pm(), nextDay9Am()));
         visibleEvents.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", previousDay8Pm(), nextDay9Am()));
-         
+        request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+     
     }
     
     public Date getRandomDate() {
@@ -91,4 +108,5 @@ public class HomeMonthlyBean implements Serializable{
          
         return t.getTime();
     }
+     
 }

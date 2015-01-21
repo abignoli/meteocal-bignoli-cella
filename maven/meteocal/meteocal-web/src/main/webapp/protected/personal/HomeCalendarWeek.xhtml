@@ -21,7 +21,7 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
         <div id="wrapper" style="text-align: center ; width: 95%">
-            <p:tabMenu activeIndex="0">
+            <p:tabMenu activeIndex="1">
                 <p:menuitem value="Monthly" outcome="/protected/personal/HomeCalendarMonth.xhtml" icon="ui-icon-star">
                     <f:param name="i" value="0" />
                 </p:menuitem>
@@ -33,7 +33,7 @@ and open the template in the editor.
                 </p:menuitem>
             </p:tabMenu>
             <p:schedule value="#{homeMonthlyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
-            <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
-    </div>
-</body>
+            <p:ajax event="eventSelect" listener="#{homeMonthlyBean.onEventSelect}"></p:ajax>
+        </div>
+    </body>
 </html>

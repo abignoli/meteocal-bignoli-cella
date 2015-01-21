@@ -22,7 +22,7 @@ and open the template in the editor.
         <h:form>    
             <p:dataTable var="event" value="#{eventManagementBean.events}">
                 <p:column headerText="Id">
-                    <h:outputText value="#{event.id}" />
+                    <p:link value="#{event.id}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}"></p:link>
                 </p:column>
 
                 <p:column headerText="Name">

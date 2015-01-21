@@ -17,6 +17,34 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
+        <div>
+            
+        <h:form>    
+            <p:dataTable var="notification" value="#{notificationManagementBean.notifications}">
+                <p:column headerText="Id">
+                    <p:link value="#{notification.id}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}"></p:link>
+                </p:column>
+
+                <p:column headerText="Event Name">
+                    <h:outputText value="#{notification.event.name}" />
+                </p:column>
+
+                <p:column headerText="Type">
+                    <h:outputText value="#{notification.type}" />
+                </p:column>
+
+                <p:column headerText="GoodWeather">
+                    <h:outputText value="#{notification.goodWeather}" />
+                </p:column>
+
+                <p:column headerText="DateTime">
+                    <h:outputText value="#{notification.generationDateTime}" />
+                </p:column>
+               
+            </p:dataTable>
+        </h:form>
+
+        </div>
     </body>
 </html>
 

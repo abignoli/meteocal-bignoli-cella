@@ -104,7 +104,7 @@ public class EventPage extends HttpServlet {
                     SYSO_Testing.syso("post dispatcher EventPage");
                     return;
                     
-//                    sessionUtility.setComingFromDispatcher();
+//                    sessionUtility.setComingFromRedirect();
 //                    sessionUtility.setEventID(eventID);
 //                    try {
 //                        SYSO_Testing.syso("pre-dispatcher");
@@ -119,12 +119,12 @@ public class EventPage extends HttpServlet {
                 else {
                     if (visibility == VIEWER) {
                         SYSO_Testing.syso("viewer");
-//                        sessionUtility.setComingFromDispatcher();
+//                        sessionUtility.setComingFromRedirect();
 //                        request.getRequestDispatcher(viewerPath).forward(request, response);
                     }
                     else {// NO VISIBILITY
                         SYSO_Testing.syso("no Visibility");
-//                        sessionUtility.setComingFromDispatcher();
+//                        sessionUtility.setComingFromRedirect();
 //                        request.getRequestDispatcher(noVisibilityPath).forward(request, response);  
                     }
                 } 
