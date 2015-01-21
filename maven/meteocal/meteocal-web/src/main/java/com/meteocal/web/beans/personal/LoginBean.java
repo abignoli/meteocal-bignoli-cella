@@ -76,10 +76,6 @@ public class LoginBean {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         SYSO_Testing.clean();
         SYSO_Testing.syso("Try to login user: " + this.username + " with psw: " + this.password + " !");
-
-        if(uf.isUsernameInUse(username)){
-            return "/Index.xhtml?used=yes";
-        }
                 
         try {
             request.login(this.username, this.password);
@@ -87,7 +83,7 @@ public class LoginBean {
         catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
-            return "/Error";
+            return "/Error.xhtml";
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);

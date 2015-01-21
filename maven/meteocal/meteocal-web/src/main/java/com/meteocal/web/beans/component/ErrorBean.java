@@ -16,7 +16,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 @SessionScoped
 public class ErrorBean implements Serializable{
-    private String message;
+    private String message="error";
     
     public String getMessage(){
         return message;
