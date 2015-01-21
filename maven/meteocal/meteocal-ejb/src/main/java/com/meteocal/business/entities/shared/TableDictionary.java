@@ -14,6 +14,6 @@ public class TableDictionary {
     public static final String TABLE_INVITATION = "INVITATION";
     public static final String TABLE_NOTIFICATION = "NOTIFICATION";
     public static final String TABLE_NOTIFICATION_VIEW = "NOTIFICATIONVIEW";
-    public static final String TABLE_USER = "USER";
+    public static final String TABLE_USER = "USER_TABLE";
     public static final String TABLE_WEATHER_FORECAST = "WEATHERFORECAST";
 }
