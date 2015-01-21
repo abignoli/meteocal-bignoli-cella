@@ -241,4 +241,23 @@ public class EventFacadeImplementation implements EventFacade {
         return find(eventID) == null;
     }
 
+    public List<Event> mask(List<Event> events) {
+        // Make sure the events are detached
+        for(Event e: events) {
+            eventDAO.detach(e);
+            
+            mask(e);
+        }
+        
+        return events;
+    }
+
+    private void mask(Event e) {
+        Event result = new Event();
+        
+        result.setStart(e.getStart());
+        result.setEnd(e.getEnd());
+        
+        e = result;
+    }
 }

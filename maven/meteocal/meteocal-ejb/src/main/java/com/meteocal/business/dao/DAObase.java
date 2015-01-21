@@ -64,7 +64,6 @@ public abstract class DAObase<T> {
     }
 
     public void delete(T entityToRemove) {
-        // TODO merge may create a new entity on the database (if it's not already present). If an error occurs between merge and remove the new entity will be actually persisted on the db. FIX 
         try {
             T toRemove = em.merge(entityToRemove);
             em.remove(toRemove);
@@ -73,6 +72,15 @@ public abstract class DAObase<T> {
             e.printStackTrace();
         }
     }
+    
+     public void detach(T entityToDetach) {
+        try {
+            em.detach(entityToDetach);
+        } catch (Exception e) {
+            System.out.println("[ERROR - PERSISTENCE] While running query: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }   
 
     public T find(Object primaryKey) {
         try {

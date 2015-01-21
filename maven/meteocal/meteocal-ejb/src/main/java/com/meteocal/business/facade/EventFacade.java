@@ -11,6 +11,7 @@ import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *
@@ -111,4 +112,6 @@ public interface EventFacade {
     public UserEventVisibility getVisibilityOverEvent(int userID, int eventID) throws NotFoundException;
 
     public void updateWeatherForecasts(int eventID) throws InvalidInputException, NotFoundException;
+
+    public List<Event> mask(List<Event> createdAndParticipatingTo);
 }
