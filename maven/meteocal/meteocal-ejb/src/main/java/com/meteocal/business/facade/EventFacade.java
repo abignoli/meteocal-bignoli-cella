@@ -57,6 +57,8 @@ public interface EventFacade {
     public abstract Event create(Event e, int userID) throws InvalidInputException, NotFoundException;
 
     public abstract Event find(int eventID);
+    
+    public abstract boolean exists(int eventID);
 
     public abstract void addInvited(int eventID, int userID) throws BusinessException;
 

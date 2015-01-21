@@ -241,4 +241,16 @@ public class User {
     public static String encryptPassword(String password) {
         return PasswordEncrypter.encrypt(password);
     }
+    
+    public List<Event> getCreatedAndParticipatingTo() {
+        List<Event> result = new ArrayList<Event>();
+        
+        for(Event e: getParticipatingTo())
+            result.add(e);
+        
+        for(Event e: getCreatedEvents())
+            result.add(e);
+        
+        return result;
+    }
 }
