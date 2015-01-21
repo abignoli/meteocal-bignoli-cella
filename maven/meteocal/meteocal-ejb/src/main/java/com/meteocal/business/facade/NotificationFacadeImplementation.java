@@ -16,6 +16,7 @@ import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.NotificationType;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
+import java.time.LocalDateTime;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -42,7 +43,7 @@ public class NotificationFacadeImplementation implements NotificationFacade {
         changeNotification.setEvent(e);
         changeNotification.setType(NotificationType.EVENT_CHANGE);
 
-        notificationDAO.save(changeNotification);
+        save(changeNotification);
 
         notificateParticipantsAndCreator(changeNotification);
     }
@@ -72,7 +73,7 @@ public class NotificationFacadeImplementation implements NotificationFacade {
 
         cancelNotification.setType(NotificationType.EVENT_CANCEL);
 
-        notificationDAO.save(cancelNotification);
+        save(cancelNotification);
 
         notificateParticipantsAndCreator(cancelNotification);
     }
@@ -93,9 +94,15 @@ public class NotificationFacadeImplementation implements NotificationFacade {
         weatherNotification.setType(NotificationType.WEATHER_NOTIFICATION);
         weatherNotification.setGoodWeather(newForecastsGood);
         
-        notificationDAO.save(weatherNotification);
+        save(weatherNotification);
 
         notificateParticipantsAndCreator(weatherNotification);
+    }
+
+    private void save(Notification notification) {
+        notification.setGenerationDateTime(LocalDateTime.now());
+        
+        notificationDAO.save(notification);
     }
 
 }

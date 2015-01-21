@@ -7,6 +7,7 @@ package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.Notification;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.shared.TableDictionary;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -19,6 +20,6 @@ import javax.ejb.Stateless;
 public class NotificationDAO extends DAObase<Notification> {
     
     public NotificationDAO() {
-	super(Notification.class);
+	super(Notification.class, TableDictionary.TABLE_NOTIFICATION);
     }
 }

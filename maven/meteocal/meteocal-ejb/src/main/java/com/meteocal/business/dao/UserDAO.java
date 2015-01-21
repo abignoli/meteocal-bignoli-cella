@@ -6,6 +6,7 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.shared.TableDictionary;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -19,7 +20,7 @@ import javax.ejb.Stateless;
 public class UserDAO extends DAObase<User> {
     
     public UserDAO() {
-	super(User.class);
+	super(User.class, TableDictionary.TABLE_USER);
     }
     
     public User findByUsername(String username) {

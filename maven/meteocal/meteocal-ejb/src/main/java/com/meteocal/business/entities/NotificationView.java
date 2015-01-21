@@ -6,6 +6,7 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.keys.NotificationViewID;
+import com.meteocal.business.entities.shared.TableDictionary;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @IdClass(NotificationViewID.class)
-@Table(name = "NOTIFICATIONVIEW")
+@Table(name = TableDictionary.TABLE_NOTIFICATION_VIEW)
 public class NotificationView {
     
     @Id

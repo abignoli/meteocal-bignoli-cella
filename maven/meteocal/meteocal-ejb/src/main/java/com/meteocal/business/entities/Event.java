@@ -6,6 +6,7 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.EventStatus;
+import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.InvalidInputException;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotNull;
  * @author Andrea Bignoli
  */
 @Entity
-@Table(name = "EVENT")
+@Table(name = TableDictionary.TABLE_EVENT)
 public class Event {
 
     @Id
@@ -33,7 +34,7 @@ public class Event {
 
     @NotNull(message = "Event description cannot be empty")
     private String description;
-    
+
 //    TODO remove comment
 //    @NotNull
     private LocalDateTime start;
@@ -41,11 +42,12 @@ public class Event {
 //    TODO remove comment
 //    @NotNull
     private LocalDateTime end;
-    
+
 //    TODO remove comment
-//    @NotNull    
+//    @NotNull   
+    @Enumerated(EnumType.STRING)
     private EventStatus status = EventStatus.PLANNED;
-    
+
     private String country;
 
     private String city;
@@ -55,29 +57,20 @@ public class Event {
     private boolean indoor;
 
     // TODO Bad Weather Conditions set
-    
     private boolean privateEvent;
 
     private LocalDateTime suggestedChangeStart;
-    
+
     private LocalDateTime suggestedChangeEnd;
-    
-    
-    
-    
-    
-    @ElementCollection(targetClass = WeatherCondition.class) 
-    @CollectionTable(name = "ADVERSE_CONDITIONS",
-        joinColumns = @JoinColumn(name = "eventID",
-                        referencedColumnName = "id"))
-    @Column(name = "adverseCondition")
-    @Enumerated(EnumType.STRING)
+
+//    @ElementCollection(targetClass = WeatherCondition.class)
+//    @CollectionTable(name = "ADVERSE_CONDITIONS",
+//            joinColumns = @JoinColumn(name = "eventID",
+//                    referencedColumnName = "id"))
+//    @Column(name = "adverseCondition")
+//    @Enumerated(EnumType.STRING)
     EnumSet<WeatherCondition> adverseConditions;
 
-    
-    
-    
-    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATORID", referencedColumnName = "ID")
     private User creator;
@@ -113,26 +106,18 @@ public class Event {
 
     public Event() {
     }
-    
+
     /**
      * Create a new event based on the provided one. The updated fields are:
-     * 
-     * Name
-     * Description
-     * Country
-     * City
-     * Address
-     * Indoor flag
-     * Privacy flag
-     * Adverse weather conditions set
-     * Start
-     * End
-     * 
+     *
+     * Name Description Country City Address Indoor flag Privacy flag Adverse
+     * weather conditions set Start End
+     *
      * The status is set to EventStatus.PLANNED.
-     * 
+     *
      * This constructor doesn't perform any validation on input data.
-     * 
-     * @param e 
+     *
+     * @param e
      */
     public Event(Event e) {
         name = e.getName();
@@ -191,8 +176,8 @@ public class Event {
     /**
      *
      * @param u
-     * @return
-     * True if the user isn't already the creator or an invited, false otherwise
+     * @return True if the user isn't already the creator or an invited, false
+     * otherwise
      */
     public boolean addInvited(User u) {
         List<User> invited = this.getInvited();
@@ -202,19 +187,18 @@ public class Event {
             u.getParticipatingTo().add(this);
             return true;
         }
-        
+
         return false;
     }
 
     /**
      *
      * @param u
-     * @return
-     * True if the user is invited, false otherwise
+     * @return True if the user is invited, false otherwise
      */
     public boolean removeInvited(User u) {
         List<User> invited = this.getInvited();
-        
+
         User invitedUser = findInvited(u);
 
         if (invitedUser != null) {
@@ -223,10 +207,10 @@ public class Event {
             u.removeInvitedToFromList(this);
             return true;
         }
-        
+
         return false;
     }
-    
+
     public boolean isInvited(User u) {
         for (User invited : getInvited()) {
             if (invited.getId() == u.getId()) {
@@ -236,7 +220,7 @@ public class Event {
 
         return false;
     }
-    
+
     public User findInvited(User u) {
         for (User invited : getInvited()) {
             if (invited.getId() == u.getId()) {
@@ -262,8 +246,8 @@ public class Event {
     /**
      *
      * @param u
-     * @return
-     * True if the user isn't already the creator or a participant, false otherwise
+     * @return True if the user isn't already the creator or a participant,
+     * false otherwise
      */
     public boolean addParticipant(User u) {
         List<User> participants = this.getParticipants();
@@ -273,15 +257,14 @@ public class Event {
             u.getParticipatingTo().add(this);
             return true;
         }
-        
+
         return false;
     }
 
     /**
      *
      * @param u
-     * @return
-     * True if the user is a participant, false otherwise
+     * @return True if the user is a participant, false otherwise
      */
     public boolean removeParticipant(User u) {
         List<User> participants = this.getParticipants();
@@ -293,7 +276,7 @@ public class Event {
             u.removeParticipatingToFromList(this);
             return true;
         }
-        
+
         return false;
     }
 
@@ -430,9 +413,10 @@ public class Event {
     }
 
     public EnumSet<WeatherCondition> getAdverseConditions() {
-        if(adverseConditions == null)
+        if (adverseConditions == null) {
             adverseConditions = EnumSet.noneOf(WeatherCondition.class);
-        
+        }
+
         return adverseConditions;
     }
 
@@ -441,52 +425,50 @@ public class Event {
     }
 
     public static void validateScheduling(LocalDateTime start, LocalDateTime end) throws InvalidInputException {
-        if(!isSchedulingValid(start, end))
+        if (!isSchedulingValid(start, end)) {
             throw new InvalidInputException(InvalidInputException.EVENT_START_AFTER_END);
+        }
     }
-    
+
     public static boolean isSchedulingValid(LocalDateTime start, LocalDateTime end) {
-        boolean valid = true;
-        
-        if(start == null) 
-            valid = false;
-        
-        if(end == null) 
-            valid = false;
-        
-        if(!end.isAfter(start))
-            valid = false;
-        
-        return valid;
+        if (start == null) {
+            return false;
+        }
+
+        if (end == null) {
+            return false;
+        }
+
+        if (!end.isAfter(start)) {
+            return false;
+        }
+
+        return true;
     }
-    
+
     public void cancel() throws InvalidInputException {
-        if(status != EventStatus.PLANNED)
+        if (status != EventStatus.PLANNED) {
             throw new InvalidInputException(InvalidInputException.EVENT_CANCEL_INVALID_STATE);
+        }
     }
 
     /**
      * Sets event data for this entity dbEntry using data provided by updated.
      * The updated fields are:
-     * 
-     * Name
-     * Description
-     * Country
-     * City
-     * Address
-     * Indoor flag
-     * Privacy flag
-     * Adverse weather conditions set
-     * 
+     *
+     * Name Description Country City Address Indoor flag Privacy flag Adverse
+     * weather conditions set
+     *
      * Any other field is ignored.
-     * 
+     *
      * @param updated
-     * @throws BusinessException 
+     * @throws BusinessException
      */
     public void setEventData(Event updated) throws InvalidInputException {
-        if(status != EventStatus.PLANNED)
+        if (status != EventStatus.PLANNED) {
             throw new InvalidInputException(InvalidInputException.EVENT_CHANGE_INVALID_STATE);
-        
+        }
+
         setName(updated.getName());
         setDescription(updated.getDescription());
         setCountry(updated.getCountry());
@@ -502,14 +484,17 @@ public class Event {
     }
 
     public boolean areForecastsGood(List<WeatherForecast> weatherForecasts) throws InvalidInputException {
-        if(weatherForecasts == null)
+        if (weatherForecasts == null) {
             throw new InvalidInputException(InvalidInputException.EVENT_GOOD_WEATHER_CONDITIONS_CHECK);
-        
+        }
+
         // TODO weather condition null?
-        for(WeatherForecast wf: weatherForecasts)
-            if(adverseConditions.contains(wf.getWeatherCondition()))
+        for (WeatherForecast wf : weatherForecasts) {
+            if (adverseConditions.contains(wf.getWeatherCondition())) {
                 return false;
-        
+            }
+        }
+
         return true;
     }
 
@@ -523,24 +508,21 @@ public class Event {
 //        
 //        return result;
 //    }
-
     public boolean hasDifferentScheduling(LocalDateTime start, LocalDateTime end) {
         return this.start != start || this.end != end;
     }
 
     public void clearSuggestedChange() {
-            setSuggestedChangeStart(null);
-            setSuggestedChangeEnd(null);
+        setSuggestedChangeStart(null);
+        setSuggestedChangeEnd(null);
     }
 
     public boolean validForSave() {
-        boolean valid = true;
-        
-        if(!isSchedulingValid(start, end))
-            valid = false;
-        
-        return valid;
+        if (!isSchedulingValid(start, end)) {
+            return false;
+        }
+
+        return true;
     }
-    
-    
+
 }

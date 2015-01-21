@@ -5,6 +5,7 @@
  */
 package com.meteocal.business.entities;
 
+import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.PasswordEncrypter;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import javax.validation.constraints.Pattern;
  * @author Andrea Bignoli
  */
 @Entity
-@Table(name = "USER")
+@Table(name = TableDictionary.TABLE_USER)
 public class User {
-
+    
     private static final String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
     @Id

@@ -29,11 +29,13 @@ public abstract class DAObase<T> {
 
     @PersistenceContext(unitName = UNIT_NAME)
     private EntityManager em;
-
+    
+    private String tableName;
     private Class<T> databaseEntityClass;
 
-    public DAObase(Class<T> databaseEntityClass) {
+    public DAObase(Class<T> databaseEntityClass, String tableName) {
         this.databaseEntityClass = databaseEntityClass;
+        this.tableName = tableName;
     }
 
     public void save(T entity) {

@@ -7,6 +7,7 @@ package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.entities.shared.TableDictionary;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -19,6 +20,6 @@ import javax.ejb.Stateless;
 public class WeatherForecastDAO extends DAObase<WeatherForecast> {
     
     public WeatherForecastDAO() {
-	super(WeatherForecast.class);
+	super(WeatherForecast.class, TableDictionary.TABLE_WEATHER_FORECAST);
     }
 }

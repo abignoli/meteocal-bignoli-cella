@@ -6,6 +6,7 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.NotificationView;
+import com.meteocal.business.entities.shared.TableDictionary;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -18,7 +19,7 @@ import javax.ejb.Stateless;
 public class NotificationViewDAO extends DAObase<NotificationView> {
     
     public NotificationViewDAO() {
-	super(NotificationView.class);
+	super(NotificationView.class, TableDictionary.TABLE_NOTIFICATION_VIEW);
     }
     
 //    public long getNotSeenCount(int userID) {

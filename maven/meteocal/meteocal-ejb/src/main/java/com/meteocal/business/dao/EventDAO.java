@@ -6,6 +6,7 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.shared.TableDictionary;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -18,7 +19,7 @@ import javax.ejb.Stateless;
 public class EventDAO extends DAObase<Event> {
     
     public EventDAO() {
-	super(Event.class);
+	super(Event.class, TableDictionary.TABLE_EVENT);
     }
     
     public Event findByName(String name) {

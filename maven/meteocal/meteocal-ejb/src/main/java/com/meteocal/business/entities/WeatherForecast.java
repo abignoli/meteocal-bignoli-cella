@@ -5,6 +5,7 @@
  */
 package com.meteocal.business.entities;
 
+import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,9 +28,9 @@ import javax.validation.constraints.NotNull;
  * @author Andrea Bignoli
  */
 @Entity
-@Table(name = "WEATHERFORECAST")
+@Table(name = TableDictionary.TABLE_WEATHER_FORECAST)
 public class WeatherForecast {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

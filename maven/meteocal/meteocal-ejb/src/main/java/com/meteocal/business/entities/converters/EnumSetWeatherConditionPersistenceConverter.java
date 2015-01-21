@@ -5,8 +5,10 @@
  */
 package com.meteocal.business.entities.converters;
 
+import com.meteocal.business.entities.shared.WeatherCondition;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -15,23 +17,23 @@ import javax.persistence.Converter;
  * @author Andrea Bignoli, inspired from code by Steven Gertiser
  */
 @Converter(autoApply = true)
-public class LocalDateTimePersistenceConverter implements
-        AttributeConverter<LocalDateTime, java.sql.Timestamp> {
+public class EnumSetWeatherConditionPersistenceConverter implements
+        AttributeConverter<EnumSet<WeatherCondition>, Long> {
 
     @Override
-    public java.sql.Timestamp convertToDatabaseColumn(LocalDateTime entityValue) {
+    public Long convertToDatabaseColumn(EnumSet<WeatherCondition> entityValue) {
         if (entityValue == null) {
             return null;
         }
 
-        return Timestamp.valueOf(entityValue);
+        return WeatherCondition.encodeSet(entityValue);
     }
 
     @Override
-    public LocalDateTime convertToEntityAttribute(java.sql.Timestamp databaseValue) {
+    public EnumSet<WeatherCondition> convertToEntityAttribute(Long databaseValue) {
         if (databaseValue == null) 
             return null;
 
-        return databaseValue.toLocalDateTime();
+        return WeatherCondition.decodeSet(databaseValue);
     }
 }

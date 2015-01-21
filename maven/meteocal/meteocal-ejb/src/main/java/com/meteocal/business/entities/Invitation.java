@@ -6,6 +6,7 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.keys.InvitationID;
+import com.meteocal.business.entities.shared.TableDictionary;
 import javax.persistence.*;
 
 /**
@@ -15,7 +16,7 @@ import javax.persistence.*;
 
 @Entity
 @IdClass(InvitationID.class)
-@Table(name = "INVITATION")
+@Table(name = TableDictionary.TABLE_INVITATION)
 public class Invitation {
     
     @Id

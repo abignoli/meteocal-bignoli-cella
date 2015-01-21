@@ -6,7 +6,9 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.NotificationType;
+import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.entities.shared.WeatherCondition;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,9 +30,9 @@ import javax.validation.constraints.NotNull;
  * @author Andrea Bignoli
  */
 @Entity
-@Table(name = "NOTIFICATION")
+@Table(name = TableDictionary.TABLE_NOTIFICATION)
 public class Notification {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -54,6 +56,9 @@ public class Notification {
     private NotificationType type;
     
     private boolean goodWeather;
+    
+    @NotNull
+    private LocalDateTime generationDateTime;
 
     // TODO Add all other parameters
     public int getId() {
@@ -112,6 +117,14 @@ public class Notification {
 
     public void setGoodWeather(boolean goodWeather) {
         this.goodWeather = goodWeather;
+    }
+
+    public LocalDateTime getGenerationDateTime() {
+        return generationDateTime;
+    }
+
+    public void setGenerationDateTime(LocalDateTime generationDateTime) {
+        this.generationDateTime = generationDateTime;
     }
 
     

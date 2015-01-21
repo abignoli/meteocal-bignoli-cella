@@ -8,6 +8,7 @@ package com.meteocal.business.tests;
 import com.meteocal.business.dao.EventDAO;
 import com.meteocal.business.entities.Event;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -37,5 +38,10 @@ public class EventTests {
         Event e = eventDAO.findByName(EVENT_NAME_CREATE_WITH_DATE);
         
         System.out.println("[TEST - checkCreateWithDate] The event was created: " + e.getStart().toString());
+    }
+    
+    public List<Event> findAll() {
+        List<Event> result = eventDAO.findAll();
+        return result;
     }
 }
