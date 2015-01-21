@@ -20,9 +20,8 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml">
             </ui:include>
         </div>
-        <p:fieldset legend="Event " toggleable="true" toggleSpeed="500">
-            <p:ajax event="toggle" />
-            <h:panelGrid columns="2" cellpadding="5">
+        <p:panel id="privacyPanel" header="Event " footer="Preview form" style="margin-top:70px" class="panelForm">     
+                <h:panelGrid columns="2" cellpadding="5">
                 <h:outputText value="Here there are all the available informations as far as an event concerns. ">
                 </h:outputText>
                 <br/>
@@ -52,6 +51,6 @@ and open the template in the editor.
                     </h:panelGrid>
                 </h:form>
             </h:panelGrid>
-        </p:fieldset>
+        </p:panel>
     </body>
 </html>

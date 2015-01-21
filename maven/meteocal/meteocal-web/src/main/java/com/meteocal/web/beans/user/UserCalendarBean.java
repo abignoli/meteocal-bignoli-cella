@@ -9,6 +9,6 @@ package com.meteocal.web.beans.user;
  *
  * @author Leo
  */
-public class UserDayBean {
+public class UserCalendarBean {
     
 }

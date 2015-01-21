@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
@@ -25,13 +26,21 @@
             <p:panel id="registrationPanel" header="First Option - Registration" footer="Registration form" style="margin-bottom:20px" class="panelForm">
                 <h:panelGrid columns="2" id="registrationGrid">
                     <p:outputLabel value="Username" for="userRegistration" />
-                    <p:inputText id="userRegistration" value="#{registrationBean.user.username}" />
+                    <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true">
+                    <f:validateLength minimum="4" />
+                    </p:inputText>
+                    
                     <p:outputLabel value="Password" for="passwordRegistration"/>
-                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" />
+                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true">
+                    <f:validateLength minimum="4" />
+                    </p:password>
+                    
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
-                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}"/>
+                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}">
+                    <f:validateLength minimum="4" />
+                    </p:password>
+                    
                     <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"/>
-                    <p:messages id="messagesRegistration" showDetail="true" autoUpdate="true" closable="true" />
                 </h:panelGrid>
             </p:panel>
 	</h:form> 
@@ -40,11 +49,16 @@
             <p:panel id="loginPanel" header="Second Option - Login" footer="Login form" style="margin-bottom:20px"  class="panelForm">
                 <h:panelGrid columns="2" id="loginGrid">
                     <p:outputLabel value="Username" for="userLogin" />
-                    <p:inputText id="userLogin" value="#{loginBean.username}" />
+                    <p:inputText id="userLogin" value="#{loginBean.username}" required="true">
+                    <f:validateLength minimum="4" />
+                    </p:inputText>
+                    
                     <p:outputLabel value="Password" for="pswLog"/>
-                    <p:password id="pswLog" value="#{loginBean.password}" />
+                    <p:password id="pswLog" value="#{loginBean.password}" required="true">
+                    <f:validateLength minimum="4" />
+                    </p:password>
+                    
                     <p:commandButton action="#{loginBean.login()}" value="Login" type="submit" ajax="false" styleClass="block" />
-                    <p:messages id="messagesLogin" showDetail="true" autoUpdate="true" closable="true" />
                 </h:panelGrid>
             </p:panel>
         </h:form>

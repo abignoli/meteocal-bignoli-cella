@@ -7,15 +7,33 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Event Suggestions</title>
+        <title>Events System's Suggestions Page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
-        <div id="header">
-            <ui:include src="/Components/TopBar.xhtml"></ui:include>
+        <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
+        <h:form>
+            <p:panel id="privacyPanel" header="Event Suggestion | Creator Mode" footer="suggestions" style="margin-top:70px" class="panelForm">     
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
+                    
+                    <p:outputLabel value="Name" for="name" />
+                    <p:outputLabel id="name" value="#{eventSuggestionsBean.name}" />
+                    
+                    <p:outputLabel value="Name" for="name" />
+                    <p:outputLabel id="name" value="#{eventSuggestionsBean.start}" />
+                    
+                    <p:outputLabel value="Name" for="name" />
+                    <p:outputLabel id="name" value="#{eventSuggestionsBean.end}" />
+                    
+                    <p:commandButton value="Discard Suggestions" icon="ui-icon-closethick" action="#{eventSuggestionsBean.discard()}"/>
+                    <p:commandButton value="Accept Suggestions" icon="ui-icon-check" action="#{eventSuggestionsBean.accept()}"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
     </body>
 </html>
 

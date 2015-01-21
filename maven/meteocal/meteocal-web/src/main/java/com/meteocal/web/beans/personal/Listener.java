@@ -53,7 +53,7 @@ public class Listener {
             response.sendRedirect(eventPath);
         }
         catch (IOException ex) {
-            Logger.getLogger(HomeMonthlyBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HomeBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

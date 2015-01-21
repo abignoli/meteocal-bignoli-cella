@@ -11,8 +11,8 @@
     <h:form>  
 
         <p:menubar>
-            <p:menuitem value="Home" url="/protected/personal/HomeCalendarMonth.xhtml" />
-            <p:menuitem value="#{topbarBean.username}" url="#" />
+            <p:menuitem value="Home" url="/protected/personal/HomeCalendarMonth.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="#{topbarBean.username}" url="#" style="text-decoration: underline" />
 
             <f:facet name="options">
                 <p:inputText style="margin-right:20px" placeholder="Search"
@@ -21,18 +21,18 @@
                 </p:inputText>
             </f:facet>
 
-            <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml"/>
-            <p:menuitem value="NotificationNumber" url="#"/>
-            <p:menuitem value="Invitation" url="/protected/personal/ManageInvitations.xhtml"/>
-            <p:menuitem value="InvitationNumber" url="#"/>
+            <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>
+            <p:menuitem value="NotificationNumber" url="#" icon="ui-icon-flag"/>
+            <p:menuitem value="Invitation" url="/protected/personal/ManageInvitations.xhtml" icon="ui-icon-mail-closed"/>
+            <p:menuitem value="InvitationNumber" url="#" icon="ui-icon-mail-closed"/>
 
             <p:submenu label="Events" >
-                <p:menuitem value="Create" url="/protected/event/EventCreate.xhtml"  />
-                <p:menuitem value="Manage" url="/protected/personal/ManageEvents.xhtml" />
+                <p:menuitem value="Create" url="/protected/event/EventCreate.xhtml" icon="ui-icon-document" />
+                <p:menuitem value="Manage" url="/protected/personal/ManageEvents.xhtml" icon="ui-icon-script" />
             </p:submenu>                
             <p:submenu label="Account" >
-                <p:menuitem value="Settings" url="/protected/personal/Settings.xhtml"  />                
-                <p:menuitem value="Logout" actionListener="#{loginBean.logout()}" ajax="false"/>
+                <p:menuitem value="Settings" url="/protected/personal/Settings.xhtml" icon="ui-icon-gear" />                
+                <p:menuitem value="Logout" actionListener="#{loginBean.logout()}" ajax="false" icon="ui-icon-power"/>
             </p:submenu>
 
         </p:menubar>

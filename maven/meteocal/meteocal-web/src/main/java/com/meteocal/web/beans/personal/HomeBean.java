@@ -31,7 +31,7 @@ import org.primefaces.model.ScheduleEvent;
  */
 @Named
 @RequestScoped
-public class HomeMonthlyBean implements Serializable{
+public class HomeBean implements Serializable{
     private ScheduleModel visibleEvents = new DefaultScheduleModel();
     private ScheduleEvent selectedEvent;
     private HttpServletRequest request;

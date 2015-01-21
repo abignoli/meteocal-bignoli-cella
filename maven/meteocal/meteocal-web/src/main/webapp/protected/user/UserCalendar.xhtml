@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Home Calendar | Monthly</title>
+        <title>User Calendar </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel="stylesheet"
               href="#{request.contextPath}/Resources/css/style.css" />
@@ -32,7 +32,7 @@ and open the template in the editor.
                     <f:param name="i" value="2" />
                 </p:menuitem>
             </p:tabMenu>
-            <p:schedule value="#{homeMonthlyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
+            <p:schedule value="#{userCalendarBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
             <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
     </div>
 </body>

@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>My Event</title>
+        <title>Own Event</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
@@ -21,7 +21,7 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml">
             </ui:include>
         </div>
-        <p:fieldset legend="Your Event " toggleable="true" toggleSpeed="500">
+        <p:fieldset legend="Your Event " toggleSpeed="500">
             <p:ajax event="toggle" />
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputText value="Here there are all the available informations as far as an event concerns. ">
@@ -63,9 +63,8 @@ and open the template in the editor.
         </p:fieldset>
         <p:fieldset>
             <h:form>
-                <p:inputText value="Participants"></p:inputText>
-                <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add 
-                                 Participant"></p:commandButton>
+                <p:inputText value="#{eventCreatorBean.participant}"></p:inputText>
+                <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add Participant"></p:commandButton>
             </h:form>
         </p:fieldset>
     </body>
