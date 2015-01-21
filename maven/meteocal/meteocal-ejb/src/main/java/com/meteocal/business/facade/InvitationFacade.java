@@ -5,10 +5,13 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.entities.keys.InvitationID;
+import com.meteocal.business.exceptions.NotFoundException;
+
 /**
  *
  * @author USUARIO
  */
 public interface InvitationFacade {
-    
+    public void setAsSeen(InvitationID invitationID) throws NotFoundException;
 }

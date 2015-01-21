@@ -6,11 +6,13 @@
 package com.meteocal.business.facade;
 
 import com.meteocal.business.dao.UserDAO;
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.UserUserVisibility;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 

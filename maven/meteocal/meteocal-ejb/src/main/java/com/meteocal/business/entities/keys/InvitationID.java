@@ -15,6 +15,14 @@ public class InvitationID implements Serializable {
     private int userID;
     private int eventID;
 
+    public InvitationID() {
+    }
+
+    public InvitationID(int userID, int eventID) {
+        this.userID = userID;
+        this.eventID = eventID;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

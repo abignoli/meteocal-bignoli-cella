@@ -5,7 +5,9 @@
  */
 package com.meteocal.business.security;
 
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
@@ -14,6 +16,7 @@ import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import com.meteocal.business.shared.security.UserUserVisibility;
 import java.security.Principal;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -61,8 +64,12 @@ public interface UserManager {
     public void toggleParticipation(int eventID) throws BusinessException;
 
     public int getNotSeenInvitationsCount();
+    
+    public void setInvitationAsSeen(InvitationID invitationID) throws NotFoundException;
 
     public int getNotSeenNotificationsCount();
 
     public void setNotificationAsSeen(int notificationID) throws NotFoundException;
+    
+    public List<Event> getEventsVisibilityMasked(int userID) throws NotFoundException;
 }

@@ -5,12 +5,16 @@
  */
 package com.meteocal.business.security;
 
+import com.meteocal.business.dao.UserDAO;
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.Invitation;
 import com.meteocal.business.entities.NotificationView;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.business.facade.InvitationFacade;
 import com.meteocal.business.facade.NotificationFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.shared.data.Group;
@@ -35,6 +39,12 @@ public class UserManagerImplementation implements UserManager {
 
     @EJB
     EventFacade eventFacade;
+    
+    @EJB
+    InvitationFacade invitationFacade;
+    
+    @EJB
+    UserDAO userDAO;
         
     @EJB
     private NotificationFacade notificationFacade;
@@ -109,5 +119,20 @@ public class UserManagerImplementation implements UserManager {
                 count++;
         
         return count;
+    }
+    
+    @Override
+    public List<Event> getEventsVisibilityMasked(int userID) throws NotFoundException {
+        User u = userDAO.retrieve(userID);
+        
+        if(u.isCalendarVisible())
+            return u.getCreatedAndParticipatingTo();
+        else
+            return eventFacade.mask(userDAO.retrieve(userID).getCreatedAndParticipatingTo());
+    }
+
+    @Override
+    public void setInvitationAsSeen(InvitationID invitationID) throws NotFoundException {
+        invitationFacade.setAsSeen(invitationID);
     }
 }

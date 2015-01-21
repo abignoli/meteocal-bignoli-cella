@@ -5,10 +5,12 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.security.UserUserVisibility;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -31,6 +33,4 @@ public interface UserFacade {
     public abstract boolean isUsernameInUse(String username);
 
     public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
-
-
 }
