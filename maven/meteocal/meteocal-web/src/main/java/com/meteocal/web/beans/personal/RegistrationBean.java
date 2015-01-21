@@ -73,11 +73,11 @@ public class RegistrationBean implements Serializable{
     }
     
     public String register(){
-        
+        /*
         if(uf.isUsernameInUse(userToRegister.getUsername())){
             return "/Index.xhtml?used=yes";
         }
-        
+        */
         if( passwordMatching() ){
             SYSO_Testing.clean();
             SYSO_Testing.syso("Starting registration!");

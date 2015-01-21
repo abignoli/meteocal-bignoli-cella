@@ -21,19 +21,8 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
         <div id="wrapper" style="text-align: center ; width: 95%">
-            <p:tabMenu activeIndex="0">
-                <p:menuitem value="Monthly" outcome="/protected/personal/HomeCalendarMonth.xhtml" icon="ui-icon-star">
-                    <f:param name="i" value="0" />
-                </p:menuitem>
-                <p:menuitem value="Weekly" outcome="/protected/personal/HomeCalendarWeek.xhtml" icon="ui-icon-search">
-                    <f:param name="i" value="1" />
-                </p:menuitem>
-                <p:menuitem value="Daily" outcome="/protected/personal/HomeCalendarDay.xhtml" icon="ui-icon-document">
-                    <f:param name="i" value="2" />
-                </p:menuitem>
-            </p:tabMenu>
-            <p:schedule value="#{homeBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
+            <p:schedule value="#{homeBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" style="width: 90% ; margin:auto; height: 800px" />
             <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
-    </div>
-</body>
+        </div>
+    </body>
 </html>
