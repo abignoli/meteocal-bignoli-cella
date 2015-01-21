@@ -88,7 +88,7 @@ public class LoginBean {
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
 
-        return "/protected/personal/HomeCalendarMonth";
+        return "/protected/personal/HomeCalendar";
     }
 
     public void logout() {
