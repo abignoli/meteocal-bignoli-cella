@@ -35,7 +35,7 @@ public class FilterEventCreator {
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String indexPath = context + "/Index.xhtml";
+    private final String errorPath = context + "/Error.xhtml";
     
     @PostConstruct
     public void init(){
@@ -58,7 +58,7 @@ public class FilterEventCreator {
             try {
                 SYSO_Testing.syso("I'm not coming from redirect");
                 sessionUtility.sessionLogout();
-                response.sendRedirect(indexPath);
+                response.sendRedirect(errorPath);
             }
             catch (IOException ex) {
                 Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,6 +72,7 @@ public class FilterEventCreator {
     }
 
     private boolean amIComingFromDispatcher() {
+        if(this.loggedUser==null)return false;
         return sessionUtility.getComingFromDispatcher();
     }
 }
