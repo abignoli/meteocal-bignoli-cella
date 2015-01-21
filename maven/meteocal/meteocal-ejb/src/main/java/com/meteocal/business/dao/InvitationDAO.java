@@ -16,7 +16,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class InvitationDAO extends DAObase<Invitation> {
 
-    public InvitationDAO(Class<Invitation> databaseEntityClass, String tableName) {
+    public InvitationDAO() {
         super(Invitation.class, TableDictionary.TABLE_INVITATION);
     }
     
