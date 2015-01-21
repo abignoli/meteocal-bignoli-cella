@@ -5,6 +5,7 @@
  */
 package com.meteocal.business.facade;
 
+
 import com.meteocal.business.dao.InvitationDAO;
 import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.NotFoundException;
