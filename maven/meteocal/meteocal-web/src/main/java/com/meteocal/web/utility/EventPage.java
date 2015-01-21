@@ -10,7 +10,7 @@ import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
 import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
-import com.meteocal.web.filters.FilterEvent;
+import com.meteocal.web.filters.events.FilterEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

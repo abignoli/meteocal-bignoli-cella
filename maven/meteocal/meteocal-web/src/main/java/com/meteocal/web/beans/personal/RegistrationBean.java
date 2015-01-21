@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.beans;
+package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.facade.UserFacade;

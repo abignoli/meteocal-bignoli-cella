@@ -1,4 +1,4 @@
-package com.meteocal.web.beans;
+package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.web.converters.BooleanConverter;

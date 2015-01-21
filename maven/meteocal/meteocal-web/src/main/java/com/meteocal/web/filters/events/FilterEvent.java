@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.filters;
+package com.meteocal.web.filters.events;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.security.UserManager;

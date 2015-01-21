@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.beans;
+package meteocal.web.beans.component;
 
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
@@ -28,8 +28,7 @@ public class TopbarBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        SYSO_Testing.syso("topbar_init: " + sessionUtility.getLoggedUser());
-        SYSO_Testing.syso("it's setting:" + sessionUtility.getLoggedUser());
+        SYSO_Testing.syso("topbar_init: ");
         this.setUsername(sessionUtility.getLoggedUser());
         SYSO_Testing.syso("now the field has value: " + this.getUsername());
     }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal.web.beans;
+package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.security.UserManager;
@@ -20,41 +20,48 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class SettingsBean implements Serializable {
+
     private String username;
     private String email;
     private boolean privacyMod;
-    
+
     @EJB
     UserManager um;
 
     @PostConstruct
-    public void init(){
-        User u = um.getLoggedUser();
-        this.username = u.getUsername();
-        this.setEmail(u.getEmail());
-        this.setPrivacyMod(u.isCalendarVisible());
+    public void init() {
+        if (um != null) {
+            User u = um.getLoggedUser();
+            if (u != null) {
+                this.username = u.getUsername();
+                this.setEmail(u.getEmail());
+                this.setPrivacyMod(u.isCalendarVisible());
+            }
+        }
     }
-    
-    public void setUsername(String user){
+
+    public void setUsername(String user) {
         this.username = user;
     }
-    
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         this.email = email;
     }
-       
-    public void setPrivacyMod(boolean privacyMod){
+
+    public void setPrivacyMod(boolean privacyMod) {
         this.privacyMod = privacyMod;
     }
-    
-    public String getUsername(){
+
+    public String getUsername() {
         return this.username;
     }
-    public String getEmail(){
+
+    public String getEmail() {
         return this.email;
     }
-    public boolean getPrivacyMod(){
+
+    public boolean getPrivacyMod() {
         return this.privacyMod;
     }
-    
+
 }

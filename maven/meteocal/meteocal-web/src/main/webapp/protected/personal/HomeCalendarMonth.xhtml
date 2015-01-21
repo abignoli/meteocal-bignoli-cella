@@ -16,11 +16,13 @@ and open the template in the editor.
 	<link type="text/css" rel="stylesheet"
 		href="#{request.contextPath}/Resources/css/style.css" />
     </h:head>
-    <body>
+    <body style="text-align: center">
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
-        <p:panelGrid id="container" style="margin-top:20px">
+        <div id="wrapper" style="text-align: center ; width: 95%">
+        <p:schedule value="#{homeMonthlyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
+        <!--<p:panelGrid id="container" style="margin-top:20px">
             <f:facet name="header">
                 <p:row>
                     <p:column class="tableHead">
@@ -209,6 +211,7 @@ and open the template in the editor.
                     Friday
                 </p:column>
             </p:row>
-        </p:panelGrid>
+        </p:panelGrid>-->
+        </div>
     </body>
 </html>

@@ -14,10 +14,13 @@ and open the template in the editor.
         <title>HomeCalendar | Daily </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <body>
+    <body>        
         <!--<div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>-->
+        <div id="wrapper" style="text-align: center ; width: 95%">
+            <p:schedule value="#{homeMonthlyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear" view="agendaDay"  style="width: 90% ; margin:auto;" />
+        </div>
 
     </body>
 </html>
