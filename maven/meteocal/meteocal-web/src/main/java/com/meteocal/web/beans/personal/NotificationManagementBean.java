@@ -6,7 +6,10 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.Notification;
+import com.meteocal.business.security.UserManager;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -19,6 +22,14 @@ import javax.inject.Named;
 public class NotificationManagementBean {
 
     List<Notification> notifications;
+    
+    @EJB
+    UserManager um;
+    
+    @PostConstruct 
+    public void init(){
+        setNotifications(um.getLoggedUser().getNotifications());
+    }
     
     public List<Notification> getNotifications(){
         return notifications;

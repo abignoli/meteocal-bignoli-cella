@@ -30,28 +30,25 @@ and open the template in the editor.
                 <h:form id="form">
                     <h:panelGrid columns="2">
                         <h:outputText value="ID" />
-                        <h:outputText value="num" />
+                        <h:outputText value="#{eventViewBean.id}" />
 
                         <h:outputText value="Name" />
-                        <h:outputText value="nome" />
+                        <h:outputText value="#{eventViewBean.name}" />
 
                         <h:outputText value="Address" />
-                        <h:outputText value="road ... , n" />
+                        <h:outputText value="#{eventViewBean.address}" />
 
                         <h:outputText value="City" />
-                        <h:outputText value="città" />
+                        <h:outputText value="#{eventViewBean.city}" />
 
                         <h:outputText value="Country" />
-                        <h:outputText value="paese" />
+                        <h:outputText value="#{eventViewBean.country}" />
 
-                        <h:outputText value="Dwscription" />
-                        <h:outputText value="testo descrittivo" />
+                        <h:outputText value="Description" />
+                        <h:outputText value="#{eventViewBean.description}" />
 
                         <h:outputText value="Indoor" />
-                        <h:outputText value="Y/N" />
-
-                        <h:outputText value="Private" />
-                        <h:outputText value="Y/N" />
+                        <h:outputText value="#{eventViewBean.indoor}" />
                     </h:panelGrid>
                 </h:form>
             </h:panelGrid>

@@ -32,8 +32,8 @@ and open the template in the editor.
                     <f:param name="i" value="2" />
                 </p:menuitem>
             </p:tabMenu>
-            <p:schedule value="#{homeMonthlyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
-            <p:ajax event="eventSelect" listener="#{homeMonthlyBean.onEventSelect}"></p:ajax>
+            <p:schedule value="#{homeWeeklyBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
+            <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
         </div>
     </body>
 </html>
