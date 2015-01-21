@@ -20,9 +20,10 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
-        <div id="wrapper" style="text-align: center ; width: 95%">
-            <p:schedule value="#{homeBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" style="width: 90% ; margin:auto; height: 800px" />
-            <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
-        </div>
+        <h:panelGrid>
+            <p:schedule value="#{homeBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" style="width: 90% ; margin:auto; height: 800px"  >
+                <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
+            </p:schedule>
+        </h:panelGrid>
     </body>
 </html>
