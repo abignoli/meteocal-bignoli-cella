@@ -9,11 +9,13 @@ import com.meteocal.business.dao.InvitationDao;
 import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.NotFoundException;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author USUARIO
  */
+@Stateless
 public class InvitationFacadeImplementation implements InvitationFacade {
     
     @EJB
