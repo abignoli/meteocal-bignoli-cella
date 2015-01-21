@@ -25,6 +25,10 @@ public class Invitation {
     @Id
     private int eventID;
     
+    public InvitationID getID() {
+        return new InvitationID(userID, eventID);
+    }
+    
     @Column(columnDefinition="boolean default false")
     private boolean seen;
 

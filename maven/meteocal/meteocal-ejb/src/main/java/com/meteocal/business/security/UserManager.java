@@ -7,6 +7,7 @@ package com.meteocal.business.security;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
+import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
@@ -63,6 +64,8 @@ public interface UserManager {
     public void toggleParticipation(int eventID) throws BusinessException;
 
     public int getNotSeenInvitationsCount();
+    
+    public void setInvitationAsSeen(InvitationID invitationID) throws NotFoundException;
 
     public int getNotSeenNotificationsCount();
 

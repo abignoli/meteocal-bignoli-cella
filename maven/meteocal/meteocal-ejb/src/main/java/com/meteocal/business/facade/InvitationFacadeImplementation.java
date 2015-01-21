@@ -5,10 +5,23 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.dao.InvitationDao;
+import com.meteocal.business.entities.keys.InvitationID;
+import com.meteocal.business.exceptions.NotFoundException;
+import javax.ejb.EJB;
+
 /**
  *
  * @author USUARIO
  */
-public class InvitationFacadeImplementation {
+public class InvitationFacadeImplementation implements InvitationFacade {
+    
+    @EJB
+    InvitationDao invitationDAO;
+
+    @Override
+    public void setAsSeen(InvitationID invitationID) throws NotFoundException {
+        invitationDAO.retrieve(invitationID).setSeen(true);
+    }
     
 }
