@@ -5,10 +5,16 @@
  */
 package com.meteocal.geography;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
+import javax.json.stream.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
@@ -24,17 +30,31 @@ public class GeographicRepository {
     @PostConstruct
     private void constructed() {
         logger.log(Level.INFO, "GeograficRepository constructed");
-        world = parseWorld();
+        
+        parseWorld();
     }
     
     
-    private static World parseWorld() {
-        logger.log(Level.INFO, "Parsing world structure");
+    private void parseWorld() {
+        
+        logger.log(Level.INFO, "BEGIN - Parsing world structure");
         // TODO parse file
         
-//        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         
-        return null;
+        InputStream worldData = getClass().getResourceAsStream("/world.json");
+        
+        try {
+            world = mapper.readValue(worldData, World.class);
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        logger.log(Level.INFO, "END - Parsing world structure");
     }
     
     public World getWorld() {
