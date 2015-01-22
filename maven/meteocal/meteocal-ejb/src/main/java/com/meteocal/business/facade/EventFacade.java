@@ -114,4 +114,6 @@ public interface EventFacade {
     public void updateWeatherForecasts(int eventID) throws InvalidInputException, NotFoundException;
 
     public List<Event> mask(List<Event> createdAndParticipatingTo);
+    
+    public abstract List<Event> search(String eventName);
 }

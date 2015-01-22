@@ -18,6 +18,7 @@ import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import javax.ejb.EJB;
@@ -259,5 +260,17 @@ public class EventFacadeImplementation implements EventFacade {
         result.setEnd(e.getEnd());
         
         e = result;
+    }
+
+    @Override
+    public List<Event> search(String eventName) {
+        List<Event> events = new ArrayList<Event>();
+        
+        // TODO implement properly
+        Event found = eventDAO.findByName(eventName);
+        if(found != null)
+            events.add(found);
+        
+        return events;
     }
 }

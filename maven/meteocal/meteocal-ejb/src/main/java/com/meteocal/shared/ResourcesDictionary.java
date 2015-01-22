@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.meteocal;
+package com.meteocal.shared;
 
 /**
  *
  * @author AB
  */
 public class ResourcesDictionary {
-    
+    public static String PATH_WORLD_JSON = "/geography/world.json";
 }

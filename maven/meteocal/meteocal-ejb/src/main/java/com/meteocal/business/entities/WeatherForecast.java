@@ -29,25 +29,15 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = TableDictionary.TABLE_WEATHER_FORECAST)
-public class WeatherForecast {
+public class WeatherForecast extends WeatherForecastBase {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    private WeatherCondition weatherCondition;
-    
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="EVENTID", referencedColumnName = "ID")
     private Event event;
- 
-//    TODO remove comment
-//    @NotNull
-    private LocalDateTime start;
-
-//    TODO remove comment
-//    @NotNull
-    private LocalDateTime end;
 
     public int getId() {
         return id;
@@ -57,14 +47,6 @@ public class WeatherForecast {
         this.id = id;
     }
 
-    public WeatherCondition getWeatherCondition() {
-        return weatherCondition;
-    }
-
-    public void setWeatherCondition(WeatherCondition weatherCondition) {
-        this.weatherCondition = weatherCondition;
-    }
-
     public Event getEvent() {
         return event;
     }
@@ -72,24 +54,4 @@ public class WeatherForecast {
     public void setEvent(Event event) {
         this.event = event;
     }
-
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDateTime start) {
-        this.start = start;
-    }
-
-    public LocalDateTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
-    }
-
-
-    
-    
 }

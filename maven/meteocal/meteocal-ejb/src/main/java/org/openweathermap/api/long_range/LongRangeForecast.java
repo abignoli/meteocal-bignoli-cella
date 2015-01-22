@@ -1,5 +1,5 @@
 
-package org.openweathermap.api.short_range;
+package org.openweathermap.api.long_range;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,13 +7,13 @@ import java.util.Map;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class ShortRange {
+public class LongRangeForecast {
 
     private String cod;
     private Double message;
     private City city;
     private Integer cnt;
-    private java.util.List<org.openweathermap.api.short_range.List> list = new ArrayList<org.openweathermap.api.short_range.List>();
+    private java.util.List<org.openweathermap.api.long_range.List> list = new ArrayList<org.openweathermap.api.long_range.List>();
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -93,7 +93,7 @@ public class ShortRange {
      * @return
      *     The list
      */
-    public java.util.List<org.openweathermap.api.short_range.List> getList() {
+    public java.util.List<org.openweathermap.api.long_range.List> getList() {
         return list;
     }
 
@@ -102,7 +102,7 @@ public class ShortRange {
      * @param list
      *     The list
      */
-    public void setList(java.util.List<org.openweathermap.api.short_range.List> list) {
+    public void setList(java.util.List<org.openweathermap.api.long_range.List> list) {
         this.list = list;
     }
 

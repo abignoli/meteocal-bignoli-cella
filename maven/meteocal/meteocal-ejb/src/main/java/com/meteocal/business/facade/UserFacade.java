@@ -32,5 +32,7 @@ public interface UserFacade {
     
     public abstract boolean isUsernameInUse(String username);
 
-    public UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
+    public abstract UserUserVisibility getVisibilityOverUser(int userID) throws NotFoundException;
+    
+    public abstract List<User> search(String username);
 }

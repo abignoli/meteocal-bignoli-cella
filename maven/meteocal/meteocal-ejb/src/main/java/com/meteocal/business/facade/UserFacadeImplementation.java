@@ -12,6 +12,7 @@ import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.UserUserVisibility;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -127,6 +128,18 @@ public class UserFacadeImplementation implements UserFacade {
     @Override
     public boolean isUsernameInUse(String username) {
         return findByUsername(username) != null;
+    }
+
+    @Override
+    public List<User> search(String username) {
+        List<User> users = new ArrayList<User>();
+        
+        // TODO implement properly
+        User found = userDAO.findByUsername(username);
+        if(found != null)
+            users.add(found);
+        
+        return users;
     }
 
 
