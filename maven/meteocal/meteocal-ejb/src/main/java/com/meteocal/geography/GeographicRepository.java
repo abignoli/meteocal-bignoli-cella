@@ -8,6 +8,8 @@ package com.meteocal.geography;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -59,5 +61,42 @@ public class GeographicRepository {
     
     public World getWorld() {
         return world;
+    }
+    
+    /**
+     * Returns the list of the names of the countries in the application geographic repository.
+     * 
+     * @return the list of the names of the countries in the application geographic repository
+     */
+    public List<String> getCountryNames() {
+        List<String> names = new ArrayList<String>();
+        
+        for(Country c: world.getCountry()) {
+            names.add(c.getName());
+        }
+                
+        return names;
+    }
+    
+    /**
+     * Returns the list of the names of the cities in a given country, identified by countryName.
+     * 
+     * @param countryName
+     * @return the list of the names of the cities in a given country, identified by countryName. Null is returned if no Country with the given name is found
+     */
+    public List<String> getCityNames(String countryName) {
+        List<String> names = null;
+        
+        for(Country country: world.getCountry()) {
+            if(country.getName().equals(countryName)) {
+                names = new ArrayList<String>();
+                
+                for(City city: country.getCity()) {
+                    names.add(city.getName());
+                }
+            }
+        }
+                
+        return names;
     }
 }

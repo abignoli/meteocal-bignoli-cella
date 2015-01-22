@@ -22,6 +22,7 @@ public class InvalidInputException extends BusinessException {
     
     public static String EVENT_GOOD_WEATHER_CONDITIONS_CHECK = "[EVENT - GOOD WEATHER CONDITIONS CHECK] No weather conditions, can't check compatibility.";
     public static String EVENT_CREATION_INVALID = "[EVENT CREATION] Provided data is invalid";
+    public static String EVENT_CREATION_NO_CITY_OR_COUNTRY = "[EVENT CREATION] Cannot create an event without specifying both city and country.";
     public static String EVENT_CREATION_NO_LOGGED_USER = "[EVENT CREATION] No user is logged in, cannot create the event.";
     
     /**
