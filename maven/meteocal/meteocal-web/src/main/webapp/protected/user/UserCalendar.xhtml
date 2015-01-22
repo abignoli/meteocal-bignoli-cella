@@ -11,29 +11,20 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>User Calendar </title>
+        <title>User Calendar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link type="text/css" rel="stylesheet"
               href="#{request.contextPath}/Resources/css/style.css" />
     </h:head>
     <body style="text-align: center">
+        <f:event listener="#{FilterCalendar.check}" type="preRenderView" />
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
-        <div id="wrapper" style="text-align: center ; width: 95%">
-            <p:tabMenu activeIndex="0">
-                <p:menuitem value="Monthly" outcome="/protected/personal/HomeCalendarMonth.xhtml" icon="ui-icon-star">
-                    <f:param name="i" value="0" />
-                </p:menuitem>
-                <p:menuitem value="Weekly" outcome="/protected/personal/HomeCalendarWeek.xhtml" icon="ui-icon-search">
-                    <f:param name="i" value="1" />
-                </p:menuitem>
-                <p:menuitem value="Daily" outcome="/protected/personal/HomeCalendarDay.xhtml" icon="ui-icon-document">
-                    <f:param name="i" value="2" />
-                </p:menuitem>
-            </p:tabMenu>
-            <p:schedule value="#{userCalendarBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" rightHeaderTemplate="prevYear,nextYear"  style="width: 90% ; margin:auto; height: 800px" />
-            <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
-    </div>
-</body>
+        <h:panelGrid>
+            <p:schedule value="#{userCalendarBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" style="width: 90% ; margin:auto; height: 800px"  >
+                <p:ajax event="eventSelect" listener="#{onEventSelectListener.onEventSelect}"></p:ajax>
+            </p:schedule>
+        </h:panelGrid>
+    </body>
 </html>

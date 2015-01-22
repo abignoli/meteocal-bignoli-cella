@@ -63,20 +63,21 @@ public class EventCreationBean implements Serializable {
     }
 
     public String create() {
+        int eventID;
         SYSO_Testing.syso("in create()");
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
         SYSO_Testing.syso("start: " + createdEvent.getStart().toString() + "end" + createdEvent.getEnd().toString());
         SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() );
         try {
-            ef.create(getCreatedEvent());
+            eventID= ef.create(getCreatedEvent()).getId();
         }
         catch (BusinessException e) {
             error.setMessage("An error occurs: " + e.getMessage());
             return "/Error";
         }
         
-        sessionUtility.setParameter(1);
+        sessionUtility.setParameter(eventID);
         return "/protected/event/EventPage";
     }
 
