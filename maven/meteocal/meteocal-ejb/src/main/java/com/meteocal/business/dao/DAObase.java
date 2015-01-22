@@ -83,6 +83,11 @@ public abstract class DAObase<T> {
             e.printStackTrace();
         }
     }
+    
+    public T refresh(T toRefresh) {
+        em.refresh(toRefresh);
+        return toRefresh;
+    }
 
     public T find(Object primaryKey) {
         try {

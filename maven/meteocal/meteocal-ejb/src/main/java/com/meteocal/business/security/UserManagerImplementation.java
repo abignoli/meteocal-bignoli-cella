@@ -62,7 +62,7 @@ public class UserManagerImplementation implements UserManager {
     }
 
     public User getLoggedUser() {
-        return userFacade.findByUsername(principal.getName());
+        return userDAO.refresh(userFacade.findByUsername(principal.getName()));
     }
 
     /**
