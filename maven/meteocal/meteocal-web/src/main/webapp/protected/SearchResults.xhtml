@@ -9,7 +9,7 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-    <head>
+      <head>
         <title>Search Results</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style type="text/css">
@@ -32,12 +32,31 @@ and open the template in the editor.
         <div id="container">
             <div id="left">
                 <p:panel id="privacyPanel" header="List of compatible Users" footer="Users" style="margin-top:70px" class="panelForm">     
-                
+                    <p:feedReader value="#{searchBean.users}" var="user">
+                        <p:link value="#{user.username}" outcome="RelatedUser">
+                            <f:param name="username" value="#{user.username}"/>
+                        </p:link>
+                        <p:link value="#{user.email}" outcome="RelatedUser">
+                            <f:param name="username" value="#{user.username}"/>
+                        </p:link>
+                        <p:separator />
+                    </p:feedReader>
                 </p:panel>
             </div>
             <div id="right">
                 <p:panel id="privacyPanel" header="Event Editing | creator only" footer="Editing form" style="margin-top:70px" class="panelForm">     
-                    
+                    <p:feedReader value="#{searchBean.events}" var="event">
+                        <p:link value="#{event.id}" outcome="RelatedEvent">
+                            <f:param name="eventID" value="#{event.id}"/>
+                        </p:link>
+                        <p:link value="#{event.id}" outcome="RelatedEvent">
+                            <f:param name="eventID" value="#{event.id}"/>
+                        </p:link>                        
+                        <p:link value="#{event.id}" outcome="RelatedEvent">
+                            <f:param name="eventID" value="#{event.id}"/>
+                        </p:link>                        
+                        <p:separator />
+                    </p:feedReader>
                 </p:panel>
             </div>
         </div>
