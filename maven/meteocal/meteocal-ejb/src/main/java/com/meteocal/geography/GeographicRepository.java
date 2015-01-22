@@ -15,15 +15,15 @@ import javax.ejb.Singleton;
  * @author AB
  */
 @Singleton
-public class GeograficRepository {
+public class GeographicRepository {
     
-    private static final Logger logger = Logger.getLogger(GeograficRepository.class.getName());
+    private static final Logger logger = Logger.getLogger(GeographicRepository.class.getName());
     
     private World world;
     
     @PostConstruct
     private void constructed() {
-        logger.log(Level.INFO, "GeograficRepository created - parsing world structure");
+        logger.log(Level.INFO, "GeograficRepository constructed");
         world = parseWorld();
     }
     
@@ -31,6 +31,8 @@ public class GeograficRepository {
     private static World parseWorld() {
         logger.log(Level.INFO, "Parsing world structure");
         // TODO parse file
+        
+        ObjectMapper mapper = new ObjectMapper();
         
         return null;
     }
