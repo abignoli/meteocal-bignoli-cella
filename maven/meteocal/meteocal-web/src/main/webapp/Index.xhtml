@@ -26,17 +26,17 @@
             <p:panel id="registrationPanel" header="First Option - Registration" footer="Registration form" style="margin-bottom:20px" class="panelForm">
                 <h:panelGrid columns="2" id="registrationGrid">
                     <p:outputLabel value="Username" for="userRegistration" />
-                    <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true">
+                    <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:inputText>
                     
                     <p:outputLabel value="Password" for="passwordRegistration"/>
-                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true">
+                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" requiredMessage="this field is compulsory" required="true">
                     <f:validateLength minimum="4" />
                     </p:password>
                     
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
-                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}">
+                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:password>
                     
@@ -49,12 +49,12 @@
             <p:panel id="loginPanel" header="Second Option - Login" footer="Login form" style="margin-bottom:20px"  class="panelForm">
                 <h:panelGrid columns="2" id="loginGrid">
                     <p:outputLabel value="Username" for="userLogin" />
-                    <p:inputText id="userLogin" value="#{loginBean.username}" required="true">
+                    <p:inputText id="userLogin" value="#{loginBean.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:inputText>
                     
                     <p:outputLabel value="Password" for="pswLog"/>
-                    <p:password id="pswLog" value="#{loginBean.password}" required="true">
+                    <p:password id="pswLog" value="#{loginBean.password}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:password>
                     

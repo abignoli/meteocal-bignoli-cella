@@ -28,19 +28,19 @@ import javax.servlet.http.HttpServletRequest;
 @Named
 @SessionScoped
 public class SessionUtility implements Serializable {
- 
+
     private String loggedUserName, loggedUserPassword;
-    private int errorCode;
-    private boolean error;
+    private int errorCode, parameterID;
+    private boolean error,parameter;
 
     @PostConstruct
     public void init() {
         error = false;
     }
-   
+
     public void addUser(String username) {
         loggedUserName = username;
-        SYSO_Testing.syso("SessionUtility_addUser: "+loggedUserName + " added in cache");
+        SYSO_Testing.syso("SessionUtility_addUser: " + loggedUserName + " added in cache");
     }
 
     public String getLoggedUser() {
@@ -54,7 +54,7 @@ public class SessionUtility implements Serializable {
         loggedUserName = null;
         error = false;
         request.getSession().invalidate();
-        
+
     }
 
     public void setError(int value) {
@@ -70,11 +70,29 @@ public class SessionUtility implements Serializable {
         return errorCode;
     }
 
+    public void setParameter(int value) {
+        parameterID = value;
+        parameter = true;
+    }
+
+    public boolean isAParameter() {
+        return parameter;
+    }
+
+    public int getParameter() {
+        return parameterID;
+    }
+    
+    public int getParameterAsClient() {
+        parameter = false;
+        return parameterID;
+    }
+
     public void showedError() {
         error = false;
     }
 
-    public boolean isThereAnActiveSession(){
+    public boolean isThereAnActiveSession() {
         return this.loggedUserName != null;
     }
 }

@@ -30,12 +30,12 @@ public class EventManagementBean implements Serializable {
     SessionUtility sessionUtility;
     
     @EJB
-    UserManager uf;
+    UserManager um;
 
     @PostConstruct
     public void init(){
         username = sessionUtility.getLoggedUser();
-        //setEvents(uf.getCreatedAndParticipatingTo());
+        events = um.getLoggedUser().getCreatedAndParticipatingTo();
     }
     
     public List<Event> getEvents(){

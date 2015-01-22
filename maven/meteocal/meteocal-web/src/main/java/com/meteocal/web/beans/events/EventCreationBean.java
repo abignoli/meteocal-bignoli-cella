@@ -9,14 +9,17 @@ import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.convert.Converter;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -30,6 +33,13 @@ public class EventCreationBean implements Serializable {
     @EJB
     private EventFacade ef;
 
+    @Inject 
+    private ErrorBean error;
+    
+    
+    @Inject
+    private SessionUtility sessionUtility;
+    
     private WeatherConditionsConverter weatherConv;
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
@@ -62,9 +72,12 @@ public class EventCreationBean implements Serializable {
             ef.create(getCreatedEvent());
         }
         catch (BusinessException e) {
-            SYSO_Testing.syso(e.getMessage());
+            error.setMessage("An error occurs: " + e.getMessage());
+            return "/Error";
         }
-        return "/EventPage";
+        
+        sessionUtility.setParameter(1);
+        return "/protected/event/EventPage";
     }
 
     public Event getCreatedEvent() {

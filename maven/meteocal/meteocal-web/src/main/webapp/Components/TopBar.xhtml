@@ -11,14 +11,11 @@
     <h:form>  
 
         <p:menubar>
-            <p:menuitem value="Home" url="/protected/personal/HomeCalendarMonth.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="Home" url="/protected/personal/HomeCalendar.xhtml" icon="ui-icon-home"/>
             <p:menuitem value="#{topbarBean.username}" url="#" style="text-decoration: underline" />
 
             <f:facet name="options">
-                <p:inputText style="margin-right:20px" placeholder="Search"
-                             requiredMessage="Please enter your username." id="searchText">
-                    <f:validateLength />
-                </p:inputText>
+                <p:inputText style="margin-right:20px" placeholder="Search" onclick="#{searchBean.search()}"/>
             </f:facet>
 
             <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>

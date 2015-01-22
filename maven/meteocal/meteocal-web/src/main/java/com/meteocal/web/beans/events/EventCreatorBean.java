@@ -9,6 +9,8 @@ import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.web.exceptions.NotValidParameter;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -25,15 +28,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class EventCreatorBean implements Serializable{
+public class EventCreatorBean implements Serializable {
 
-    private String user,name;
+    private String user, name;
     private Event referredEvent;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private int eventID;
+
+    @Inject
+    private SessionUtility sessionUtility;
     
     @EJB
     EventFacade ef;
+    
     private String address;
     private String city;
     private String country;
@@ -46,89 +53,115 @@ public class EventCreatorBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        setReferredEvent(ef.find(this.getId()));
+        try {
+            id = this.getID();
+        }
+        catch (NotValidParameter ex) {
+
+        }
+        setReferredEvent(ef.find(id));
     }
 
     public String addParticipant() {
         return "/protected/event/EventPageCreator.xhtml";
     }
 
-    public int getId() {
+    private int getID() throws NotValidParameter {
         String strID;
-        strID = request.getParameter("eventID");
-        id = Integer.parseInt(strID);
+
+        if (!sessionUtility.isAParameter()) {
+            strID = request.getParameter("eventID");
+            try {
+                id = Integer.parseInt(strID);
+            }
+            catch (NumberFormatException e) {
+                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+            }
+        }
+        else{
+            id = sessionUtility.getParameterAsClient();
+        }
+        
         return id;
     }
-    
-    public void setReferredEvent(Event event){
+
+    public void setReferredEvent(Event event) {
         referredEvent = event;
     }
-    
-    public Event getReferredEvent(){
+
+    public Event getReferredEvent() {
         return referredEvent;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return referredEvent.getName();
     }
-    public void setName(){
+
+    public void setName() {
         name = referredEvent.getName();
     }
-    
-    public String getAddress(){
+
+    public String getAddress() {
         return referredEvent.getAddress();
     }
-    public void setAddress(){
+
+    public void setAddress() {
         address = referredEvent.getAddress();
     }
-    
-    public String getCity(){
+
+    public String getCity() {
         return referredEvent.getCity();
     }
-    public void setCity(){
+
+    public void setCity() {
         city = referredEvent.getCity();
     }
-    
-    public String getCountry(){
+
+    public String getCountry() {
         return referredEvent.getCountry();
     }
-    public void setCountry(){
+
+    public void setCountry() {
         country = referredEvent.getCountry();
     }
-    
-    public String getDescription(){
+
+    public String getDescription() {
         return referredEvent.getDescription();
     }
-    public void setDescription(){
+
+    public void setDescription() {
         description = referredEvent.getDescription();
     }
-    
-    public EnumSet<WeatherCondition> getAdverseConditions(){
+
+    public EnumSet<WeatherCondition> getAdverseConditions() {
         return referredEvent.getAdverseConditions();
     }
-    public void setAdverseConditions(){
+
+    public void setAdverseConditions() {
         adverseConditions = referredEvent.getAdverseConditions();
     }
-    
-    public List<User> getInvited(){
+
+    public List<User> getInvited() {
         return referredEvent.getInvited();
     }
-    public void setInvited(){
+
+    public void setInvited() {
         invited = referredEvent.getInvited();
     }
-    
-    public List<User> getParticipant(){
+
+    public List<User> getParticipant() {
         return referredEvent.getParticipants();
     }
-    public void setParticipant(){
+
+    public void setParticipant() {
         participants.add(referredEvent.findParticipant(null));
     }
-    
-    public void setIndoor(){
+
+    public void setIndoor() {
         indoor = referredEvent.isIndoor();
     }
-    
-    public boolean getIndoor(){
+
+    public boolean getIndoor() {
         return referredEvent.isIndoor();
     }
 }

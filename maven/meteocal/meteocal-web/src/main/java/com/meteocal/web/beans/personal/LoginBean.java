@@ -6,6 +6,7 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.facade.UserFacade;
+import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class LoginBean {
     @Inject
     private SessionUtility sessionUtility;
 
+    @Inject 
+    ErrorBean error;
+    
     @EJB
     UserFacade uf;
     
@@ -68,7 +72,7 @@ public class LoginBean {
         if (sessionUtility != null)  {
             if (sessionUtility.isThereAnActiveSession()) {
                 SYSO_Testing.syso("I redirect you to your active session");
-                return "/protected/personal/HomeCalendarMonth";
+                return "/protected/personal/HomeCalendar";
             }
         }
         
@@ -83,12 +87,13 @@ public class LoginBean {
         catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
-            return "/Error.xhtml";
+            error.setMessage("Login Failed");
+            return "Error";
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
 
-        return "/protected/personal/HomeCalendar";
+        return "Success";
     }
 
     public void logout() {

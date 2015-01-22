@@ -15,7 +15,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
-    <body>
+    <h:body>
         <f:event listener="#{filterEventCreator.check}" type="preRenderView" />
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml">
@@ -31,7 +31,7 @@ and open the template in the editor.
                 <h:form id="form">
                     <h:panelGrid columns="2">
                         <h:outputText value="ID" />
-                        <h:outputText value="#{eventCreatorBean.id}" />
+                        <h:outputText value="1" />
 
                         <h:outputText value="Name" />
                         <h:outputText value="#{eventCreatorBean.name}" />
@@ -54,8 +54,7 @@ and open the template in the editor.
                         <h:outputText value="Private" />
                         <h:outputText value="Y/N" />
 
-                        <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit"/>
-
+                        <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit" type="submit" ajax="true"/>
 
                     </h:panelGrid>
                 </h:form>
@@ -67,6 +66,6 @@ and open the template in the editor.
                 <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add Participant"></p:commandButton>
             </h:form>
         </p:fieldset>
-    </body>
+    </h:body>
 
 </html>

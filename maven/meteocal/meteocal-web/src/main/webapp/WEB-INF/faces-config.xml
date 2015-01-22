@@ -6,32 +6,58 @@
     <navigation-rule>
         <from-view-id>/Index.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>user-login</from-outcome>
-            <to-view-id>/protected/personal/HomeCalendarMonth.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <navigation-case>
-            <from-outcome>logout</from-outcome>
+            <from-action>#{registrationBean.register()}</from-action>
+            <from-outcome>Index</from-outcome>
             <to-view-id>/Index.xhtml</to-view-id>
-            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{registrationBean.register()}</from-action>
+            <from-outcome>Error</from-outcome>
+            <to-view-id>/Error.xhtml</to-view-id>
+        </navigation-case>		
+        <navigation-case>
+            <from-action>#{loginBean.login()}</from-action>
+            <from-outcome>Success</from-outcome>
+            <to-view-id>/protected/personal/HomeCalendar.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginBean.login()}</from-action>
+            <from-outcome>Error</from-outcome>
+            <to-view-id>/Error.xhtml</to-view-id>
         </navigation-case>		
     </navigation-rule>
-
+    
     <navigation-rule>
-        <from-view-id>/Index.xhtml</from-view-id>
+        <from-view-id>/protected/event/EventPage.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>user-registration</from-outcome>
-            <to-view-id>/Index.xhtml</to-view-id>
+            <from-outcome>Creator</from-outcome>
+            <to-view-id>/protected/event/EventPageCreator.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Viewer</from-outcome>
+            <to-view-id>/protected/event/EventPageViewer.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>NoVisibility</from-outcome>
+            <to-view-id>/protected/event/EventPageNoVisibility.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Error</from-outcome>
+            <to-view-id>/Error.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>  
+            <from-outcome>Home</from-outcome>
+            <to-view-id>/protected/personal/HomeCalendar.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-
+    
     <navigation-rule>
-        <from-view-id>/Index.xhtml</from-view-id>
+        <from-view-id>
+            /protected/*
+        </from-view-id>
         <navigation-case>
-            <from-outcome>user-registered</from-outcome>
-            <to-view-id>/Index.xhtml</to-view-id>
+            <from-outcome>Results</from-outcome>
+            <to-view-id>/protected/SearchResults.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     

@@ -47,7 +47,7 @@ and open the template in the editor.
                     <h:outputText value="Event beginning: " />
                     <p:calendar id="startingTime" value="#{eventCreationBean.createdEvent.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
                     
-                    <h:outputText value="Event beginning: " />
+                    <h:outputText value="Event ending " />
                     <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
 
                     <h:outputText value="Location: " />
@@ -63,7 +63,7 @@ and open the template in the editor.
                     </p:selectOneButton>
                         
                     <br/>    
-                    <p:commandButton value="Create" action="#{eventCreationBean.create()}"/>
+                    <p:commandButton value="Create" action="#{eventCreationBean.create()}" type="submit" ajax="false" styleClass="block"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>
