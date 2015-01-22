@@ -33,6 +33,8 @@ public class GeographicRepository {
 
     private List<String> countryNames;
     private Map<String, List<String>> cityNamesMap;
+    
+    private Map<String, Country> countryNamesMap;
 
     @PostConstruct
     private void constructed() {
@@ -42,6 +44,7 @@ public class GeographicRepository {
 
         computeCountryNames();
         computeCityNamesMap();
+        computeCountryNamesMap();
     }
 
     private void parseWorld() {
@@ -115,5 +118,21 @@ public class GeographicRepository {
 
             cityNamesMap.put(country.getName(), cityNames);
         }
+    }
+
+    private void computeCountryNamesMap() {
+        countryNamesMap = new HashMap<String, Country>();
+        
+        for(Country c: world.getCountry())
+            countryNamesMap.put(c.getName(), c);
+    }
+    
+    public String getCountryID(String countryName) {
+        Country country = countryNamesMap.get(countryName);
+        
+        if(country == null)
+            return null;
+        
+        return country.getId();
     }
 }
