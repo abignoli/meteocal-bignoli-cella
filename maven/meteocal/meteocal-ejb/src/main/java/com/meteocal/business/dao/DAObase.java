@@ -23,7 +23,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Andrea Bignoli
+ * @author Andrea Bignoli, inspided on third party code
  */
 public abstract class DAObase<T> {
 
@@ -137,6 +137,64 @@ public abstract class DAObase<T> {
             } catch (NoResultException nre) {
                 result = null;
             }
+
+        } catch (Exception e) {
+            System.out.println("Error while running query: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    protected T retrieveSingleResult(String namedQuery, Map<String, Object> parameters) {
+        T result = null;
+
+        try {
+            Query query = em.createQuery(namedQuery);
+
+            // Method that will populate parameters if they are passed not null
+            // and empty
+            if (parameters != null && !parameters.isEmpty()) {
+                insertQueryParameters(query, parameters);
+            }
+
+            result = (T) query.getSingleResult();
+
+        } catch (Exception e) {
+            System.out.println("Error while running query: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    protected List<T> findResults(String namedQuery) {
+        List<T> result = null;
+
+        try {
+            
+            result = em.createQuery(namedQuery).getResultList();
+            
+        } catch (Exception e) {
+            System.out.println("Error while running query: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    protected List<T> findResults(String namedQuery, Map<String, Object> parameters) {
+        List<T> result = null;
+
+        try {
+
+            Query query = em.createQuery(namedQuery);
+
+            if (parameters != null && !parameters.isEmpty()) {
+                insertQueryParameters(query, parameters);
+            }
+
+            result = query.getResultList();
 
         } catch (Exception e) {
             System.out.println("Error while running query: " + e.getMessage());
