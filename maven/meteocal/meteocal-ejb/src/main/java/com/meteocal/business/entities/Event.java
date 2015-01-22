@@ -9,6 +9,8 @@ import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.InvalidInputException;
+import com.meteocal.geography.City;
+import com.meteocal.geography.Country;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;

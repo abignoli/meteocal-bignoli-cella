@@ -42,7 +42,7 @@ public class GeographicRepository {
         
         ObjectMapper mapper = new ObjectMapper();
         
-        InputStream worldData = getClass().getResourceAsStream("/world.json");
+        InputStream worldData = getClass().getResourceAsStream("/geography/world.json");
         
         try {
             world = mapper.readValue(worldData, World.class);
