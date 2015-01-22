@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
@@ -26,12 +26,12 @@ import javax.faces.context.FacesContext;
  *
  * @author Leo
  */
-@RequestScoped
 @ManagedBean
+@SessionScoped
 public class SearchBean implements Serializable {
 
     private String searched;
-    private final String resultsOutcome = "searchingResults";
+    private final String resultsOutcome = "/protected/SearchResults.xhtml";
     private List<User> users;
     private List<Event> events;
 
@@ -63,9 +63,8 @@ public class SearchBean implements Serializable {
     }
     
     
-    public void search() {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, resultsOutcome);
+    public String search() {
+        return resultsOutcome;
     }
     
     public List<User> getUsers(){

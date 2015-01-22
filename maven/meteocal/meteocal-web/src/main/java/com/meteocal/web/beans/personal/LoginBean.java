@@ -88,12 +88,12 @@ public class LoginBean {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
             error.setMessage("Login Failed");
-            return "Error";
+            return "/Error";
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
 
-        return "Success";
+        return "/protected/personal/HomeCalendar.xhtml";
     }
 
     public void logout() {
