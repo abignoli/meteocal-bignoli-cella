@@ -80,7 +80,7 @@ public class SearchBean implements Serializable {
     }
 
     public void setEvents(List<Event> events) {
-        if (events == null) {
+        if (this.events == null) {
             this.events = new ArrayList<Event>();
         }
         for (Event event : events) {
