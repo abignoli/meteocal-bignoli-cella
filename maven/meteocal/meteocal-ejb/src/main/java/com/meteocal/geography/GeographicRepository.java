@@ -32,7 +32,7 @@ public class GeographicRepository {
         logger.log(Level.INFO, "Parsing world structure");
         // TODO parse file
         
-        ObjectMapper mapper = new ObjectMapper();
+//        ObjectMapper mapper = new ObjectMapper();
         
         return null;
     }
