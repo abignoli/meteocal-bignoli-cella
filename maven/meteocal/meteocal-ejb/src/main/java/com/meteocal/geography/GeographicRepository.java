@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -24,28 +26,33 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 @Singleton
 public class GeographicRepository {
-    
+
     private static final Logger logger = Logger.getLogger(GeographicRepository.class.getName());
-    
+
     private World world;
-    
+
+    private List<String> countryNames;
+    private Map<String, List<String>> cityNamesMap;
+
     @PostConstruct
     private void constructed() {
         logger.log(Level.INFO, "GeograficRepository constructed");
-        
+
         parseWorld();
+
+        computeCountryNames();
+        computeCityNamesMap();
     }
-    
-    
+
     private void parseWorld() {
-        
+
         logger.log(Level.INFO, "BEGIN - Parsing world structure");
         // TODO parse file
-        
+
         ObjectMapper mapper = new ObjectMapper();
-        
+
         InputStream worldData = getClass().getResourceAsStream("/geography/world.json");
-        
+
         try {
             world = mapper.readValue(worldData, World.class);
         } catch (JsonGenerationException e) {
@@ -55,48 +62,58 @@ public class GeographicRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         logger.log(Level.INFO, "END - Parsing world structure");
     }
-    
+
     public World getWorld() {
         return world;
     }
-    
+
     /**
-     * Returns the list of the names of the countries in the application geographic repository.
-     * 
-     * @return the list of the names of the countries in the application geographic repository
+     * Returns the list of the names of the countries in the application
+     * geographic repository.
+     *
+     * @return the list of the names of the countries in the application
+     * geographic repository
      */
     public List<String> getCountryNames() {
-        List<String> names = new ArrayList<String>();
-        
-        for(Country c: world.getCountry()) {
-            names.add(c.getName());
-        }
-                
-        return names;
+        return countryNames;
     }
-    
+
     /**
-     * Returns the list of the names of the cities in a given country, identified by countryName.
-     * 
+     * Returns the list of the names of the cities in a given country,
+     * identified by countryName.
+     *
      * @param countryName
-     * @return the list of the names of the cities in a given country, identified by countryName. Null is returned if no Country with the given name is found
+     * @return the list of the names of the cities in a given country,
+     * identified by countryName. Null is returned if no Country with the given
+     * name is found
      */
     public List<String> getCityNames(String countryName) {
-        List<String> names = null;
-        
-        for(Country country: world.getCountry()) {
-            if(country.getName().equals(countryName)) {
-                names = new ArrayList<String>();
-                
-                for(City city: country.getCity()) {
-                    names.add(city.getName());
-                }
-            }
+        return cityNamesMap.get(countryName);
+    }
+
+    private void computeCountryNames() {
+        countryNames = new ArrayList<String>();
+
+        for (Country c : world.getCountry()) {
+            countryNames.add(c.getName());
         }
-                
-        return names;
+    }
+
+    private void computeCityNamesMap() {
+        List<String> cityNames;
+        cityNamesMap = new HashMap<String, List<String>>();
+
+        for (Country country : world.getCountry()) {
+            cityNames = new ArrayList<String>();
+
+            for (City city : country.getCity()) {
+                cityNames.add(city.getName());
+            }
+
+            cityNamesMap.put(country.getName(), cityNames);
+        }
     }
 }
