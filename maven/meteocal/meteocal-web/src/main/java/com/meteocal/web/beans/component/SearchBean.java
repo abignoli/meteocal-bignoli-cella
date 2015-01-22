@@ -12,6 +12,7 @@ import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,14 +31,10 @@ import javax.faces.context.FacesContext;
 public class SearchBean implements Serializable {
 
     private String searched;
-    private final String resultsOutcome = "Results";
+    private final String resultsOutcome = "searchingResults";
     private List<User> users;
     private List<Event> events;
 
-    public String getSearched() {
-        return searched;
-    }
-    
     @EJB
     UserFacade uf;
     
@@ -61,6 +58,11 @@ public class SearchBean implements Serializable {
         this.searched = searched;
     }
 
+    public String getSearched() {
+        return searched;
+    }
+    
+    
     public void search() {
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.getApplication().getNavigationHandler().handleNavigation(fc, null, resultsOutcome);
@@ -70,14 +72,16 @@ public class SearchBean implements Serializable {
         return users;
     }
     public void setUsers(List<User> users){
-        this.users = users;
+        for(User user:users)
+        this.users.add(user);
     }
     
     public List<Event> getEvents(){
         return events;
     }
     public void setEvents(List<Event> events){
-        this.events = events;
+        for(Event event:events)
+        this.events.add(event);
     }
     
 }

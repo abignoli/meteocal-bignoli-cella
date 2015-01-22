@@ -15,7 +15,8 @@
             <p:menuitem value="#{topbarBean.username}" url="#" style="text-decoration: underline" />
 
             <f:facet name="options">
-                <p:inputText style="margin-right:20px" placeholder="Search" onclick="#{searchBean.search()}"/>
+                <p:inputText style="margin-right:20px" placeholder="Search"  value="#{searchBean.searched}"/>
+                <p:commandButton action="#{searchBean.search()}" type="submit" icon="ui-icon-search" />
             </f:facet>
 
             <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>

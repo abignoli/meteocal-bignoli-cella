@@ -5,10 +5,16 @@
  */
 package com.meteocal.web.filters.calendars;
 
+import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
+
 /**
  *
  * @author Leo
  */
-public class FilterDaily {
+@ManagedBean
+@RequestScoped
+public class FilterCalendar implements Serializable {
     
 }

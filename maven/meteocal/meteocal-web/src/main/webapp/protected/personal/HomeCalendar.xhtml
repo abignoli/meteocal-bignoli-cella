@@ -22,7 +22,7 @@ and open the template in the editor.
         </div>
         <h:panelGrid>
             <p:schedule value="#{homeBean.visibleEvents}" draggable="false" leftHeaderTemplate="prev,next,today" style="width: 90% ; margin:auto; height: 800px"  >
-                <p:ajax event="eventSelect" listener="#{listener.onEventSelect}"></p:ajax>
+                <p:ajax event="eventSelect" listener="#{onEventSelectListener.onEventSelect}"></p:ajax>
             </p:schedule>
         </h:panelGrid>
     </body>

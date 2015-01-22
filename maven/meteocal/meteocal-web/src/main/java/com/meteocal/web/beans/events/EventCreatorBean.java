@@ -8,12 +8,16 @@ package com.meteocal.web.beans.events;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.business.facade.UserFacade;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -39,7 +43,11 @@ public class EventCreatorBean implements Serializable {
     private SessionUtility sessionUtility;
     
     @EJB
+    UserFacade uf;
+    
+    @EJB
     EventFacade ef;
+    
     
     private String address;
     private String city;
@@ -62,8 +70,15 @@ public class EventCreatorBean implements Serializable {
         setReferredEvent(ef.find(id));
     }
 
-    public String addParticipant() {
-        return "/protected/event/EventPageCreator.xhtml";
+    public void addParticipant() {
+        int userID;
+        userID = uf.findByUsername(user).getId();  
+        try {
+            ef.addParticipant(eventID, userID);
+        }
+        catch (BusinessException ex) {
+            Logger.getLogger(EventCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private int getID() throws NotValidParameter {
@@ -163,5 +178,5 @@ public class EventCreatorBean implements Serializable {
 
     public boolean getIndoor() {
         return referredEvent.isIndoor();
-    }
+    } 
 }
