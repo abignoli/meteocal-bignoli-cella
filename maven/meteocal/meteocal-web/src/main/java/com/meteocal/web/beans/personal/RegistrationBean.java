@@ -18,8 +18,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
-
 /**
  *
  * @author USUARIO
@@ -76,7 +74,7 @@ public class RegistrationBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (uf.isUsernameInUse(userToRegister.getUsername())) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Username already present!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Username already present!", "Username already present!"));
             return "/Index";
         }
 
@@ -86,7 +84,7 @@ public class RegistrationBean implements Serializable {
             SYSO_Testing.syso("name: " + userToRegister.getUsername() + " psw: " + userToRegister.getPassword());
             //I've to use a try-catch or a boolean function in order to check if the username is available
             um.register(userToRegister);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Registration ends successfully!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registration ends successfully!", "Registration ends successfully!"));
             SYSO_Testing.syso("Registration complete!");
         }
         else {

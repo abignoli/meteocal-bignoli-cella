@@ -29,38 +29,35 @@ and open the template in the editor.
         </style>
     </h:head>
     <h:body>
-        <f:event listener="#{NotLoggedFilter.check}" type="preRenderView" />        
+        <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />        
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
         <div id="container">
             <div id="left">
-                <p:panel id="privacyPanel" header="List of compatible Users" footer="Users" style="margin-top:70px" class="panelForm">     
-                    <p:feedReader value="#{searchBean.users}" var="user">
-                        <p:link value="#{user.username}" outcome="RelatedUser">
+                <p:panel id="users" header="List of compatible Users" footer="Users" style="margin-top:70px" class="panelForm">     
+                    <p:dataList value="#{searchBean.users}" var="user">
+                        <p:link value="#{user.username}" outcome="/protected/user/UserCalendar.xhtml?username=#{user.username}">
                             <f:param name="username" value="#{user.username}"/>
                         </p:link>
-                        <p:link value="#{user.email}" outcome="RelatedUser">
+                        <p:link value="#{user.email}" outcome="/protected/user/UserCalendar.xhtml?username=#{user.username}">
                             <f:param name="username" value="#{user.username}"/>
                         </p:link>
                         <p:separator />
-                    </p:feedReader>
+                    </p:dataList>
                 </p:panel>
             </div>
             <div id="right">
-                <p:panel id="privacyPanel" header="Event Editing | creator only" footer="Editing form" style="margin-top:70px" class="panelForm">     
-                    <p:feedReader value="#{searchBean.events}" var="event">
-                        <p:link value="#{event.id}" outcome="RelatedEvent">
+                <p:panel id="events" header="Event Editing | creator only" footer="Editing form" style="margin-top:70px" class="panelForm">     
+                    <p:dataList value="#{searchBean.events}" var="event">
+                        <p:link value="#{event.id}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}">
                             <f:param name="eventID" value="#{event.id}"/>
                         </p:link>
-                        <p:link value="#{event.id}" outcome="RelatedEvent">
-                            <f:param name="eventID" value="#{event.id}"/>
-                        </p:link>                        
-                        <p:link value="#{event.id}" outcome="RelatedEvent">
+                        <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}">
                             <f:param name="eventID" value="#{event.id}"/>
                         </p:link>                        
                         <p:separator />
-                    </p:feedReader>
+                    </p:dataList>
                 </p:panel>
             </div>
         </div>

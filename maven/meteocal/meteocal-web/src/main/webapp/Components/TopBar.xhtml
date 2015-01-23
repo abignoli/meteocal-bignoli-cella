@@ -15,7 +15,7 @@
 
             <f:facet name="options">
                 <p:inputText style="margin-right:20px" placeholder="Search"  value="#{searchBean.searched}"/>
-                <p:commandButton action="#{searchBean.search()}" type="submit" icon="ui-icon-search" />
+                <p:commandButton action="#{searchBean.search()}" type="submit" icon="ui-icon-search" ajax="false"/>
             </f:facet>
 
             <p:menuitem value="#{topbarBean.notificationNumber}" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>

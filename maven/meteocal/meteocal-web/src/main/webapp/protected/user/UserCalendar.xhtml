@@ -17,7 +17,7 @@ and open the template in the editor.
               href="#{request.contextPath}/Resources/css/style.css" />
     </h:head>
     <body style="text-align: center">
-        <f:event listener="#{NotLoggedFilter.check}" type="preRenderView" />
+        <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />
         <f:event listener="#{filterCalendarVisible.check}" type="preRenderView" />
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
