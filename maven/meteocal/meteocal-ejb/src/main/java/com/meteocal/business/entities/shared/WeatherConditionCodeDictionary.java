@@ -14,4 +14,5 @@ public class WeatherConditionCodeDictionary {
     public static final int RAIN_CODE = 1;
     public static final int SNOW_CODE = 2;
     public static final int CLOUDS_CODE = 3; 
+    public static final int NOT_AVAILABLE_CODE = 4; 
 }

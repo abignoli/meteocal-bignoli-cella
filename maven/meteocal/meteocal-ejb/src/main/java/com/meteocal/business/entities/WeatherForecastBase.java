@@ -7,6 +7,7 @@ package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.WeatherCondition;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
@@ -36,19 +37,23 @@ public class WeatherForecastBase {
         this.weatherCondition = weatherCondition;
     }
     
-    public LocalDateTime getStart() {
+    public LocalDateTime getForecastStart() {
         return forecastStart;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setForecastStart(LocalDateTime start) {
         this.forecastStart = start;
     }
 
-    public LocalDateTime getEnd() {
+    public LocalDateTime getForecastEnd() {
         return forecastEnd;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setForecastEnd(LocalDateTime end) {
         this.forecastEnd = end;
+    }
+
+    public boolean isValid() {
+        return !(forecastStart == null || forecastEnd == null || forecastStart.isAfter(forecastEnd) || weatherCondition == null);
     }
 }

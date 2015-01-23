@@ -2,6 +2,7 @@
 package org.openweathermap.api.short_range;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -151,5 +152,4 @@ public class List {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }

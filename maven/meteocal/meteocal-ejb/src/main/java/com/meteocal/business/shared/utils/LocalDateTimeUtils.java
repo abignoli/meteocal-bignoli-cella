@@ -1,0 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.meteocal.business.shared.utils;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+/**
+ *
+ * @author AB
+ */
+public abstract class LocalDateTimeUtils {
+    /**
+     * 
+     * @param unixTime expressed in seconds since January 1 1970 GMT, standard epoch
+     * @return 
+     */
+    public static LocalDateTime convertUnixToLocalDateTime(int unixTime){
+        return LocalDateTime.ofEpochSecond(unixTime, 0, ZoneOffset.UTC);
+    }
+    
+    public static boolean inBetween(LocalDateTime middle, LocalDateTime interval_start, LocalDateTime interval_end) {
+        return middle.isAfter(interval_start) && middle.isBefore(interval_end);
+    }
+}

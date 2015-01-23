@@ -16,7 +16,8 @@ public enum WeatherCondition {
     SUN(WeatherConditionCodeDictionary.SUN_CODE),
     RAIN(WeatherConditionCodeDictionary.RAIN_CODE),
     SNOW(WeatherConditionCodeDictionary.SNOW_CODE),
-    CLOUDS(WeatherConditionCodeDictionary.CLOUDS_CODE);
+    CLOUDS(WeatherConditionCodeDictionary.CLOUDS_CODE),
+    NOT_AVAILABLE(WeatherConditionCodeDictionary.NOT_AVAILABLE_CODE);
 
     private final int code;
 
@@ -43,6 +44,9 @@ public enum WeatherCondition {
                 break;
             case WeatherConditionCodeDictionary.CLOUDS_CODE:
                 decoded = WeatherCondition.CLOUDS;
+                break;
+            case WeatherConditionCodeDictionary.NOT_AVAILABLE_CODE:
+                decoded = WeatherCondition.NOT_AVAILABLE;
                 break;
             default:
                 decoded = null;
