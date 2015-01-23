@@ -542,5 +542,7 @@ public class Event {
         return true;
     }
 
-
+    public boolean isEditable() {
+        return status == EventStatus.PLANNED;
+    }
 }
