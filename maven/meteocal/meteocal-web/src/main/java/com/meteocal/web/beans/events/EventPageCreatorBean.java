@@ -55,7 +55,7 @@ public class EventPageCreatorBean implements Serializable {
     private String description;
     private EnumSet<WeatherCondition> adverseConditions;
     private List<User> invited;
-    private List<User> participants;
+    private User participants;
     private boolean indoor;
 
     @PostConstruct
@@ -172,15 +172,12 @@ public class EventPageCreatorBean implements Serializable {
         invited = referredEvent.getInvited();
     }
 
-    public List<User> getParticipant() {
-        if (referredEvent != null) {
-            return referredEvent.getParticipants();
-        }
-        return null;
+    public User getParticipant() {
+        return participants;
     }
 
     public void setParticipant(User newParticipant) {
-        participants.add(newParticipant);
+        participants = newParticipant;
     }
 
     public void setIndoor() {
