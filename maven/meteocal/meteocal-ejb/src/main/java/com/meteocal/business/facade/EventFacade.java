@@ -124,4 +124,6 @@ public interface EventFacade {
      * @throws NotFoundException 
      */
     public void updateWeatherForecasts() throws InvalidInputException, NotFoundException;
+    
+    public boolean isSuggestedChangeAvailable(int eventID) throws NotFoundException;
 }

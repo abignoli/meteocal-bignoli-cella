@@ -295,4 +295,11 @@ public class EventFacadeImplementation implements EventFacade {
     private void updateWeatherForecastsAsync(Event e) throws InvalidInputException, NotFoundException {
         updateWeatherForecasts(e);
     }
+
+    @Override
+    public boolean isSuggestedChangeAvailable(int eventID) throws NotFoundException {
+        return false;
+    }
+    
+    
 }
