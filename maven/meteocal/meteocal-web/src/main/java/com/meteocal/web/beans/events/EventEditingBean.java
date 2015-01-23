@@ -6,11 +6,18 @@
 package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.facade.EventFacade;
 import com.meteocal.geography.GeographicRepository;
+import com.meteocal.web.converters.WeatherConditionsConverter;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -22,13 +29,24 @@ import javax.inject.Named;
 public class EventEditingBean implements Serializable {
     @EJB
     private GeographicRepository gp;
-          
+    
+    @Inject
+    private SessionUtility sessionUtility;
+    
+    @EJB
+    private EventFacade ef;
     
     private List<String> cities,countries;
     private String address, city, country, name, description;
     private Event event;
 
     private boolean indoor, privateEvent;
+        
+    @PostConstruct
+    public void init() {
+        countries = gp.getCountryNames();
+        this.setEvent(ef.find(getID()));
+    }
 
     public EventEditingBean() {
     }
@@ -100,12 +118,11 @@ public class EventEditingBean implements Serializable {
     public String getDescription() {
         return description;
     }
-
+   
     public List<String> getCities() {
-        String tmp = event.getCountry();
-        if (tmp != null) {
+        String tmp=event.getCountry();
+        if(tmp!=null)
             return gp.getCityNames(tmp);
-        }
         return cities;
     }
 
@@ -119,5 +136,9 @@ public class EventEditingBean implements Serializable {
 
     public void setCountries(List<String> countries) {
         this.countries = countries;
+    }
+    
+    private int getID(){
+        return sessionUtility.getParameterAsClient();
     }
 }

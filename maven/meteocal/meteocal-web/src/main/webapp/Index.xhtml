@@ -24,41 +24,51 @@
     <h:body>
     	<h:form>
             <p:panel id="registrationPanel" header="First Option - Registration" footer="Registration form" style="margin-bottom:20px" class="panelForm">
-                <h:panelGrid columns="2" id="registrationGrid">
+                <h:panelGrid columns="3" id="registrationGrid">
                     <p:outputLabel value="Username" for="userRegistration" />
                     <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:inputText>
+                    <p:message for="userRegistration" severity="error"/>
                     
                     <p:outputLabel value="Password" for="passwordRegistration"/>
                     <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" requiredMessage="this field is compulsory" required="true">
                     <f:validateLength minimum="4" />
                     </p:password>
+                    <p:message for="passwordRegistration" severity="error"/>
+                    
                     
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
                     <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:password>
+                    <p:message for="passwordConfirmation" severity="error"/>
                     
                     <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"/>
                 </h:panelGrid>
+                <p:separator/>
+                <p:growl/>
             </p:panel>
 	</h:form> 
         
         <h:form>
             <p:panel id="loginPanel" header="Second Option - Login" footer="Login form" style="margin-bottom:20px"  class="panelForm">
-                <h:panelGrid columns="2" id="loginGrid">
+                <h:panelGrid columns="3" id="loginGrid">
                     <p:outputLabel value="Username" for="userLogin" />
                     <p:inputText id="userLogin" value="#{loginBean.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:inputText>
+                    <p:message for="userLogin" severity="error"/>
+                    
                     <p:outputLabel value="Password" for="pswLog"/>
                     <p:password id="pswLog" value="#{loginBean.password}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
                     </p:password>
+                    <p:message for="pswLog" severity="error"/>
                     
                     <p:commandButton action="#{loginBean.login()}" value="Login" type="submit" ajax="false" styleClass="block" />
                 </h:panelGrid>
+                <p:separator/>
             </p:panel>
         </h:form>
     </h:body>

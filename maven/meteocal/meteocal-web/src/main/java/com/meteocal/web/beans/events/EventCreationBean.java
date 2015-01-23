@@ -54,6 +54,7 @@ public class EventCreationBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        countries = gp.getCountryNames();
         weatherConv = new WeatherConditionsConverter();
         weatherConditions = EnumSet.noneOf(WeatherCondition.class);
         listChoiche = EnumSet.noneOf(WeatherCondition.class);
@@ -62,7 +63,6 @@ public class EventCreationBean implements Serializable {
         weatherConditions.add(WeatherCondition.RAIN);
         weatherConditions.add(WeatherCondition.CLOUDS);
         this.setEvent(new Event());
-
     }
 
     private void setEvent(Event event) {

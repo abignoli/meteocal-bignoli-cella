@@ -23,16 +23,16 @@ and open the template in the editor.
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     
                     <p:outputLabel value="Name" for="name" />
-                    <p:autoComplete id="name" value="#{eventEditingBean.event.name}" emptyMessage="Event's name" />
+                    <p:inputText id="name" value="#{eventEditingBean.event.name}"/>
                     
                     <p:outputLabel value="Address" for="address" />
-                    <p:autoComplete id="address" value="#{eventEditingBean.event.address}" emptyMessage="Road , N" />
+                    <p:inputText id="address" value="#{eventEditingBean.event.address}"/>
                     
                     <p:outputLabel value="City" for="city" />
-                    <p:autoComplete id="city" value="#{eventEditingBean.event.city}" emptyMessage="City" />
+                    <p:inputText id="city" value="#{eventEditingBean.event.city}"/>
                     
                     <p:outputLabel value="Country" for="country" />
-                    <p:autoComplete id="country" value="#{eventEditingBean.event.country}" emptyMessage="Country" />
+                    <p:inputText id="country" value="#{eventEditingBean.event.country}"/>
                     
                     <h:outputText value="Description"/>
                     <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventEditingBean.event.description}"/>

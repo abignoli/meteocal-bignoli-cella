@@ -21,6 +21,7 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml">
             </ui:include>
         </div>
+        <p:growl></p:growl>
         <p:fieldset legend="Your Event " toggleSpeed="500">
             <p:ajax event="toggle" />
             <h:panelGrid columns="2" cellpadding="5">
@@ -63,7 +64,7 @@ and open the template in the editor.
         <p:fieldset>
             <h:form>
                 <p:inputText value="#{eventCreatorBean.participant}"></p:inputText>
-                <p:commandButton action="#{eventCreatorBean.addParticipant()}" value="add Participant"></p:commandButton>
+                <p:commandButton action="#{eventCreatorBean.addParticipant()}" value="add Participant" type="submit" ajax="false"></p:commandButton>
             </h:form>
         </p:fieldset>
     </h:body>

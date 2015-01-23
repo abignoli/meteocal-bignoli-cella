@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -41,14 +42,13 @@ public class EventCreatorBean implements Serializable {
 
     @Inject
     private SessionUtility sessionUtility;
-    
+
     @EJB
     UserFacade uf;
-    
+
     @EJB
     EventFacade ef;
-    
-    
+
     private String address;
     private String city;
     private String country;
@@ -71,15 +71,21 @@ public class EventCreatorBean implements Serializable {
 
     public String addParticipant() {
         int userID;
-        userID = uf.findByUsername(user).getId();  
+        userID = uf.findByUsername(user).getId();
         try {
             ef.addParticipant(eventID, userID);
         }
         catch (BusinessException ex) {
             Logger.getLogger(EventCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
-            return "/Error";
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info!", "Participant not added!"));
+
+            return "/protected/event/EventPageCreator";
         }
         sessionUtility.setParameter(eventID);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Participant addedd!"));
+        
         return "/protected/event/EventPageCreator";
     }
 
@@ -95,10 +101,10 @@ public class EventCreatorBean implements Serializable {
                 throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
             }
         }
-        else{
-            eventID = sessionUtility.getParameterAsClient();
+        else {
+            eventID = sessionUtility.getParameter();
         }
-        
+
         return eventID;
     }
 
@@ -167,11 +173,14 @@ public class EventCreatorBean implements Serializable {
     }
 
     public List<User> getParticipant() {
-        return referredEvent.getParticipants();
+        if (referredEvent != null) {
+            return referredEvent.getParticipants();
+        }
+        return null;
     }
 
     public void setParticipant(User newParticipant) {
-            participants.add(newParticipant);
+        participants.add(newParticipant);
     }
 
     public void setIndoor() {
@@ -180,5 +189,5 @@ public class EventCreatorBean implements Serializable {
 
     public boolean getIndoor() {
         return referredEvent.isIndoor();
-    } 
+    }
 }
