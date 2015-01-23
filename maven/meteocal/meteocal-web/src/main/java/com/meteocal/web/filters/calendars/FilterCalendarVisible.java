@@ -51,10 +51,11 @@ public class FilterCalendarVisible {
     
 
     public void check(ComponentSystemEvent event) {
-        String userA, userB;
+        String userB;
         UserUserVisibility visibility;
 
         userB = getUser();
+        
         try {
             visibility = um.getVisibilityOverUser(uf.findByUsername(userB).getId());
         }

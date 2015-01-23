@@ -74,8 +74,6 @@ public class EventPage extends HttpServlet {
 
         try {
             SYSO_Testing.syso("in try");
-//            request.getRequestDispatcher("/WEB-INF/HiddenPages/EventPageCreator.xhtml").forward(request, response);
-
             if (isNotLogged()) {
                 SYSO_Testing.syso("I'm not logged");
                 response.sendRedirect(indexPath);

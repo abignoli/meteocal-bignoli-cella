@@ -5,12 +5,10 @@
  */
 package com.meteocal.web.filters.events;
 
-import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
-import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
@@ -84,7 +82,6 @@ public class FilterEventEditing {
             FacesContext fc = FacesContext.getCurrentInstance();
             sessionUtility.setParameter(eventID);
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-
         }
         else {
             try {
@@ -92,10 +89,8 @@ public class FilterEventEditing {
                 if (visibility != CREATOR) {
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-
+                    return;
                 }
-                //If I reach this code, I'm the creator
-
             }
             catch (NotFoundException ex) {
                 Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,6 +99,7 @@ public class FilterEventEditing {
 
             }
         }
+        return;
     }
 
     private int getID() throws NotValidParameter {

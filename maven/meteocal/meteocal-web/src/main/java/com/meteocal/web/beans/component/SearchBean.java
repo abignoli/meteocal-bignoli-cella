@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -71,6 +70,8 @@ public class SearchBean implements Serializable {
     }
 
     public void setUsers(List<User> users) {
+        if(this.users==null)
+            this.users = new ArrayList<User>();
         for (User user : users) {
             this.users.add(user);
         }

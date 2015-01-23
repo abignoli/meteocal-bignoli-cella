@@ -6,13 +6,10 @@
 package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
-import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.geography.GeographicRepository;
-import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
-import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

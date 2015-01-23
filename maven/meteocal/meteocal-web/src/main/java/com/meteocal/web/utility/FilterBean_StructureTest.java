@@ -89,15 +89,4 @@ public class FilterBean_StructureTest implements Serializable {
     private boolean isNotLogged() {
         return logica();
     }
-//        fc.getExternalContext().getUserPrincipal();
-//        System.out.println("role: " + fc.getExternalContext().getSessionMap().get("role"));
-//        
-//	if (!"admin".equals(fc.getExternalContext().getSessionMap().get("role"))){
-// 
-//		ConfigurableNavigationHandler nav 
-//		   = (ConfigurableNavigationHandler) 
-//			fc.getApplication().getNavigationHandler();
-// 
-//		nav.performNavigation("access-denied");
-//	}
 }

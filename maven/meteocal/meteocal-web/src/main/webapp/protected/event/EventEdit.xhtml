@@ -27,12 +27,19 @@ and open the template in the editor.
                     
                     <p:outputLabel value="Address" for="address" />
                     <p:inputText id="address" value="#{eventEditingBean.event.address}"/>
-                    
-                    <p:outputLabel value="City" for="city" />
-                    <p:inputText id="city" value="#{eventEditingBean.event.city}"/>
+
                     
                     <p:outputLabel value="Country" for="country" />
-                    <p:inputText id="country" value="#{eventEditingBean.event.country}"/>
+                    <p:selectOneMenu id="country" value="#{eventEditingBean.event.country}" panelStyle="width:180px"
+                                     effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{eventEditingBean.countries}" var="city" itemLabel="#{country}" itemValue="#{country}" />
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="City" for="city"/>
+                    <p:selectOneMenu id="city" value="#{eventEditingBean.event.city}" panelStyle="width:180px"
+                                     effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{eventEditingBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" />
+                    </p:selectOneMenu>
                     
                     <h:outputText value="Description"/>
                     <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventEditingBean.event.description}"/>
