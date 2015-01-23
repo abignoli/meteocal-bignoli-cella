@@ -6,29 +6,47 @@
 package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.facade.EventFacade;
 import com.meteocal.geography.GeographicRepository;
+import com.meteocal.web.utility.SYSO_Testing;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
  *
  * @author Leo
  */
-@RequestScoped
+@ViewScoped
 @Named
 public class EventEditingBean implements Serializable {
+
     @EJB
     private GeographicRepository gp;
-          
-    
-    private List<String> cities,countries;
-    private String address, city, country, name, description;
+
+    @Inject
+    private SessionUtility sessionUtility;
+
+    @EJB
+    private EventFacade ef;
+
+    private List<String> cities, countries;
+    private String address, city, country, name, description, selectedCountry;
     private Event event;
 
     private boolean indoor, privateEvent;
+
+    @PostConstruct
+    public void init() {
+        countries = gp.getCountryNames();
+        this.setEvent(ef.find(getID()));
+    }
 
     public EventEditingBean() {
     }
@@ -42,7 +60,16 @@ public class EventEditingBean implements Serializable {
     }
 
     public String eventEditing() {
-        return "/protected/event/EventPageCreator";
+        int eventID;
+        event.setCountry(selectedCountry);
+        try {
+            eventID = ef.create(getEvent()).getId();
+        }
+        catch (BusinessException e) {
+            return "/Error";
+        }
+        sessionUtility.setParameter(eventID);
+        return "/protected/event/EventPage";
     }
 
     public String getAddress() {
@@ -102,10 +129,6 @@ public class EventEditingBean implements Serializable {
     }
 
     public List<String> getCities() {
-        String tmp = event.getCountry();
-        if (tmp != null) {
-            return gp.getCityNames(tmp);
-        }
         return cities;
     }
 
@@ -119,5 +142,21 @@ public class EventEditingBean implements Serializable {
 
     public void setCountries(List<String> countries) {
         this.countries = countries;
+    }
+
+    private int getID() {
+        return sessionUtility.getParameterAsClient();
+    }
+
+    public void setSelectedCountry(String selectedCountry) {
+        this.selectedCountry = selectedCountry;
+    }
+
+    public void updateCities() {
+        cities = gp.getCityNames(selectedCountry);
+    }
+
+    public String getSelectedCountry() {
+        return selectedCountry;
     }
 }

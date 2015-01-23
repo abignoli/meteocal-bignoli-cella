@@ -9,9 +9,9 @@ import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
+import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -46,8 +46,6 @@ public class FilterEventViewer {
         
     private final String context = request.getContextPath();
     private final String errorPath = context + "/Error.xhtml";
-    private final String indexPath = context + "/Index.xhtml";
-    private final String initialContext = context + "/protected/personal/HomeCalendarMonth.xhtml";
     
     @PostConstruct
     public void init(){
@@ -62,46 +60,70 @@ public class FilterEventViewer {
     }
      
     public void check(ComponentSystemEvent event) {
-        int eventID;
-        eventID = getID();
-        if(! sessionUtility.isThereAnActiveSession() ){
-            try {
-                response.sendRedirect(indexPath);
-            }
-            catch (IOException ex) {
-                Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        int eventID = -1;
+        try {
+            eventID = getID();
         }
-        else{
+        catch (NotValidParameter ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+            return;
+        }
+        
+        if (isNotLogged()) {
+            SYSO_Testing.syso("I'm not logged");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            sessionUtility.setParameter(eventID);
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+            return;
+        }
+        else {
             try {
                 visibility = um.getVisibilityOverEvent(eventID);
-                if( visibility != VIEWER ){
-                    try {
-                        response.sendRedirect(errorPath);
-                    }
-                    catch (IOException ex1) {
-                        Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex1);
-                    }    
+                if (visibility != VIEWER) {
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+                    return;
                 }
+                //If I reach this code, I'm the creator
+
             }
             catch (NotFoundException ex) {
-                Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex);
-                try {
-                    response.sendRedirect(errorPath);
-                }
-                catch (IOException ex1) {
-                    Logger.getLogger(FilterEventCreator.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+                Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+                return;
             }
-            
         }
     }
 
-    private int getID() {
+    private int getID() throws NotValidParameter {
         int id;
         String strID;
-        strID = request.getParameter("eventID");
-        id = Integer.parseInt(strID);
+
+        if (!sessionUtility.isAParameter()) {
+            strID = request.getParameter("eventID");
+            try {
+                id = Integer.parseInt(strID);
+            }
+            catch (NumberFormatException e) {
+                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+            }
+        }
+        else {
+            id = sessionUtility.getParameterAsClient();
+        }
+        if (id < 0) {
+            throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+        }
+
         return id;
+    }
+    
+    private boolean isNotLogged() {
+        if (this.loggedUser == null) {
+            return true;
+        }
+        return !sessionUtility.getLoggedUser().equals(this.loggedUser);
     }
 }

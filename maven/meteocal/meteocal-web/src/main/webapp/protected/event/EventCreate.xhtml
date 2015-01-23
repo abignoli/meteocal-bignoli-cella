@@ -29,9 +29,10 @@ and open the template in the editor.
                     <p:inputText id="address" value="#{eventCreationBean.createdEvent.address}" />
                     
                     <p:outputLabel value="Country" for="country" />
-                    <p:selectOneMenu id="country" value="#{eventCreationBean.createdEvent.country}" panelStyle="width:180px"
+                    <p:selectOneMenu id="country" value="#{eventCreationBean.selectedCountry}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
-                        <f:selectItems value="#{eventCreationBean.countries}" var="city" itemLabel="#{country}" itemValue="#{country}" />
+                        <f:selectItems value="#{eventCreationBean.countries}" var="country" itemLabel="#{country}" itemValue="#{country}" />
+                        <f:ajax listener="#{eventCreationBean.updateCities}" render="city" />
                     </p:selectOneMenu>
                     
                     <p:outputLabel value="City" for="city"/>

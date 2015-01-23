@@ -40,7 +40,7 @@ and open the template in the editor.
                     <h:outputText value="Password Confirmation: " />
                     <p:password id="passwordConfirmation" value="#{settingsEditingBean.confirmationPassword}" feedback="true" />
                     
-                    <p:commandButton value="Save" icon="ui-icon-check" action="#{settingsEditingBean.saveSettings()}"/>
+                    <p:commandButton value="Save" icon="ui-icon-check" action="#{settingsEditingBean.saveSettings()}" type="submit" ajax="false"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

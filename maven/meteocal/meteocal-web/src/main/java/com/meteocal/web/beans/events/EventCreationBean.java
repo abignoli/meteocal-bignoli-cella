@@ -19,17 +19,16 @@ import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
-import javax.inject.Named;
-
 /**
  *
  * @author Leo
  */
-@Named
-@RequestScoped
+@ManagedBean
+@ViewScoped
 public class EventCreationBean implements Serializable {
 
     @EJB
@@ -37,23 +36,23 @@ public class EventCreationBean implements Serializable {
 
     @EJB
     private GeographicRepository gp;
-          
-    
-    @Inject 
+
+    @Inject
     private ErrorBean error;
-    
-    
+
     @Inject
     private SessionUtility sessionUtility;
-    
+
     private WeatherConditionsConverter weatherConv;
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
-    private List<String> cities,countries;
+    private List<String> cities, countries;
+    private String selectedCountry;
     private boolean indoor, privateEvent;
 
     @PostConstruct
     public void init() {
+        countries = gp.getCountryNames();
         weatherConv = new WeatherConditionsConverter();
         weatherConditions = EnumSet.noneOf(WeatherCondition.class);
         listChoiche = EnumSet.noneOf(WeatherCondition.class);
@@ -62,7 +61,6 @@ public class EventCreationBean implements Serializable {
         weatherConditions.add(WeatherCondition.RAIN);
         weatherConditions.add(WeatherCondition.CLOUDS);
         this.setEvent(new Event());
-
     }
 
     private void setEvent(Event event) {
@@ -75,15 +73,16 @@ public class EventCreationBean implements Serializable {
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
         SYSO_Testing.syso("start: " + createdEvent.getStart().toString() + "end" + createdEvent.getEnd().toString());
-        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size() );
+        SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size());
+        createdEvent.setCountry(selectedCountry);
         try {
-            eventID= ef.create(getCreatedEvent()).getId();
+            eventID = ef.create(getCreatedEvent()).getId();
         }
         catch (BusinessException e) {
             error.setMessage("An error occurs: " + e.getMessage());
             return "/Error";
         }
-        
+
         sessionUtility.setParameter(eventID);
         return "/protected/event/EventPage";
     }
@@ -116,20 +115,21 @@ public class EventCreationBean implements Serializable {
         return weatherConv;
     }
 
+    public void updateCities() {
+        cities = gp.getCityNames(selectedCountry);
+    }
+
     public void mostra() {
         for (WeatherCondition date : listChoiche) {
             SYSO_Testing.syso("bean. " + date);
         }
     }
-    
-    public void metodoDiProva(){
+
+    public void metodoDiProva() {
         SYSO_Testing.syso("prova listener");
     }
-    
+
     public List<String> getCities() {
-        String tmp=createdEvent.getCountry();
-        if(tmp!=null)
-            return gp.getCityNames(tmp);
         return cities;
     }
 
@@ -145,4 +145,11 @@ public class EventCreationBean implements Serializable {
         this.countries = countries;
     }
 
+    public void setSelectedCountry(String selectedCountry){
+        this.selectedCountry = selectedCountry;
+    }
+    
+    public String getSelectedCountry(){
+        return selectedCountry;
+    }
 }

@@ -6,7 +6,7 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.facade.UserFacade;
-import com.meteocal.web.beans.component.ErrorBean;
+import com.meteocal.web.renders.IndexRender;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.IOException;
@@ -36,12 +36,12 @@ public class LoginBean {
     @Inject
     private SessionUtility sessionUtility;
 
-    @Inject 
-    ErrorBean error;
-    
+    @Inject
+    private IndexRender ir;
+
     @EJB
     UserFacade uf;
-    
+
     @PostConstruct
     public void init() {
     }
@@ -69,29 +69,32 @@ public class LoginBean {
     }
 
     public String login() {
-        if (sessionUtility != null)  {
+        if (sessionUtility != null) {
             if (sessionUtility.isThereAnActiveSession()) {
                 SYSO_Testing.syso("I redirect you to your active session");
                 return "/protected/personal/HomeCalendar";
             }
         }
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         SYSO_Testing.clean();
         SYSO_Testing.syso("Try to login user: " + this.username + " with psw: " + this.password + " !");
-                
+
         try {
             request.login(this.username, this.password);
         }
         catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
-            error.setMessage("Login Failed");
-            return "/Error";
+            ir.setErrorLogin(true);
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Credentials are not valid!"));
+            return "/Index.xhtml";
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error!", "Login end successfully!"));
 
         return "/protected/personal/HomeCalendar.xhtml";
     }
@@ -108,10 +111,11 @@ public class LoginBean {
         request.getSession().invalidate();
         try {
             contextPath = request.getContextPath();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Logout!"));
+            
             FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml");
         }
         catch (IOException ex) {
         }
     }
-
 }

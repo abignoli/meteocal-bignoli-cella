@@ -7,14 +7,16 @@ package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.facade.UserFacade;
-import com.meteocal.business.security.UserManager; 
+import com.meteocal.business.security.UserManager;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -24,39 +26,37 @@ import javax.inject.Named;
  */
 @ManagedBean
 @RequestScoped
-public class RegistrationBean implements Serializable{
- 
-        
+public class RegistrationBean implements Serializable {
+
     @PostConstruct
-    public void init(){
+    public void init() {
         SYSO_Testing.syso("init-RegistrationBean");
         setUser(new User());
     }
-    
+
     @EJB
     UserManager um;
-    
+
     @EJB
     UserFacade uf;
-    
+
     @Inject
     SessionUtility sessionUtility;
-    
+
     private String passwordConfirmation;
     private User userToRegister;
 
-    
     /**
      * Creates a new instance of LoginBean
      */
     public RegistrationBean() {
     }
-    
-    public String getPasswordConfirmation(){
+
+    public String getPasswordConfirmation() {
         return this.passwordConfirmation;
     }
-        
-    public void setPasswordConfirmation(String passwordConf){
+
+    public void setPasswordConfirmation(String passwordConf) {
         this.passwordConfirmation = passwordConf;
     }
 
@@ -67,27 +67,32 @@ public class RegistrationBean implements Serializable{
     public void setUser(User user) {
         this.userToRegister = user;
     }
-    
-    private boolean passwordMatching(){
+
+    private boolean passwordMatching() {
         return userToRegister.getPassword().equals(this.passwordConfirmation);
     }
-    
-    public String register(){
-        /*
-        if(uf.isUsernameInUse(userToRegister.getUsername())){
-            return "/Index.xhtml?used=yes";
+
+    public String register() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (uf.isUsernameInUse(userToRegister.getUsername())) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This username is already used!"));
+            return "/Index";
         }
-        */
-        if( passwordMatching() ){
+
+        if (passwordMatching()) {
             SYSO_Testing.clean();
             SYSO_Testing.syso("Starting registration!");
             SYSO_Testing.syso("name: " + userToRegister.getUsername() + " psw: " + userToRegister.getPassword());
             //I've to use a try-catch or a boolean function in order to check if the username is available
             um.register(userToRegister);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Registration ends successfully!"));
             SYSO_Testing.syso("Registration complete!");
-            return "Index";
         }
-        else 
-            return "Error";
+        else {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Credentials are not valid!"));
+        }
+        return "/Index";
     }
+
 }

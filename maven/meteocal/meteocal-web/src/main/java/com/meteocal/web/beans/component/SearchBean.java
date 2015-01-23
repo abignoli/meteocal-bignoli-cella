@@ -39,17 +39,12 @@ public class SearchBean implements Serializable {
 
     @EJB
     UserManager um;
-
+    
     @EJB
     EventFacade ev;
 
     @PostConstruct
     public void init() {
-        try {
-            setEvents(um.getEventsVisibilityMasked(um.getLoggedUser().getId()));
-        } catch (NotFoundException ex) {
-            Logger.getLogger(SearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void setSearched(String searched) {
@@ -61,6 +56,12 @@ public class SearchBean implements Serializable {
     }
 
     public String search() {
+        try {
+            setEvents(um.getEventsVisibilityMasked(um.getLoggedUser().getId()));
+            setUsers(uf.search(searched));
+        } catch (NotFoundException ex) {
+            Logger.getLogger(SearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return resultsOutcome;
     }
 
@@ -69,6 +70,8 @@ public class SearchBean implements Serializable {
     }
 
     public void setUsers(List<User> users) {
+        if(this.users==null)
+            this.users = new ArrayList<User>();
         for (User user : users) {
             this.users.add(user);
         }

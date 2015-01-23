@@ -105,8 +105,8 @@ public class FilterEvent {
                         }
                         else {// NO VISIBILITY
                             FacesContext fc = FacesContext.getCurrentInstance();
-                            //sessionUtility.setParameter(eventID);
-                            //fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
+                            sessionUtility.setParameter(eventID);
+                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
                             return;
                         }
                     }

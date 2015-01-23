@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class EventViewBean implements Serializable{
+public class EventPageViewerBean implements Serializable{
 
     private String user,name;
     private Event referredEvent;

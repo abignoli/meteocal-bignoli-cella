@@ -50,8 +50,6 @@ public class FilterEventCreator {
 
     private final String context = request.getContextPath();
     private final String errorPath = context + "/Error";
-    private final String indexPath = context + "/Index";
-    private final String initialContext = context + "/protected/personal/HomeCalendar";
 
     @PostConstruct
     public void init() {
@@ -71,7 +69,6 @@ public class FilterEventCreator {
             eventID = getID();
         }
         catch (NotValidParameter ex) {
-            error.setMessage("Not Valid Parameter");
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
             return;
@@ -118,7 +115,7 @@ public class FilterEventCreator {
             }
         }
         else {
-            id = sessionUtility.getParameterAsClient();
+            id = sessionUtility.getParameter();
         }
         if (id < 0) {
             throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
