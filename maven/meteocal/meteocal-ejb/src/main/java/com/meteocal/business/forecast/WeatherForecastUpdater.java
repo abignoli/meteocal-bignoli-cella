@@ -51,14 +51,17 @@ public class WeatherForecastUpdater {
     private final String EXCEPTION_REQUEST_NO_CITY_OR_COUNTRY = "[WEATHER FORECAST SERVICE] Weather forecast request: null city or country has been provided.";
     private final String EXCEPTION_ASK_FORECAST_NO_START_END_CITY_OR_COUNTRY = "[WEATHER FORECAST SERVICE] Weather forecast request: null start, end, city or country has been provided.";
 
+    // This represents the quantity of time the system is allowed to add to the forecasts to create a perfect sequence, in general this shouldn't happena anyways
+    private final int FORECAST_ALLOWED_TIME_INCREASE_HOURS = 1;
+
     // Fixed
-    private final int SHORT_RANGE_DAYS = 5;
+    public final int SHORT_RANGE_DAYS = 5;
 
     // Fixed
     private final int SHORT_RANGE_FORECAST_HOURS_DURATION = 3;
 
     // Maximum 16
-    private final int LONG_RANGE_DAYS = 16;
+    public final int LONG_RANGE_DAYS = 16;
 
     // Fixed
     private final int LONG_RANGE_FORECAST_HOURS_DURATION = 24;
@@ -118,10 +121,6 @@ public class WeatherForecastUpdater {
             throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END);
         }
 
-        if (end.isBefore(LocalDateTime.now())) {
-            throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_END_BEFORE_NOW);
-        }
-
         if (isShortRangeForecastNeeded(start, end)) {
             shortRangeForecast = getShortRangeForecast(city, countryID);
         }
@@ -132,9 +131,9 @@ public class WeatherForecastUpdater {
         List<WeatherForecastBase> mergedResult = mergeForecasts(shortRangeForecast, longRangeForecast);
 
         List<WeatherForecastBase> result = truncateAndCover(mergedResult, start, end);
-        
-        print(result);
-        
+
+        print(start, end, result);
+
         return result;
     }
 
@@ -175,11 +174,11 @@ public class WeatherForecastUpdater {
     }
 
     private boolean isShortRangeForecastNeeded(LocalDateTime start, LocalDateTime end) {
-        return !(end.isBefore(LocalDateTime.now()) || start.isAfter(LocalDateTime.now().plusDays(SHORT_RANGE_DAYS)));
+        return !(end.isBefore(LocalDateTime.now()) || start.isAfter(LocalDateTime.now().plusDays(SHORT_RANGE_DAYS + 1)));
     }
 
     private boolean isLongRangeForecastNeeded(LocalDateTime start, LocalDateTime end) {
-        return !(end.isBefore(LocalDateTime.now().plusDays(SHORT_RANGE_DAYS)) || start.isAfter(LocalDateTime.now().plusDays(LONG_RANGE_DAYS)));
+        return !(end.isBefore(LocalDateTime.now().plusDays(SHORT_RANGE_DAYS - 1)) || start.isAfter(LocalDateTime.now().plusDays(LONG_RANGE_DAYS + 1)));
     }
 
     private List<WeatherForecastBase> convert(ShortRangeForecast shortRangeForecast) {
@@ -538,7 +537,7 @@ public class WeatherForecastUpdater {
     private List<WeatherForecastBase> mergeConvertedForecasts(List<WeatherForecastBase> convertedShortRangeForecasts, List<WeatherForecastBase> convertedLongRangeForecasts) {
         List<WeatherForecastBase> result = new ArrayList<WeatherForecastBase>();
 
-        if (convertedShortRangeForecasts != null) {
+        if (convertedShortRangeForecasts != null && convertedShortRangeForecasts.size() > 0) {
             Collections.sort(convertedShortRangeForecasts, new WeatherForecastBaseComparator());
 
             for (int i = 0; i < convertedShortRangeForecasts.size(); i++) {
@@ -584,54 +583,106 @@ public class WeatherForecastUpdater {
         if (forecasts == null) {
             forecasts = new ArrayList<WeatherForecastBase>();
         }
-        
+
+        // Truncate start,end, remove out of boundary, and leave untouched the rest
         List<WeatherForecastBase> toRemove = new ArrayList<WeatherForecastBase>();
 
         for (WeatherForecastBase wf : forecasts) {
             if (wf.getForecastEnd().isBefore(start)) {
                 toRemove.add(wf);
-            } else if (wf.getForecastStart().isBefore(start) && wf.getForecastEnd().isAfter(start)) {
-                wf.setForecastStart(start);
-            } else if (wf.getForecastStart().isBefore(end) && wf.getForecastEnd().isAfter(end)) {
-                wf.setForecastEnd(end);
-            } else {
+            } else if (wf.getForecastStart().isAfter(end)) {
                 toRemove.add(wf);
+            } else {
+                if (wf.getForecastStart().isBefore(start)) {
+                    wf.setForecastStart(start);
+                }
+                if (wf.getForecastEnd().isAfter(end)) {
+                    wf.setForecastEnd(end);
+                } 
             }
         }
-        
-        for(WeatherForecastBase wf : toRemove)
-            forecasts.remove(wf);
 
-        Collections.sort(forecasts, new WeatherForecastBaseComparator());
+        for (WeatherForecastBase wf : toRemove) {
+            forecasts.remove(wf);
+        }
 
         if (forecasts.size() == 0) {
+            // Produce a single not avaible notification to cover the whole range of the forecast
             WeatherForecastBase wf = new WeatherForecastBase();
             wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
             wf.setForecastStart(start);
             wf.setForecastEnd(end);
             forecasts.add(wf);
         } else {
+            Collections.sort(forecasts, new WeatherForecastBaseComparator());
+
             LocalDateTime resultStart = forecasts.get(0).getForecastStart();
-            LocalDateTime resultEnd = forecasts.get(0).getForecastEnd();
-            
-            if(resultStart.isAfter(start)) {
-                WeatherForecastBase wf = new WeatherForecastBase();
-                wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
-                wf.setForecastStart(start);
-                wf.setForecastEnd(resultStart);
+            LocalDateTime resultEnd = forecasts.get(forecasts.size() - 1).getForecastEnd();
+
+            // Ensures the start of the forecasts is the given start
+            if (resultStart.isAfter(start)) {
+                if (resultStart.isBefore(start.plusHours(FORECAST_ALLOWED_TIME_INCREASE_HOURS))) {
+                    // We can change the first forecast start time to adapt it to our needs without losing too much accuracy
+                    // Relies on the list being sorted!
+                    forecasts.get(0).setForecastStart(start);
+                } else {
+                    WeatherForecastBase wf = new WeatherForecastBase();
+                    wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
+                    wf.setForecastStart(start);
+                    wf.setForecastEnd(resultStart);
+                    forecasts.add(wf);
+                    Collections.sort(forecasts, new WeatherForecastBaseComparator());
+                }
+            }
+
+            // Ensures the end of the forecasts is the given end
+            if (resultEnd.isBefore(end)) {
+                if (resultEnd.isAfter(end.minusHours(FORECAST_ALLOWED_TIME_INCREASE_HOURS))) {
+                    // We can change the last forecast end time to adapt it to our needs without losing too much accuracy
+                    // Relies on the list being sorted!
+                    forecasts.get(forecasts.size() - 1).setForecastEnd(end);
+                } else {
+                    WeatherForecastBase wf = new WeatherForecastBase();
+                    wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
+                    wf.setForecastStart(resultEnd);
+                    wf.setForecastEnd(end);
+                    forecasts.add(wf);
+                }
+            }
+
+            // Ensures there are no gaps between forecasts
+            List<WeatherForecastBase> toAdd = new ArrayList<WeatherForecastBase>();
+
+            WeatherForecastBase previous = forecasts.get(0);
+            WeatherForecastBase current;
+
+            for (int i = 1; i < forecasts.size() - 1; i++) {
+                current = forecasts.get(i);
+
+                if (!current.getForecastStart().equals(previous.getForecastEnd())) {
+                    if (current.getForecastStart().isBefore(previous.getForecastEnd().plusHours(FORECAST_ALLOWED_TIME_INCREASE_HOURS))) {
+                        // We can change the previous forecast end time to adapt it to our needs without losing too much accuracy
+                        previous.setForecastEnd(current.getForecastStart());
+                    } else {
+                        WeatherForecastBase wf = new WeatherForecastBase();
+                        wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
+                        wf.setForecastStart(previous.getForecastEnd());
+                        wf.setForecastEnd(current.getForecastStart());
+                        toAdd.add(wf);
+                    }
+
+                }
+
+                previous = current;
+            }
+
+            for (WeatherForecastBase wf : toAdd) {
                 forecasts.add(wf);
-                Collections.sort(forecasts, new WeatherForecastBaseComparator());
-            } 
-            
-            if(resultEnd.isBefore(end)) {
-                WeatherForecastBase wf = new WeatherForecastBase();
-                wf.setWeatherCondition(WeatherCondition.NOT_AVAILABLE);
-                wf.setForecastStart(resultEnd);
-                wf.setForecastEnd(end);
-                forecasts.add(wf);
-            } 
+            }
+
+            Collections.sort(forecasts, new WeatherForecastBaseComparator());
         }
-        
+
         return forecasts;
     }
 
@@ -658,11 +709,12 @@ public class WeatherForecastUpdater {
             return o1.getDt() - o2.getDt();
         }
     }
-    
-    private void print(List<WeatherForecastBase> result) {
-        for(WeatherForecastBase wf: result) {
+
+    private void print(LocalDateTime start, LocalDateTime end, List<WeatherForecastBase> result) {
+        logger.log(Level.INFO, "Start: " + start.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + ", End: " + end.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+        for (WeatherForecastBase wf : result) {
             logger.log(Level.INFO, wf.getForecastStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "            " + wf.getForecastEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "           " + wf.getWeatherCondition());
         }
-        
+
     }
 }
