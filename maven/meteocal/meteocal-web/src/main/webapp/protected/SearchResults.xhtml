@@ -7,6 +7,7 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
       <h:head>
@@ -28,6 +29,10 @@ and open the template in the editor.
         </style>
     </h:head>
     <h:body>
+        <f:event listener="#{NotLoggedFilter.check}" type="preRenderView" />        
+        <div id="header">
+            <ui:include src="/Components/TopBar.xhtml"></ui:include>
+        </div>
         <div id="container">
             <div id="left">
                 <p:panel id="privacyPanel" header="List of compatible Users" footer="Users" style="margin-top:70px" class="panelForm">     

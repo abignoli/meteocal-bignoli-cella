@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestScoped
 public class EventPageCreatorBean implements Serializable {
 
-    private String user, name;
+    private String newParticipant;
     private Event referredEvent;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private int eventID;
@@ -71,9 +71,9 @@ public class EventPageCreatorBean implements Serializable {
 
     public String addParticipant() {
         int userID;
-        userID = uf.findByUsername(user).getId();
+        userID = uf.findByUsername(newParticipant).getId();
         try {
-            ef.addParticipant(eventID, userID);
+            ef.addInvited(eventID, userID);
         }
         catch (BusinessException ex) {
             Logger.getLogger(EventPageCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -172,12 +172,16 @@ public class EventPageCreatorBean implements Serializable {
         invited = referredEvent.getInvited();
     }
 
-    public User getParticipant() {
-        return participants;
+    public String getParticipant() {
+        return newParticipant;
     }
 
+    public void setParticipant(String newParticipant) {
+        this.newParticipant = newParticipant;
+    }
+    
     public void setParticipant(User newParticipant) {
-        participants = newParticipant;
+        this.newParticipant = newParticipant.getUsername();
     }
 
     public void setIndoor() {

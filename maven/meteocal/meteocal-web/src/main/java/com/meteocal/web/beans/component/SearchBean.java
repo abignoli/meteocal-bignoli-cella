@@ -45,6 +45,8 @@ public class SearchBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        events = new ArrayList<Event>();
+        users = new ArrayList<User>();
     }
 
     public void setSearched(String searched) {

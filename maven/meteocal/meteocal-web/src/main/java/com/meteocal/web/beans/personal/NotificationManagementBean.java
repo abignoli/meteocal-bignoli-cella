@@ -6,8 +6,11 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.Notification;
+import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -36,6 +39,13 @@ public class NotificationManagementBean {
     }
     
     public void setNotifications(List<Notification> newNotifications){
+        for(Notification notification:newNotifications)
+            try {
+                um.setNotificationAsSeen(notification.getId());
+            }
+            catch (NotFoundException ex) {
+                Logger.getLogger(NotificationManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         notifications = newNotifications;
     }
 }

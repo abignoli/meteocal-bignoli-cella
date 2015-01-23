@@ -49,7 +49,7 @@ public class FilterEventCreator {
     private HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
     private final String context = request.getContextPath();
-    private final String errorPath = context + "/Error";
+    private final String errorOutcome = "/Error";
 
     @PostConstruct
     public void init() {
@@ -70,7 +70,7 @@ public class FilterEventCreator {
         }
         catch (NotValidParameter ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
             return;
         }
         
@@ -78,7 +78,7 @@ public class FilterEventCreator {
             SYSO_Testing.syso("I'm not logged");
             FacesContext fc = FacesContext.getCurrentInstance();
             sessionUtility.setParameter(eventID);
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
             return;
         }
         else {
@@ -86,7 +86,7 @@ public class FilterEventCreator {
                 visibility = um.getVisibilityOverEvent(eventID);
                 if (visibility != CREATOR) {
                     FacesContext fc = FacesContext.getCurrentInstance();
-                    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+                    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
                     return;
                 }
                 //If I reach this code, I'm the creator
@@ -95,7 +95,7 @@ public class FilterEventCreator {
             catch (NotFoundException ex) {
                 Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
                 FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
                 return;
             }
         }
