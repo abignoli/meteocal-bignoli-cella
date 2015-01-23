@@ -51,33 +51,35 @@ public class OnEventSelectListener {
 
     public void onEventSelect(SelectEvent selectEvent) {
         UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
-        String eventPath;
+        String eventPath,strID;
         int eventID;
+        
         selectedEvent = (ScheduleEvent) selectEvent.getObject();
-        eventID = Integer.parseInt(selectedEvent.getId());
+        eventID = Integer.parseInt(selectedEvent.getData().toString());
         String username = sessionUtility.getLoggedUser();
         try {
             visibility = um.getVisibilityOverEvent(eventID);
             sessionUtility.setParameter(eventID);
-
             SYSO_Testing.syso("FilterEvent. Username " + username);
             SYSO_Testing.syso("FilterEvent. I'm logged, and I've to check the visibility");
             if (visibility == CREATOR) {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 sessionUtility.setParameter(eventID);
                 fc.getApplication().getNavigationHandler().handleNavigation(fc, null, creatorOutcome);
+                return;
             }
             else {
                 if (visibility == VIEWER) {
                     FacesContext fc = FacesContext.getCurrentInstance();
                     sessionUtility.setParameter(eventID);
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
+                    return;
                 }
                 else {// NO VISIBILITY
                     FacesContext fc = FacesContext.getCurrentInstance();
                     sessionUtility.setParameter(eventID);
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
-
+                    return;
                 }
             }
         }
@@ -87,8 +89,6 @@ public class OnEventSelectListener {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
 
         }
-        eventPath = "/protected/event/EventPage.xhtml?eventID=" + eventID;
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, eventPath);
+        return;
     }
 }

@@ -56,21 +56,20 @@ public class EventCreatorBean implements Serializable {
     private EnumSet<WeatherCondition> adverseConditions;
     private List<User> invited;
     private List<User> participants;
-    private int id;
     private boolean indoor;
 
     @PostConstruct
     public void init() {
         try {
-            id = this.getID();
+            eventID = this.getID();
         }
         catch (NotValidParameter ex) {
 
         }
-        setReferredEvent(ef.find(id));
+        setReferredEvent(ef.find(eventID));
     }
 
-    public void addParticipant() {
+    public String addParticipant() {
         int userID;
         userID = uf.findByUsername(user).getId();  
         try {
@@ -78,7 +77,10 @@ public class EventCreatorBean implements Serializable {
         }
         catch (BusinessException ex) {
             Logger.getLogger(EventCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "/Error";
         }
+        sessionUtility.setParameter(eventID);
+        return "/protected/event/EventPageCreator";
     }
 
     private int getID() throws NotValidParameter {
@@ -87,17 +89,17 @@ public class EventCreatorBean implements Serializable {
         if (!sessionUtility.isAParameter()) {
             strID = request.getParameter("eventID");
             try {
-                id = Integer.parseInt(strID);
+                eventID = Integer.parseInt(strID);
             }
             catch (NumberFormatException e) {
                 throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
             }
         }
         else{
-            id = sessionUtility.getParameterAsClient();
+            eventID = sessionUtility.getParameterAsClient();
         }
         
-        return id;
+        return eventID;
     }
 
     public void setReferredEvent(Event event) {
@@ -112,7 +114,7 @@ public class EventCreatorBean implements Serializable {
         return referredEvent.getName();
     }
 
-    public void setName() {
+    public void setName(String name) {
         name = referredEvent.getName();
     }
 
@@ -168,8 +170,8 @@ public class EventCreatorBean implements Serializable {
         return referredEvent.getParticipants();
     }
 
-    public void setParticipant() {
-        participants.add(referredEvent.findParticipant(null));
+    public void setParticipant(User newParticipant) {
+            participants.add(newParticipant);
     }
 
     public void setIndoor() {

@@ -13,9 +13,8 @@ import com.meteocal.business.shared.security.UserUserVisibility;
 import com.meteocal.web.utility.SessionUtility;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Leo
  */
-@ManagedBean
-@RequestScoped
-public class FilterCalendar {
+public class FilterCalendarVisible {
 
     @EJB
     private UserManager um;
@@ -40,7 +37,6 @@ public class FilterCalendar {
     private final String errorOutcome = "Error";
     private final String visibleOutcome = "Visible";
     private final String noVisibleOutcome = "NoVisible";
-    private final String myCalendarOutcome = "MyCalendar";
     private User loggedUser;
 
     @PostConstruct
@@ -52,19 +48,13 @@ public class FilterCalendar {
     private void setUser(User user) {
         this.loggedUser = user;
     }
+    
 
-    public void check() {
-        String userB;
+    public void check(ComponentSystemEvent event) {
+        String userA, userB;
         UserUserVisibility visibility;
 
         userB = getUser();
-        
-        if(userB.equals(loggedUser.getUsername())){
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, myCalendarOutcome);
-            return;
-        }
-            
         try {
             visibility = um.getVisibilityOverUser(uf.findByUsername(userB).getId());
         }
@@ -77,10 +67,7 @@ public class FilterCalendar {
         if (visibility == UserUserVisibility.NOT_VISIBLE) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibleOutcome);
-        }
-        else {//VISIBLE
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, visibleOutcome);
+            return;
         }
     }
 

@@ -45,7 +45,7 @@ and open the template in the editor.
                         <h:outputText value="Country" />
                         <h:outputText value="#{eventCreatorBean.country}" />
 
-                        <h:outputText value="Dwscription" />
+                        <h:outputText value="Description" />
                         <h:outputText value="#{eventCreatorBean.description}" />
 
                         <h:outputText value="Indoor" />
@@ -54,7 +54,7 @@ and open the template in the editor.
                         <h:outputText value="Private" />
                         <h:outputText value="Y/N" />
 
-                        <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit" type="submit" ajax="true"/>
+                        <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit" type="submit" ajax="false" styleClass="block"/>
 
                     </h:panelGrid>
                 </h:form>
@@ -63,7 +63,7 @@ and open the template in the editor.
         <p:fieldset>
             <h:form>
                 <p:inputText value="#{eventCreatorBean.participant}"></p:inputText>
-                <p:commandButton action="#{eventCreatorBean.addParticipant}" value="add Participant"></p:commandButton>
+                <p:commandButton action="#{eventCreatorBean.addParticipant()}" value="add Participant"></p:commandButton>
             </h:form>
         </p:fieldset>
     </h:body>

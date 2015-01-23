@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -71,6 +70,7 @@ public class FilterEvent {
         catch (NotValidParameter ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+            return;
         }
 
         SYSO_Testing.syso("FilteEvent. in EventPage: check");
@@ -80,6 +80,7 @@ public class FilterEvent {
                 SYSO_Testing.syso("I'm not logged");
                 FacesContext fc = FacesContext.getCurrentInstance();
                 fc.getApplication().getNavigationHandler().handleNavigation(fc, null, initialContext);
+                return;
             }
             else {
                 String username = loggedUser.getUsername();
@@ -93,18 +94,20 @@ public class FilterEvent {
                         FacesContext fc = FacesContext.getCurrentInstance();
                         sessionUtility.setParameter(eventID);
                         fc.getApplication().getNavigationHandler().handleNavigation(fc, null, creatorOutcome);
+                        return;
                     }
                     else {
                         if (visibility == VIEWER) {
                             FacesContext fc = FacesContext.getCurrentInstance();
                             sessionUtility.setParameter(eventID);
                             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
+                            return;
                         }
                         else {// NO VISIBILITY
                             FacesContext fc = FacesContext.getCurrentInstance();
-                            sessionUtility.setParameter(eventID);
-                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
-
+                            //sessionUtility.setParameter(eventID);
+                            //fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
+                            return;
                         }
                     }
                 }
@@ -112,14 +115,14 @@ public class FilterEvent {
                     error.setMessage("There is an incompatibility between you and the required event");
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
-
+                    return;
                 }
             }
         }
         catch (NullPointerException ec) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
-
+            return;
         }
     }
 

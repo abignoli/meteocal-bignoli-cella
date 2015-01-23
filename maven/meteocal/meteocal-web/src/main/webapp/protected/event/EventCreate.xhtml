@@ -27,12 +27,18 @@ and open the template in the editor.
 
                     <p:outputLabel value="Address" for="address" />
                     <p:inputText id="address" value="#{eventCreationBean.createdEvent.address}" />
-
-                    <p:outputLabel value="City" for="city" />
-                    <p:inputText id="city" value="#{eventCreationBean.createdEvent.city}" />
-
+                    
                     <p:outputLabel value="Country" for="country" />
-                    <p:inputText id="country" value="#{eventCreationBean.createdEvent.country}" />
+                    <p:selectOneMenu id="country" value="#{eventCreationBean.createdEvent.country}" panelStyle="width:180px"
+                                     effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{eventCreationBean.countries}" var="city" itemLabel="#{country}" itemValue="#{country}" />
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="City" for="city"/>
+                    <p:selectOneMenu id="city" value="#{eventCreationBean.createdEvent.city}" panelStyle="width:180px"
+                                     effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{eventCreationBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" />
+                    </p:selectOneMenu>
 
 
                     <h:outputText value="Description"/>
@@ -43,10 +49,10 @@ and open the template in the editor.
                     <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.weatherConv}">
                         <f:selectItems value="#{eventCreationBean.weatherConditions}" />
                     </p:selectManyButton>
-          
+
                     <h:outputText value="Event beginning: " />
                     <p:calendar id="startingTime" value="#{eventCreationBean.createdEvent.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
-                    
+
                     <h:outputText value="Event ending " />
                     <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
 
@@ -61,7 +67,7 @@ and open the template in the editor.
                         <f:selectItem itemLabel="Private" itemValue="true" />
                         <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
-                        
+
                     <br/>    
                     <p:commandButton value="Create" action="#{eventCreationBean.create()}" type="submit" ajax="false" styleClass="block"/>
                 </h:panelGrid>

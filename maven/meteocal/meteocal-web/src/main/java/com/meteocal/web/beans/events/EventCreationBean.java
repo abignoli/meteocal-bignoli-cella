@@ -9,12 +9,14 @@ import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.geography.GeographicRepository;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -33,6 +35,10 @@ public class EventCreationBean implements Serializable {
     @EJB
     private EventFacade ef;
 
+    @EJB
+    private GeographicRepository gp;
+          
+    
     @Inject 
     private ErrorBean error;
     
@@ -43,6 +49,7 @@ public class EventCreationBean implements Serializable {
     private WeatherConditionsConverter weatherConv;
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
+    private List<String> cities,countries;
     private boolean indoor, privateEvent;
 
     @PostConstruct
@@ -118,4 +125,24 @@ public class EventCreationBean implements Serializable {
     public void metodoDiProva(){
         SYSO_Testing.syso("prova listener");
     }
+    
+    public List<String> getCities() {
+        String tmp=createdEvent.getCountry();
+        if(tmp!=null)
+            return gp.getCityNames(tmp);
+        return cities;
+    }
+
+    public void setCities(List<String> cities) {
+        this.cities = cities;
+    }
+
+    public List<String> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<String> countries) {
+        this.countries = countries;
+    }
+
 }

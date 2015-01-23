@@ -15,45 +15,52 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-        <f:event listener="#{filterEventEdit.isAdmin}" type="preRenderView" />
+        <f:event listener="#{filterEventEditing.check}" type="preRenderView" />
             
         <ui:include src="/Components/TopBar.xhtml"></ui:include>
-        </div>
         <h:form>
             <p:panel id="privacyPanel" header="Event Editing | creator only" footer="Editing form" style="margin-top:70px" class="panelForm">     
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     
                     <p:outputLabel value="Name" for="name" />
-                    <p:autoComplete id="name" value="#{eventEditingBean.name}" emptyMessage="Event's name" />
+                    <p:autoComplete id="name" value="#{eventEditingBean.event.name}" emptyMessage="Event's name" />
                     
                     <p:outputLabel value="Address" for="address" />
-                    <p:autoComplete id="address" value="#{eventEditingBean.address}" emptyMessage="Road , N" />
+                    <p:autoComplete id="address" value="#{eventEditingBean.event.address}" emptyMessage="Road , N" />
                     
                     <p:outputLabel value="City" for="city" />
-                    <p:autoComplete id="city" value="#{eventEditingBean.city}" emptyMessage="City" />
+                    <p:autoComplete id="city" value="#{eventEditingBean.event.city}" emptyMessage="City" />
                     
                     <p:outputLabel value="Country" for="country" />
-                    <p:autoComplete id="country" value="#{eventEditingBean.country}" emptyMessage="Country" />
+                    <p:autoComplete id="country" value="#{eventEditingBean.event.country}" emptyMessage="Country" />
                     
                     <h:outputText value="Description"/>
-                    <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventEditingBean.description}"/>
-
+                    <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventEditingBean.event.description}"/>
+                   
+                    <h:outputText value="Adverse Conditions: " />
+                    <p:selectManyButton value="#{eventEditingBean.event.adverseConditions}" converter="#{bean.weatherConv}">
+                        <f:selectItems value="#{eventCreatioeventEditingBean.weatherConditions}" />
+                    </p:selectManyButton>
+          
+                    <h:outputText value="Event beginning: " />
+                    <p:calendar id="startingTime" value="#{eventEditingBean.event.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
                     
-                    <br/>
-                        
+                    <h:outputText value="Event ending " />
+                    <p:calendar id="endingTime" value="#{eventEditingBean.event.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
+
                     <h:outputText value="Location: " />
-                    <p:selectOneButton value="#{eventEditingBean.indoor}" converter="#{bean.booleanConv}">
+                    <p:selectOneButton value="#{eventEditingBean.event.indoor}" converter="#{bean.booleanConv}">
                     <f:selectItem itemLabel="Indoor" itemValue="true" />
                     <f:selectItem itemLabel="Outdoor" itemValue="false" />
                     </p:selectOneButton>
                     
                     <h:outputText value="Privacy Mode " />
-                    <p:selectOneButton value="#{eventEditingBean.privateEvent}" converter="#{bean.booleanConv}">
+                    <p:selectOneButton value="#{eventEditingBean.event.privateEvent}" converter="#{bean.booleanConv}">
                     <f:selectItem itemLabel="Private" itemValue="true" />
                     <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
                     
-                    <p:commandButton value="Save Editing" icon="ui-icon-check" action="#{eventEditingBean.eventEditing()}"/>
+                    <p:commandButton value="Save Editing" icon="ui-icon-check" action="#{eventEditingBean.eventEditing()}" type="submit" ajax="false"/>
                 </h:panelGrid>
             </p:panel>
         </h:form>

@@ -29,13 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScoped
 public class SessionUtility implements Serializable {
 
-    private String loggedUserName, loggedUserPassword;
+    private String loggedUserName,requiredUser;
     private int errorCode, parameterID;
-    private boolean error,parameter;
+    private boolean error,parameter,isUser;
 
     @PostConstruct
     public void init() {
         error = false;
+        isUser = false;
     }
 
     public void addUser(String username) {
@@ -94,6 +95,24 @@ public class SessionUtility implements Serializable {
 
     public boolean isThereAnActiveSession() {
         return this.loggedUserName != null;
+    }
+    
+    public void setUser(String username) {
+        requiredUser = username;
+        isUser = true;
+    }
+    
+    public boolean isAUser(){
+        return isUser;
+    }
+    
+    public String getUser(){
+        return requiredUser;
+    }
+    
+    public String getUserAsClient(){
+        isUser = false;
+        return requiredUser;
     }
 }
 /*     
