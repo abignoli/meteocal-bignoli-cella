@@ -31,7 +31,7 @@ public class EventDAO extends DAObase<Event> {
     }
     
     public List<Event> findPlanned() {
-        String query = "select e from Event e where e.status = planned";
+        String query = "select e from Event e where e.status = PLANNED";
         return super.findResults(query);
     }
     

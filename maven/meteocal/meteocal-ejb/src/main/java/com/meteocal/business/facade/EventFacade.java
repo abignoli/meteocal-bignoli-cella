@@ -116,4 +116,12 @@ public interface EventFacade {
     public List<Event> mask(List<Event> createdAndParticipatingTo);
     
     public abstract List<Event> search(String eventName);
+    
+    /**
+     * Updates weather forecast for all planned events.
+     * 
+     * @throws InvalidInputException
+     * @throws NotFoundException 
+     */
+    public void updateWeatherForecasts() throws InvalidInputException, NotFoundException;
 }

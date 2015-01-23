@@ -12,6 +12,7 @@ import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.shared.scheduling.ScheduleActivator;
 import com.meteocal.business.shared.utils.LocalDateTimeUtils;
+import com.meteocal.geography.GeographicRepository;
 import com.meteocal.shared.ApplicationVariables;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ws.rs.client.Client;
@@ -67,23 +69,14 @@ public class WeatherForecastService {
 
     // Fixed
     private final int LONG_RANGE_FORECAST_HOURS_DURATION = 24;
+    
+    @EJB
+    GeographicRepository geographicRepository;
 
     @PostConstruct
     private void constructed() {
         logger.log(Level.INFO, "Weather Forecast Updater created");
         client = ClientBuilder.newClient();
-    }
-
-    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
-    public void testTask() {
-        if (ScheduleActivator.WEATHER_FORECAST_UPDATER_TEST_TASK) {
-            logger.log(Level.INFO, "{0}: scheduled task is getting fired", LocalDateTime.now());
-//            logger.log(Level.INFO, "{0}: checking the weather", new Date());
-//            Forecast forecast = client.target("http://localhost:8080/weather/rest/forecast")
-//                    .request(MediaType.APPLICATION_JSON)
-//                    .get(Forecast.class);
-//            logger.log(Level.INFO, "Oracle says: {0}", forecast.getResult());
-        }
     }
 
     public void testShortRangeRequest() {
@@ -105,13 +98,15 @@ public class WeatherForecastService {
      * @param start
      * @param end
      * @param city
-     * @param countryID
+     * @param country
      * @return
      * @throws InvalidInputException
      */
-    public List<WeatherForecastBase> askForecast(LocalDateTime start, LocalDateTime end, String city, String countryID) throws InvalidInputException {
+    public List<WeatherForecastBase> askForecast(LocalDateTime start, LocalDateTime end, String city, String country) throws InvalidInputException {
         ShortRangeForecast shortRangeForecast = null;
         LongRangeForecast longRangeForecast = null;
+        
+        String countryID = geographicRepository.getCountryID(country);
 
         List<WeatherForecastBase> forecasts;
 
@@ -853,6 +848,6 @@ public class WeatherForecastService {
         for (WeatherForecastBase wf : result) {
             logger.log(Level.INFO, wf.getForecastStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "            " + wf.getForecastEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "           " + wf.getWeatherCondition());
         }
-
     }
+ 
 }

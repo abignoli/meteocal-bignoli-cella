@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -56,13 +57,15 @@ public class EventFacadeImplementation implements EventFacade {
 
         try {
             savedEvent = create(e, creator.getId());
+            eventDAO.flush();
+            
+            updateWeatherForecastsAsync(savedEvent);
         } catch (NotFoundException notFoundException) {
             throw new BusinessException(BusinessException.EVENT_CREATION_INTERNAL_PROCESSING);
         }
         
         return savedEvent;
     }
-
 
     public Event create(Event e, int userID) throws InvalidInputException, NotFoundException {
         User creator = userDAO.retrieve(userID);
@@ -81,7 +84,7 @@ public class EventFacadeImplementation implements EventFacade {
     }
 
     public Event find(int eventID) {
-        return eventDAO.find(eventID);
+        return eventDAO.findAndRefresh(eventID);
     }
 
     public void addParticipant(int eventID, int userID) throws BusinessException {
@@ -275,5 +278,21 @@ public class EventFacadeImplementation implements EventFacade {
             events.add(found);
         
         return events;
+    }
+
+    @Override
+    public void updateWeatherForecasts() throws InvalidInputException, NotFoundException {
+        for(Event e: getPlannedEvents()) {
+            updateWeatherForecasts(e);
+        }
+    }
+
+    private List<Event> getPlannedEvents() {
+        return eventDAO.findPlanned();
+    }
+    
+    @Asynchronous
+    private void updateWeatherForecastsAsync(Event e) throws InvalidInputException, NotFoundException {
+        updateWeatherForecasts(e);
     }
 }

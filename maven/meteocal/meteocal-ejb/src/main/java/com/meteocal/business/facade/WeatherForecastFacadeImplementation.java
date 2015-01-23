@@ -46,7 +46,7 @@ public class WeatherForecastFacadeImplementation implements WeatherForecastFacad
     }
 
     private List<WeatherForecastBase> askWeatherForecasts(LocalDateTime start, LocalDateTime end, String city, String country) throws InvalidInputException {
-        return weatherForecastService.askForecast(start, end, city, geographicRepository.getCountryID(country));
+        return weatherForecastService.askForecast(start, end, city, country);
     }
 
     @Override

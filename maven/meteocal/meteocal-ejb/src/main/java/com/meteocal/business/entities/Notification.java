@@ -9,6 +9,7 @@ import com.meteocal.business.entities.shared.NotificationType;
 import com.meteocal.business.entities.shared.TableDictionary;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -78,6 +79,9 @@ public class Notification {
     }
 
     public List<User> getNotificatedUsers() {
+        if(notificatedUsers == null)
+            notificatedUsers = new ArrayList<User>();
+        
         return notificatedUsers;
     }
 

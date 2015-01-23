@@ -99,6 +99,19 @@ public abstract class DAObase<T> {
         return null;
     }
 
+    public T findAndRefresh(Object primaryKey) {
+        try {
+            T result = em.find(databaseEntityClass, primaryKey);
+            em.refresh(result);
+            
+            return result;
+        } catch (Exception e) {
+            System.out.println("[ERROR - PERSISTENCE] While running query: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public T retrieve(Object primaryKey) throws NotFoundException {
         T result = find(primaryKey);
 
@@ -213,5 +226,9 @@ public abstract class DAObase<T> {
         for (Entry<String, Object> entry : parameters.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
+    }
+    
+    public void flush() {
+        em.flush();
     }
 }
