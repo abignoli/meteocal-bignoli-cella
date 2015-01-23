@@ -28,14 +28,18 @@ public class UserFacadeImplementation implements UserFacade {
     @EJB
     private UserDAO userDAO;
 
-    public void save(User u) {
+    public User save(User u) {
         if(u.isValid()) {
             u.setGroupName(Group.USER.getName());
             u.setAndEncryptPassword(u.getPassword());
             userDAO.save(u);
+            
+            
         }
         
         // TODO what if user not valid
+        
+        return u;
     }
 
     /**

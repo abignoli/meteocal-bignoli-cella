@@ -6,8 +6,6 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.TableDictionary;
-import com.meteocal.business.entities.shared.WeatherCondition;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +36,20 @@ public class WeatherForecast extends WeatherForecastBase {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="EVENTID", referencedColumnName = "ID")
     private Event event;
+
+    public WeatherForecast() {
+    }
+
+    public WeatherForecast(WeatherForecastBase wfb, Event e) {
+        if(wfb == null || e == null)
+            throw new NullPointerException();
+
+        weatherCondition = wfb.getWeatherCondition();
+        forecastStart = wfb.getForecastStart();
+        forecastEnd = wfb.getForecastEnd();
+        
+        event = e;
+    }
 
     public int getId() {
         return id;

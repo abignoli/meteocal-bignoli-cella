@@ -20,7 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface UserFacade {
 
-    public abstract void save(User u);
+    public abstract User save(User u);
 
     public abstract void updateData(User u) throws BusinessException;
     

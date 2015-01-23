@@ -7,7 +7,7 @@ package com.meteocal.tests.AB;
 
 import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.InvalidInputException;
-import com.meteocal.business.forecast.WeatherForecastUpdater;
+import com.meteocal.business.forecast.WeatherForecastService;
 import com.meteocal.business.tests.EditEntityTest;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -27,7 +27,7 @@ public class TestWeatherForecastUpdaterBean {
     private static final Logger logger = Logger.getLogger(TestWeatherForecastUpdaterBean.class.getName());
 
     @EJB
-    private WeatherForecastUpdater weatherForecastUpdater;
+    private WeatherForecastService weatherForecastUpdater;
 
     public void testShortForecast() {
         weatherForecastUpdater.testShortRangeRequest();

@@ -52,9 +52,10 @@ public class UserManagerImplementation implements UserManager {
     @Inject
     Principal principal;
 
-    public void register(User user) {
+    public User register(User user) {
+        User toSave = new User(user);
         user.setGroupName(Group.USER.getName());
-        userFacade.save(user);
+        return userFacade.save(toSave);
     }
 
     public void unregister() {

@@ -21,7 +21,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = TableDictionary.TABLE_USER)
 public class User {
-    
+
     private static final String EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
     @Id
@@ -87,6 +87,19 @@ public class User {
     private boolean calendarVisible;
 
     public User() {
+    }
+
+    public User(User user) {
+        if (user == null) {
+            throw new NullPointerException();
+        }
+
+
+        username = user.getUsername();
+        email = user.getEmail();
+        password = user.getPassword();
+
+        groupName = Group.USER.getName();
     }
 
     public int getId() {
@@ -241,16 +254,18 @@ public class User {
     public static String encryptPassword(String password) {
         return PasswordEncrypter.encrypt(password);
     }
-    
+
     public List<Event> getCreatedAndParticipatingTo() {
         List<Event> result = new ArrayList<Event>();
-        
-        for(Event e: getParticipatingTo())
+
+        for (Event e : getParticipatingTo()) {
             result.add(e);
-        
-        for(Event e: getCreatedEvents())
+        }
+
+        for (Event e : getCreatedEvents()) {
             result.add(e);
-        
+        }
+
         return result;
     }
 }

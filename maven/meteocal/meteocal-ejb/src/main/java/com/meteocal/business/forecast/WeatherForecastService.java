@@ -15,12 +15,14 @@ import com.meteocal.business.shared.utils.LocalDateTimeUtils;
 import com.meteocal.shared.ApplicationVariables;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,9 +41,9 @@ import org.openweathermap.api.short_range.Weather;
  * @author Andrea Bignoli
  */
 @Singleton
-public class WeatherForecastUpdater {
+public class WeatherForecastService {
 
-    private static final Logger logger = Logger.getLogger(WeatherForecastUpdater.class.getName());
+    private static final Logger logger = Logger.getLogger(WeatherForecastService.class.getName());
 
     private Client client;
 
@@ -49,7 +51,7 @@ public class WeatherForecastUpdater {
     private final String OPENWEATHERMAP_API_LONG_RANGE_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q={0},{1}&cnt={3}&mode=json&APPID={2}";
 
     private final String EXCEPTION_REQUEST_NO_CITY_OR_COUNTRY = "[WEATHER FORECAST SERVICE] Weather forecast request: null city or country has been provided.";
-    private final String EXCEPTION_ASK_FORECAST_NO_START_END_CITY_OR_COUNTRY = "[WEATHER FORECAST SERVICE] Weather forecast request: null start, end, city or country has been provided.";
+    private final String EXCEPTION_ASK_FORECAST_NO_START_END = "[WEATHER FORECAST SERVICE] Weather forecast request: null start, end.";
 
     // This represents the quantity of time the system is allowed to add to the forecasts to create a perfect sequence, in general this shouldn't happena anyways
     private final int FORECAST_ALLOWED_TIME_INCREASE_HOURS = 1;
@@ -113,27 +115,106 @@ public class WeatherForecastUpdater {
 
         List<WeatherForecastBase> forecasts;
 
-        if (start == null || end == null || city == null || countryID == null) {
-            throw new NullPointerException(EXCEPTION_ASK_FORECAST_NO_START_END_CITY_OR_COUNTRY);
+        if (start == null || end == null) {
+            throw new NullPointerException(EXCEPTION_ASK_FORECAST_NO_START_END);
         }
 
         if (start.isAfter(end)) {
             throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END);
         }
 
-        if (isShortRangeForecastNeeded(start, end)) {
-            shortRangeForecast = getShortRangeForecast(city, countryID);
+        forecasts = askForecast(city, countryID);
+
+        forecasts = truncateAndCover(forecasts, start, end);
+
+        print(start, end, city, countryID, forecasts);
+
+        return forecasts;
+    }
+
+    public List<WeatherForecastBase> askForecast(String city, String countryID) {
+        return mergeForecasts(getShortRangeForecast(city, countryID), getLongRangeForecast(city, countryID));
+    }
+
+    public List<WeatherForecastBase> askClosestMatch(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, String city, String countryID, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
+        List<WeatherForecastBase> forecastRange = askForecast(city, countryID);
+
+        if (adverseConditions == null) {
+            adverseConditions = EnumSet.noneOf(WeatherCondition.class);
         }
-        if (isLongRangeForecastNeeded(start, end)) {
-            longRangeForecast = getLongRangeForecast(city, countryID);
+
+        adverseConditions.add(WeatherCondition.NOT_AVAILABLE);
+
+        return lookForCompatibility(scheduledStart, scheduledEnd, forecastRange, adverseConditions);
+    }
+
+    private List<WeatherForecastBase> lookForCompatibility(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, List<WeatherForecastBase> forecastRange, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
+        if (scheduledStart == null || scheduledEnd == null) {
+            throw new NullPointerException(EXCEPTION_ASK_FORECAST_NO_START_END);
         }
 
-        List<WeatherForecastBase> mergedResult = mergeForecasts(shortRangeForecast, longRangeForecast);
+        if (scheduledStart.isAfter(scheduledEnd)) {
+            throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END);
+        }
 
-        List<WeatherForecastBase> result = truncateAndCover(mergedResult, start, end);
+        long duration = LocalDateTimeUtils.distance(scheduledStart, scheduledEnd);
 
-        print(start, end, result);
+        int currentMatchStartIndex = 0;
+        Integer bestMatchStartIndex = null;
+        Integer bestMatchEndIndex = null;
 
+        long currentMatchDuration = 0;
+
+        Long bestMatchDistance = null;
+
+        for (int i = 0; i < forecastRange.size() - 1; i++) {
+            WeatherForecastBase current = forecastRange.get(i);
+
+            if (current != null) {
+                if (adverseConditions.contains(current.getWeatherCondition())) {
+                    currentMatchStartIndex = i + 1;
+                    currentMatchDuration = 0;
+                } else {
+                    currentMatchDuration += current.getDuration();
+
+                    if (currentMatchDuration >= duration) {
+                        long currentMatchDistance = calculateDistance(forecastRange.get(currentMatchStartIndex).getForecastStart(), current.getForecastEnd(), scheduledStart, scheduledEnd);
+
+                        // A match has been found, since we covered the duration range with acceptable conditions
+                        if (bestMatchStartIndex != null) {
+                            if (currentMatchDistance < bestMatchDistance) {
+                                bestMatchStartIndex = currentMatchStartIndex;
+                                bestMatchEndIndex = i;
+                                bestMatchDistance = currentMatchDistance;
+                            }
+                        } else {
+                            bestMatchStartIndex = currentMatchStartIndex;
+                            bestMatchEndIndex = i;
+                            bestMatchDistance = currentMatchDistance;
+                        }
+
+                        currentMatchDuration -= forecastRange.get(currentMatchStartIndex).getDuration();
+                        currentMatchStartIndex++;
+                    }
+                }
+            } else {
+                currentMatchStartIndex = i + 1;
+                currentMatchDuration = 0;
+            }
+        }
+
+        List<WeatherForecastBase> result = new ArrayList<WeatherForecastBase>();
+
+        if (bestMatchStartIndex != null) {
+            for (int i = bestMatchStartIndex; i <= bestMatchEndIndex; i++) {
+                result.add(forecastRange.get(i));
+            }
+
+            result = truncateDurationToClosestMatch(result, scheduledStart, scheduledEnd);
+        } else {
+            result = null;
+        }
+        
         return result;
     }
 
@@ -598,7 +679,7 @@ public class WeatherForecastUpdater {
                 }
                 if (wf.getForecastEnd().isAfter(end)) {
                     wf.setForecastEnd(end);
-                } 
+                }
             }
         }
 
@@ -686,6 +767,63 @@ public class WeatherForecastUpdater {
         return forecasts;
     }
 
+    /**
+     * Gives the minimum distance in seconds between the forecast interval and
+     * the scheduled interval.
+     *
+     * @param forecastStart
+     * @param forecastEnd
+     * @param scheduledStart
+     * @param scheduledEnd
+     * @return
+     */
+    private long calculateDistance(LocalDateTime forecastStart, LocalDateTime forecastEnd, LocalDateTime scheduledStart, LocalDateTime scheduledEnd) throws InvalidInputException {
+        long distance;
+        if (LocalDateTimeUtils.distance(forecastEnd, scheduledEnd) >= 0) {
+            // FE <= SS
+            distance = LocalDateTimeUtils.distance(forecastEnd, scheduledEnd);
+        } else if (LocalDateTimeUtils.distance(forecastStart, scheduledStart) >= 0 && LocalDateTimeUtils.distance(scheduledEnd, forecastEnd) >= 0) {
+            // FS <= SS && FE >= SE
+            distance = 0;
+        } else if (LocalDateTimeUtils.distance(scheduledStart, forecastStart) >= 0) {
+            // FS >= SS
+            distance = LocalDateTimeUtils.distance(scheduledStart, forecastStart);
+        } else {
+            throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_INVALID_BEST_MATCH_CALCULATION);
+        }
+
+        return distance;
+    }
+
+    private List<WeatherForecastBase> truncateDurationToClosestMatch(List<WeatherForecastBase> result, LocalDateTime scheduledStart, LocalDateTime scheduledEnd) throws InvalidInputException {
+        long eventDuration = LocalDateTimeUtils.distance(scheduledStart, scheduledEnd);
+        
+        if(eventDuration <= 0) 
+            throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END);
+
+        if (result != null && result.size() > 0) {
+            LocalDateTime forecastStart = result.get(0).getForecastStart();
+            LocalDateTime forecastEnd = result.get(result.size() - 1).getForecastEnd();
+
+            if (LocalDateTimeUtils.distance(forecastEnd, scheduledEnd) >= 0) {
+                // FE <= SS
+                result = truncateAndCover(result, LocalDateTimeUtils.subtract(forecastEnd, eventDuration), forecastEnd);
+            } else if (LocalDateTimeUtils.distance(forecastStart, scheduledStart) >= 0 && LocalDateTimeUtils.distance(scheduledEnd, forecastEnd) >= 0) {
+                // FS <= SS && FE >= SE
+                result = truncateAndCover(result, scheduledStart, scheduledEnd);
+            } else if (LocalDateTimeUtils.distance(scheduledStart, forecastStart) >= 0) {
+                // FS >= SS
+                result = truncateAndCover(result, forecastStart, LocalDateTimeUtils.add(forecastStart, eventDuration));
+            } else {
+                throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_INVALID_BEST_MATCH_CALCULATION);
+            }
+        } else {
+            result = null;
+        }
+        
+        return result;
+    }
+
     private class ShortForecastComparator implements Comparator<org.openweathermap.api.short_range.List> {
 
         @Override
@@ -710,8 +848,8 @@ public class WeatherForecastUpdater {
         }
     }
 
-    private void print(LocalDateTime start, LocalDateTime end, List<WeatherForecastBase> result) {
-        logger.log(Level.INFO, "Start: " + start.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + ", End: " + end.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+    private void print(LocalDateTime start, LocalDateTime end, String city, String countryID, List<WeatherForecastBase> result) {
+        logger.log(Level.INFO, "City: " + city + ", Country: " + countryID + ",Start: " + start.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + ", End: " + end.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
         for (WeatherForecastBase wf : result) {
             logger.log(Level.INFO, wf.getForecastStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "            " + wf.getForecastEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "           " + wf.getWeatherCondition());
         }

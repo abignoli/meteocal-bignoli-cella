@@ -5,9 +5,19 @@
  */
 package com.meteocal.business.facade;
 
+import com.meteocal.business.dao.EventDAO;
 import com.meteocal.business.dao.WeatherForecastDAO;
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.entities.WeatherForecastBase;
+import com.meteocal.business.entities.comparators.WeatherForecastBaseComparator;
+import com.meteocal.business.exceptions.InvalidInputException;
+import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.forecast.WeatherForecastService;
+import com.meteocal.geography.GeographicRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,15 +31,60 @@ public class WeatherForecastFacadeImplementation implements WeatherForecastFacad
 
     @EJB
     WeatherForecastDAO weatherForecastDAO;
-    
-    @Override
+
+    @EJB
+    EventDAO eventDAO;
+
+    @EJB
+    GeographicRepository geographicRepository;
+
+    @EJB
+    WeatherForecastService weatherForecastService;
+
     public void disable(WeatherForecast wf) {
         weatherForecastDAO.delete(wf);
     }
 
-    @Override
-    public List<WeatherForecast> askWeatherForecasts(LocalDateTime start, LocalDateTime end) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private List<WeatherForecastBase> askWeatherForecasts(LocalDateTime start, LocalDateTime end, String city, String country) throws InvalidInputException {
+        return weatherForecastService.askForecast(start, end, city, geographicRepository.getCountryID(country));
     }
-    
+
+    @Override
+    public List<WeatherForecast> askWeatherForecasts(int eventID) throws NotFoundException, InvalidInputException {
+        Event e = eventDAO.retrieve(eventID);
+
+        eventDAO.refresh(e);
+
+        return assign(e, askWeatherForecasts(e.getStart(), e.getEnd(), e.getCity(), e.getCountry()));
+    }
+
+    private List<WeatherForecast> assign(Event e, List<WeatherForecastBase> forecastsBase) {
+        if (e == null) {
+            throw new NullPointerException();
+        }
+
+        List<WeatherForecast> forecasts = new ArrayList<WeatherForecast>();
+
+        if (forecastsBase != null) {
+            for (WeatherForecastBase wfb : forecastsBase) {
+                forecasts.add(new WeatherForecast(wfb, e));
+            }
+        }
+        
+        Collections.sort(forecasts, new WeatherForecastBaseComparator());
+        
+        return forecasts;
+    }
+
+    @Override
+    public void save(List<WeatherForecast> newForecasts) {
+        for(WeatherForecast wf: newForecasts)
+            save(wf);
+    }
+
+    @Override
+    public void save(WeatherForecast newForecast) {
+        weatherForecastDAO.save(newForecast);
+    }
+
 }

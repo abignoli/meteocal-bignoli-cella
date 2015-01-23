@@ -5,6 +5,7 @@
  */
 package com.meteocal.tests.AB;
 
+import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.tests.EditEntityTest;
 import com.meteocal.business.tests.EventTests;
@@ -18,11 +19,17 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class TestEventFindAllBean {
+public class TestEvents {
     @EJB
     EventTests eventTests;
 
     public void test() {
         eventTests.findAll();
+    }
+    
+    public void testCreateAndForecast() {
+        User creator = eventTests.testCreateAndForecast1();
+        Event event = eventTests.testCreateAndForecast2(creator.getId());
+        eventTests.testCreateAndForecast3(event.getId());
     }
 }

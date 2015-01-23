@@ -6,6 +6,9 @@
 package com.meteocal.business.facade;
 
 import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.entities.WeatherForecastBase;
+import com.meteocal.business.exceptions.InvalidInputException;
+import com.meteocal.business.exceptions.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,9 +17,13 @@ import java.util.List;
  * @author USUARIO
  */
 public interface WeatherForecastFacade {
-
+    
     public void disable(WeatherForecast wf);
+    
+    public List<WeatherForecast> askWeatherForecasts(int eventID) throws InvalidInputException, NotFoundException;
 
-    public List<WeatherForecast> askWeatherForecasts(LocalDateTime start, LocalDateTime end);
+    public void save(List<WeatherForecast> newForecasts);
+    
+    public void save(WeatherForecast newForecast);
     
 }
