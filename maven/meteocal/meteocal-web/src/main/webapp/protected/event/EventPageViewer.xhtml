@@ -22,7 +22,7 @@ and open the template in the editor.
             </ui:include>
         </div>
         <p:panel id="privacyPanel" header="Event " footer="Preview form" style="margin-top:70px" class="panelForm">     
-                <h:panelGrid columns="2" cellpadding="5">
+            <h:panelGrid columns="2" cellpadding="5">
                 <h:outputText value="Here there are all the available informations as far as an event concerns. ">
                 </h:outputText>
                 <br/>
@@ -38,17 +38,30 @@ and open the template in the editor.
                         <h:outputText value="Address" />
                         <h:outputText value="#{eventViewBean.address}" />
 
+                        <p:outputLabel value="Weather Forecasts" for="weatherForecasts" />
+
+                        <p:ring id="weatherForecasts" value="#{eventEditingBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
+                            <p:panelGrid columns="1">
+                                #{weatherForecast.forecastStart}
+                                <p:graphicImage id="img" name="/WEB-INF/Resources/images/#{weatherForecast.weatherCondition.code}.png" />
+                                #{weatherForecast.forecastEnd}
+                            </p:panelGrid>
+                        </p:ring>
+
                         <h:outputText value="City" />
-                        <h:outputText value="#{eventViewBean.city}" />
+                        <h:outputText value="#{eventPageViewerBean.city}" />
 
                         <h:outputText value="Country" />
-                        <h:outputText value="#{eventViewBean.country}" />
+                        <h:outputText value="#{eventPageViewerBean.country}" />
 
                         <h:outputText value="Description" />
-                        <h:outputText value="#{eventViewBean.description}" />
+                        <h:outputText value="#{eventPageViewerBean.description}" />
 
                         <h:outputText value="Indoor" />
-                        <h:outputText value="#{eventViewBean.indoor}" />
+                        <h:outputText value="#{eventPageViewerBean.indoor}" />
+                        
+                        <h:outputText value="Cancel the participation"/>
+                        <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" />
                     </h:panelGrid>
                 </h:form>
             </h:panelGrid>

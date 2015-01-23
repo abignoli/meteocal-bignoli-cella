@@ -94,7 +94,7 @@ public class LoginBean {
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error!", "Login end successfully!"));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Login end successfully!"));
 
         return "/protected/personal/HomeCalendar.xhtml";
     }

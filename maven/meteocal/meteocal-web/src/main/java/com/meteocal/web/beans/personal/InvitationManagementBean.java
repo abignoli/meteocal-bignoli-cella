@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -61,11 +62,14 @@ public class InvitationManagementBean {
         invitations = newInvitations;
     }
 
-    public void accept(String eventID,String userID) throws BusinessException {
-        int evID,usID;
-        evID = Integer.parseInt(eventID);
-        usID = Integer.parseInt(userID);
-        eventFacade.addParticipant(evID, usID);
+    public void accept() throws BusinessException {
+        String evID,usID;
+        int eventID,userID;
+        evID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("eventID");
+        usID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userID");
+        eventID = Integer.parseInt(evID);
+        userID = Integer.parseInt(usID);
+        eventFacade.addParticipant(eventID, userID);
     }
     
 

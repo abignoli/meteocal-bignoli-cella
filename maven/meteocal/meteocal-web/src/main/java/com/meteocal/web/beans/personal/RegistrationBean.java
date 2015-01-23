@@ -76,7 +76,7 @@ public class RegistrationBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (uf.isUsernameInUse(userToRegister.getUsername())) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "This username is already used!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Username already present!"));
             return "/Index";
         }
 

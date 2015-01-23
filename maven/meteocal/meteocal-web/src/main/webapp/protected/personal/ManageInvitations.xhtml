@@ -19,25 +19,29 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
+        <p:growl/>
         <div>
             <p:panel id="basic" header="Basic" footer="Movie Details" style="margin-bottom:20px">
                 <h:panelGrid columns="2" cellpadding="10">
                     <h:form>    
-                        <p:feedReader value="#{invitationManagementBean.invitations}" var="invitation">
-
+                        <p:dataList value="#{invitationManagementBean.invitations}" var="invitation">
+                            <f:facet name="header">
+                                Invitations
+                            </f:facet>
+                            
                             <h:outputText value="#{invitation.user.username}" />
                             invites you to his events:  
                             <p:link value="#{invitation.event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{invitation.event.id}"></p:link>
                             Would you like to join him?
 
-                            <p:splitButton value="Answer">
-                                <p:menuitem value="Joind" actionListener="#{invitationManagementBean.accept(invitation.eventID,invitation.userID)}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
-                                <p:separator />
-                                <p:menuitem value="Decline" actionListener="#{invitationManagementBean.decline()}" ajax="false" icon="ui-icon-close" />
-                            </p:splitButton>
+                            <p:commandButton value="Join" actionListener="#{invitationManagementBean.accept()}" icon="ui-icon-arrowrefresh-1-w" >
+                                <f:param name="userID" value="#{invitation.userID}" />
+                                <f:param name="eventID" value="#{invitation.eventID}" />
+                            </p:commandButton>    
+                            <p:commandButton value="Decline" actionListener="#{invitationManagementBean.decline()}" ajax="false" icon="ui-icon-close" />
 
                             <p:separator />
-                        </p:feedReader>
+                        </p:dataList>
 
                     </h:form>
                 </h:panelGrid>

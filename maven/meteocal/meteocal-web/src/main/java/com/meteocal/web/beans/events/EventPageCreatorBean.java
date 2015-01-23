@@ -7,14 +7,13 @@ package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
-import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.entities.WeatherForecast;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,15 +47,6 @@ public class EventPageCreatorBean implements Serializable {
 
     @EJB
     EventFacade ef;
-
-    private String address;
-    private String city;
-    private String country;
-    private String description;
-    private EnumSet<WeatherCondition> adverseConditions;
-    private List<User> invited;
-    private User participants;
-    private boolean indoor;
 
     @PostConstruct
     public void init() {
@@ -120,75 +110,39 @@ public class EventPageCreatorBean implements Serializable {
         return referredEvent.getName();
     }
 
-    public void setName(String name) {
-        name = referredEvent.getName();
-    }
-
     public String getAddress() {
         return referredEvent.getAddress();
-    }
-
-    public void setAddress() {
-        address = referredEvent.getAddress();
     }
 
     public String getCity() {
         return referredEvent.getCity();
     }
 
-    public void setCity() {
-        city = referredEvent.getCity();
-    }
-
     public String getCountry() {
         return referredEvent.getCountry();
-    }
-
-    public void setCountry() {
-        country = referredEvent.getCountry();
     }
 
     public String getDescription() {
         return referredEvent.getDescription();
     }
 
-    public void setDescription() {
-        description = referredEvent.getDescription();
-    }
-
-    public EnumSet<WeatherCondition> getAdverseConditions() {
-        return referredEvent.getAdverseConditions();
-    }
-
-    public void setAdverseConditions() {
-        adverseConditions = referredEvent.getAdverseConditions();
+    public List<WeatherForecast> getWeatherForecasts() {
+        return referredEvent.getWeatherForecasts();
     }
 
     public List<User> getInvited() {
         return referredEvent.getInvited();
     }
 
-    public void setInvited() {
-        invited = referredEvent.getInvited();
-    }
-
     public String getParticipant() {
         return newParticipant;
     }
 
-    public void setParticipant(String newParticipant) {
-        this.newParticipant = newParticipant;
-    }
-    
-    public void setParticipant(User newParticipant) {
-        this.newParticipant = newParticipant.getUsername();
-    }
-
-    public void setIndoor() {
-        indoor = referredEvent.isIndoor();
-    }
-
     public boolean getIndoor() {
         return referredEvent.isIndoor();
+    }
+    
+    public void setParticipant(String participant){
+        newParticipant=participant;
     }
 }

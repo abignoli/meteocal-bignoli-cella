@@ -11,19 +11,16 @@
     <h:form>  
 
         <p:menubar>
-            <p:menuitem value="Home" url="/protected/personal/HomeCalendar.xhtml" icon="ui-icon-home"/>
-            <p:menuitem value="#{topbarBean.username}" url="#" style="text-decoration: underline" />
+            <p:menuitem value="#{topbarBean.username}" url="/protected/personal/HomeCalendar.xhtml" icon="ui-icon-home"/>
 
             <f:facet name="options">
                 <p:inputText style="margin-right:20px" placeholder="Search"  value="#{searchBean.searched}"/>
                 <p:commandButton action="#{searchBean.search()}" type="submit" icon="ui-icon-search" />
             </f:facet>
 
-            <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>
-            <p:menuitem value="#{topbarBean.notificationNumber}" url="#" icon="ui-icon-flag"/>
-            <p:menuitem value="Invitation" url="/protected/personal/ManageInvitations.xhtml" icon="ui-icon-mail-closed"/>
-            <p:menuitem value="#{topbarBean.invitationNumber}" url="#" icon="ui-icon-mail-closed"/>
-
+            <p:menuitem value="#{topbarBean.notificationNumber}" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>
+            <p:menuitem value="#{topbarBean.invitationNumber}" url="/protected/personal/ManageInvitations.xhtml" icon="ui-icon-mail-closed"/>
+            
             <p:submenu label="Events" >
                 <p:menuitem value="Create" url="/protected/event/EventCreate.xhtml" icon="ui-icon-document" />
                 <p:menuitem value="Manage" url="/protected/personal/ManageEvents.xhtml" icon="ui-icon-script" />
