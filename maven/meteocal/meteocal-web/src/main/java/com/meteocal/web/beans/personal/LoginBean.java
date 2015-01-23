@@ -89,12 +89,12 @@ public class LoginBean {
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
             ir.setErrorLogin(true);
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Credentials are not valid!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credentials are not valid!", "Credentials are not valid!"));
             return "/Index.xhtml";
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error!", "Login end successfully!"));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Login end successfully!", "Login end successfully!"));
 
         return "/protected/personal/HomeCalendar.xhtml";
     }

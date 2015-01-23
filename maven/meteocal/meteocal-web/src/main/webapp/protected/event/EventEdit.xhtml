@@ -15,6 +15,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
+        <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />
         <f:event listener="#{filterEventEditing.check}" type="preRenderView" />
 
         <ui:include src="/Components/TopBar.xhtml"></ui:include>
@@ -27,14 +28,6 @@ and open the template in the editor.
 
                     <p:outputLabel value="Address" for="address" />
                     <p:inputText id="address" value="#{eventEditingBean.event.address}"/>
-
-                    
-                    <p:outputLabel value="Weather Forecasts" for="weatherForecasts" />
-                    
-                    <p:ring id="weatherForecasts" value="#{eventEditingBean.event.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
-                        <!--<p:graphicImage id="img" name="/Resources/images/{weatherForecast}.png" />-->
-                        #{weatherForecast}
-                    </p:ring>
 
                     <p:outputLabel value="Country" for="country" />
                     <p:selectOneMenu id="country" value="#{eventEditingBean.selectedCountry}" panelStyle="width:180px"

@@ -6,6 +6,7 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
@@ -29,17 +30,21 @@ import org.primefaces.model.ScheduleEvent;
 @ManagedBean
 @ViewScoped
 public class OnEventSelectListener {
+
     public static final String creatorOutcome = "Creator";
     public static final String errorOutcome = "Error";
     public static final String viewerOutcome = "Viewer";
     public static final String noVisibilityOutcome = "noVisibility";
-    
+
     @Inject
     SessionUtility sessionUtility;
 
     @Inject
     ErrorBean error;
-    
+
+    @EJB
+    EventFacade ef;
+
     @EJB
     UserManager um;
 
@@ -51,12 +56,18 @@ public class OnEventSelectListener {
 
     public void onEventSelect(SelectEvent selectEvent) {
         UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
-        String eventPath,strID;
+        String eventPath, strID;
         int eventID;
-        
         selectedEvent = (ScheduleEvent) selectEvent.getObject();
         eventID = Integer.parseInt(selectedEvent.getData().toString());
         String username = sessionUtility.getLoggedUser();
+
+        if (ef.find(eventID).isPrivateEvent()) {// NO VISIBILITY
+            FacesContext fc = FacesContext.getCurrentInstance();
+            sessionUtility.setParameter(eventID);
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
+            return;
+        }
         try {
             visibility = um.getVisibilityOverEvent(eventID);
             sessionUtility.setParameter(eventID);

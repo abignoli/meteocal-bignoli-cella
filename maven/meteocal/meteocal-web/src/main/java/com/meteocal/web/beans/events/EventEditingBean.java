@@ -6,6 +6,7 @@
 package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.WeatherForecast;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.geography.GeographicRepository;
@@ -15,16 +16,16 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *
  * @author Leo
  */
 @ViewScoped
-@Named
+@ManagedBean
 public class EventEditingBean implements Serializable {
 
     @EJB
@@ -39,7 +40,7 @@ public class EventEditingBean implements Serializable {
     private List<String> cities, countries;
     private String address, city, country, name, description, selectedCountry;
     private Event event;
-
+    private List<WeatherForecast> weatherForecasts;
     private boolean indoor, privateEvent;
 
     @PostConstruct
@@ -159,4 +160,14 @@ public class EventEditingBean implements Serializable {
     public String getSelectedCountry() {
         return selectedCountry;
     }
+
+    public List<WeatherForecast> getWeatherForecasts() {
+        return weatherForecasts;
+    }
+
+    public void setWeatherForecasts(List<WeatherForecast> weatherForecasts) {
+        this.weatherForecasts = weatherForecasts;
+    }
+    
+    
 }

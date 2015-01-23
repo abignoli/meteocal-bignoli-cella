@@ -7,10 +7,11 @@ package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
-import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.business.security.UserManager;
 import java.io.Serializable;
-import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,15 +35,11 @@ public class EventPageViewerBean implements Serializable{
     
     @EJB
     EventFacade ef;
-    private String address;
-    private String city;
-    private String country;
-    private String description;
-    private EnumSet<WeatherCondition> adverseConditions;
-    private List<User> invited;
-    private List<User> participants;
+    
+    @EJB
+    UserManager um;
+    
     private int id;
-    private boolean indoor;
 
     @PostConstruct
     public void init() {
@@ -67,64 +64,40 @@ public class EventPageViewerBean implements Serializable{
     public String getName(){
         return referredEvent.getName();
     }
-    public void setName(){
-        name = referredEvent.getName();
-    }
     
     public String getAddress(){
         return referredEvent.getAddress();
     }
-    public void setAddress(){
-        address = referredEvent.getAddress();
-    }
-    
+
     public String getCity(){
         return referredEvent.getCity();
-    }
-    public void setCity(){
-        city = referredEvent.getCity();
     }
     
     public String getCountry(){
         return referredEvent.getCountry();
     }
-    public void setCountry(){
-        country = referredEvent.getCountry();
-    }
-    
+
     public String getDescription(){
         return referredEvent.getDescription();
     }
-    public void setDescription(){
-        description = referredEvent.getDescription();
+
+    public List<WeatherForecast> getAdverseConditions(){
+        return referredEvent.getWeatherForecasts();
     }
-    
-    public EnumSet<WeatherCondition> getAdverseConditions(){
-        return referredEvent.getAdverseConditions();
-    }
-    public void setAdverseConditions(){
-        adverseConditions = referredEvent.getAdverseConditions();
-    }
-    
+
     public List<User> getInvited(){
         return referredEvent.getInvited();
     }
-    public void setInvited(){
-        invited = referredEvent.getInvited();
-    }
-    
+
     public List<User> getParticipant(){
         return referredEvent.getParticipants();
-    }
-    public void setParticipant(){
-        participants.add(referredEvent.findParticipant(null));
-    }
-    
-    public void setIndoor(){
-        indoor = referredEvent.isIndoor();
     }
     
     public boolean getIndoor(){
         return referredEvent.isIndoor();
+    }
+    
+    public void cancelPartecipation() throws BusinessException{
+        ef.removeParticipant(id, um.getLoggedUser().getId());
     }
 }

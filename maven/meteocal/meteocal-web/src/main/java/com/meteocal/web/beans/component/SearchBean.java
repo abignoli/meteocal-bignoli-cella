@@ -30,7 +30,7 @@ import javax.faces.bean.ManagedBean;
 public class SearchBean implements Serializable {
 
     private String searched;
-    private final String resultsOutcome = "/protected/SearchResults.xhtml";
+    private final String resultsOutcome = "/protected/SearchResults";
     private List<User> users;
     private List<Event> events;
 
@@ -45,6 +45,8 @@ public class SearchBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        events = new ArrayList<Event>();
+        users = new ArrayList<User>();
     }
 
     public void setSearched(String searched) {

@@ -16,6 +16,7 @@ and open the template in the editor.
     </h:head>
 
     <h:body>
+        <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />
         <f:event listener="#{filterEventCreator.check}" type="preRenderView" />
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml">
@@ -40,6 +41,14 @@ and open the template in the editor.
                         <h:outputText value="Address" />
                         <h:outputText value="#{eventPageCreatorBean.address}" />
 
+                        <p:ring id="weatherForecasts" value="#{eventPageCreatorBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
+                            <p:panelGrid columns="1">
+                                #{weatherForecast.forecastStart}
+                                <p:graphicImage id="img" name="/WEB-INF/Resources/images/#{weatherForecast.weatherCondition.code}.png" />
+                                #{weatherForecast.forecastEnd}
+                            </p:panelGrid>
+                        </p:ring>
+˙
                         <h:outputText value="City" />
                         <h:outputText value="#{eventPageCreatorBean.city}" />
 

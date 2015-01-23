@@ -13,6 +13,8 @@ import com.meteocal.business.shared.security.UserUserVisibility;
 import com.meteocal.web.utility.SessionUtility;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Leo
  */
+@RequestScoped
+@ManagedBean
 public class FilterCalendarVisible {
 
     @EJB
