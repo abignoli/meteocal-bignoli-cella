@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class EventCreatorBean implements Serializable {
+public class EventPageCreatorBean implements Serializable {
 
     private String user, name;
     private Event referredEvent;
@@ -76,7 +76,7 @@ public class EventCreatorBean implements Serializable {
             ef.addParticipant(eventID, userID);
         }
         catch (BusinessException ex) {
-            Logger.getLogger(EventCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EventPageCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info!", "Participant not added!"));
 

@@ -35,22 +35,22 @@ and open the template in the editor.
                         <h:outputText value="1" />
 
                         <h:outputText value="Name" />
-                        <h:outputText value="#{eventCreatorBean.name}" />
+                        <h:outputText value="#{eventPageCreatorBean.name}" />
 
                         <h:outputText value="Address" />
-                        <h:outputText value="#{eventCreatorBean.address}" />
+                        <h:outputText value="#{eventPageCreatorBean.address}" />
 
                         <h:outputText value="City" />
-                        <h:outputText value="#{eventCreatorBean.city}" />
+                        <h:outputText value="#{eventPageCreatorBean.city}" />
 
                         <h:outputText value="Country" />
-                        <h:outputText value="#{eventCreatorBean.country}" />
+                        <h:outputText value="#{eventPageCreatorBean.country}" />
 
                         <h:outputText value="Description" />
-                        <h:outputText value="#{eventCreatorBean.description}" />
+                        <h:outputText value="#{eventPageCreatorBean.description}" />
 
                         <h:outputText value="Indoor" />
-                        <h:outputText value="#{eventCreatorBean.indoor}" />
+                        <h:outputText value="#{eventPageCreatorBean.indoor}" />
 
                         <h:outputText value="Private" />
                         <h:outputText value="Y/N" />
@@ -63,8 +63,8 @@ and open the template in the editor.
         </p:fieldset>
         <p:fieldset>
             <h:form>
-                <p:inputText value="#{eventCreatorBean.participant}"></p:inputText>
-                <p:commandButton action="#{eventCreatorBean.addParticipant()}" value="add Participant" type="submit" ajax="false"></p:commandButton>
+                <p:inputText value="#{eventPageCreatorBean.participant}"></p:inputText>
+                <p:commandButton action="#{eventPageCreatorBean.addParticipant()}" value="add Participant" type="submit" ajax="false"></p:commandButton>
             </h:form>
         </p:fieldset>
     </h:body>
