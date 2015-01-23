@@ -70,6 +70,7 @@ public class EventFacadeImplementation implements EventFacade {
         Event toSave = new Event(e);
 
         toSave.setCreator(creator);
+        creator.getCreatedEvents().add(toSave);
 
         if (!toSave.validForSave()) {
             throw new InvalidInputException(InvalidInputException.EVENT_CREATION_INVALID);
@@ -199,7 +200,7 @@ public class EventFacadeImplementation implements EventFacade {
 
     private void updateWeatherForecasts(Event e) throws InvalidInputException, NotFoundException {
         // Ask new weather forecasts
-        List<WeatherForecast> newForecasts = weatherForecastFacade.askWeatherForecasts(e.getStart(), e.getEnd());
+        List<WeatherForecast> newForecasts = weatherForecastFacade.askWeatherForecasts(e.getId());
         boolean newForecastsGood = e.areForecastsGood(newForecasts);
 
         if (e.getWeatherForecasts() != null && e.getWeatherForecasts().size() != 0) {
@@ -221,8 +222,10 @@ public class EventFacadeImplementation implements EventFacade {
 
         // Update event with new forecasts
         e.setWeatherForecasts(newForecasts);
+        weatherForecastFacade.save(newForecasts);
 
         if (!newForecastsGood) {
+            // TODO check suggested scheduling
             updateSuggestedScheduling(e);
         }
     }

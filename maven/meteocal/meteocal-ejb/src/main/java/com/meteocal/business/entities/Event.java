@@ -111,6 +111,17 @@ public class Event {
 
     /**
      * Create a new event based on the provided one. The updated fields are:
+     * 
+     * Name
+     * Description
+     * Country
+     * City
+     * Address
+     * Indoor
+     * Private event
+     * Adverse weather conditions set
+     * Start
+     * End
      *
      * Name Description Country City Address Indoor flag Privacy flag Adverse
      * weather conditions set Start End
@@ -129,7 +140,11 @@ public class Event {
         address = e.getAddress();
         indoor = e.isIndoor();
         privateEvent = e.isPrivateEvent();
+        
         adverseConditions = e.getAdverseConditions();
+        if(adverseConditions == null)
+            adverseConditions = EnumSet.noneOf(WeatherCondition.class);
+        
         start = e.getStart();
         end = e.getEnd();
         status = EventStatus.PLANNED;

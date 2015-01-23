@@ -6,7 +6,9 @@
 package com.meteocal.business.entities;
 
 import com.meteocal.business.entities.shared.WeatherCondition;
+import com.meteocal.business.shared.utils.LocalDateTimeUtils;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,13 +23,13 @@ import javax.validation.constraints.NotNull;
 public class WeatherForecastBase {
     
     @Enumerated(EnumType.STRING)
-    private WeatherCondition weatherCondition;
+    protected WeatherCondition weatherCondition;
     
     @NotNull
-    private LocalDateTime forecastStart;
+    protected LocalDateTime forecastStart;
 
     @NotNull
-    private LocalDateTime forecastEnd;
+    protected LocalDateTime forecastEnd;
     
     public WeatherCondition getWeatherCondition() {
         return weatherCondition;
@@ -55,5 +57,9 @@ public class WeatherForecastBase {
 
     public boolean isValid() {
         return !(forecastStart == null || forecastEnd == null || forecastStart.isAfter(forecastEnd) || weatherCondition == null);
+    }
+    
+    public long getDuration() {
+        return LocalDateTimeUtils.distance(forecastStart, forecastEnd);
     }
 }

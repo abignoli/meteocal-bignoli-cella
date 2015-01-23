@@ -31,7 +31,7 @@ import javax.persistence.PersistenceContext;
 @Local
 public interface UserManager {
 
-    public void register(User user);
+    public User register(User user);
 
     public void unregister();
 

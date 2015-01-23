@@ -26,7 +26,8 @@ public class InvalidInputException extends BusinessException {
     public static final String EVENT_CREATION_NO_LOGGED_USER = "[EVENT CREATION] No user is logged in, cannot create the event.";
     
     public static final String WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END = "[WEATHER FORECAST SERVICE] Weather forecast request: start after end.";
-    
+    public static final String WEATHER_FORECAST_SERVICE_INVALID_BEST_MATCH_CALCULATION = "[WEATHER FORECAST SERVICE] Invalid distance calculation.";
+            
     /**
      * Creates a new instance of <code>NotFound</code> without detail message.
      */

@@ -131,8 +131,13 @@ public class GeographicRepository {
     public String getCountryID(String countryName) {
         Country country = countryNamesMap.get(countryName);
         
-        if(country == null)
+        if(country == null) {
+            countryNamesMap.get(countryName.toUpperCase());
+        }
+        
+        if(country == null) {
             return null;
+        }
         
         return country.getId();
     }
