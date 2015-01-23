@@ -28,13 +28,16 @@ and open the template in the editor.
                     <p:outputLabel value="Address" for="address" />
                     <p:inputText id="address" value="#{eventEditingBean.event.address}"/>
 
-                    <p:ring id="custom" value="#{eventEditingBean.event.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
-                        <!--<p:graphicImage id="img" name="/Resources/images/#{weatherForecast}.png" />-->
+                    
+                    <p:outputLabel value="Weather Forecasts" for="weatherForecasts" />
+                    
+                    <p:ring id="weatherForecasts" value="#{eventEditingBean.event.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
+                        <!--<p:graphicImage id="img" name="/Resources/images/{weatherForecast}.png" />-->
                         #{weatherForecast}
                     </p:ring>
 
                     <p:outputLabel value="Country" for="country" />
-                    <p:selectOneMenu id="country" value="#{eventEditingBean.event.country}" panelStyle="width:180px"
+                    <p:selectOneMenu id="country" value="#{eventEditingBean.selectedCountry}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{eventEditingBean.countries}" var="country" itemLabel="#{country}" itemValue="#{country}" />
                         <f:ajax listener="#{eventEditingBean.updateCities}" render="city" />
