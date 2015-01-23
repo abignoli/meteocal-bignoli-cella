@@ -40,6 +40,7 @@ public class FilterCalendar {
     private final String errorOutcome = "Error";
     private final String visibleOutcome = "Visible";
     private final String noVisibleOutcome = "NoVisible";
+    private final String myCalendarOutcome = "MyCalendar";
     private User loggedUser;
 
     @PostConstruct
@@ -53,10 +54,17 @@ public class FilterCalendar {
     }
 
     public void check() {
-        String userA, userB;
+        String userB;
         UserUserVisibility visibility;
 
         userB = getUser();
+        
+        if(userB.equals(loggedUser.getUsername())){
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, myCalendarOutcome);
+            return;
+        }
+            
         try {
             visibility = um.getVisibilityOverUser(uf.findByUsername(userB).getId());
         }

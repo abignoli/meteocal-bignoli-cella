@@ -9,23 +9,14 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
-import com.meteocal.business.shared.security.UserEventVisibility;
-import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
 import com.meteocal.business.shared.security.UserUserVisibility;
-import com.meteocal.web.beans.component.ErrorBean;
-import com.meteocal.web.exceptions.NotValidParameter;
-import com.meteocal.web.filters.events.FilterEvent;
-import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
