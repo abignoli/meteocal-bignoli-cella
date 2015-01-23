@@ -10,7 +10,7 @@ package com.meteocal.web.utility;
  * @author Leo
  */
 public class SYSO_Testing {
-    private static final boolean testing = true;
+    private static final boolean testing = false;
     
     public static void syso(String stringToPrint){
         if(testing)

@@ -5,10 +5,12 @@
  */
 package com.meteocal.web.filters.events;
 
+import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
+import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
@@ -31,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ManagedBean
 @RequestScoped
-public class FilterEventCreator {
+public class FilterEventEditing {
 
     UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
 
@@ -74,15 +76,15 @@ public class FilterEventCreator {
             error.setMessage("Not Valid Parameter");
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-            return;
+
         }
-        
+
         if (isNotLogged()) {
             SYSO_Testing.syso("I'm not logged");
             FacesContext fc = FacesContext.getCurrentInstance();
             sessionUtility.setParameter(eventID);
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-            return;
+
         }
         else {
             try {
@@ -90,7 +92,7 @@ public class FilterEventCreator {
                 if (visibility != CREATOR) {
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-                    return;
+
                 }
                 //If I reach this code, I'm the creator
 
@@ -99,7 +101,7 @@ public class FilterEventCreator {
                 Logger.getLogger(FilterEvent.class.getName()).log(Level.SEVERE, null, ex);
                 FacesContext fc = FacesContext.getCurrentInstance();
                 fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
-                return;
+
             }
         }
     }

@@ -9,23 +9,29 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
+import com.meteocal.business.shared.security.UserEventVisibility;
+import static com.meteocal.business.shared.security.UserEventVisibility.CREATOR;
 import com.meteocal.business.shared.security.UserUserVisibility;
+import com.meteocal.web.beans.component.ErrorBean;
+import com.meteocal.web.exceptions.NotValidParameter;
+import com.meteocal.web.filters.events.FilterEvent;
+import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author Leo
  */
-@ManagedBean
-@RequestScoped
-public class FilterCalendar {
+public class FilterCalendarVisible {
 
     @EJB
     private UserManager um;
@@ -51,8 +57,9 @@ public class FilterCalendar {
     private void setUser(User user) {
         this.loggedUser = user;
     }
+    
 
-    public void check() {
+    public void check(ComponentSystemEvent event) {
         String userA, userB;
         UserUserVisibility visibility;
 
@@ -69,10 +76,7 @@ public class FilterCalendar {
         if (visibility == UserUserVisibility.NOT_VISIBLE) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibleOutcome);
-        }
-        else {//VISIBLE
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, visibleOutcome);
+            return;
         }
     }
 

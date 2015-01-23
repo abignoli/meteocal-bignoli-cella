@@ -37,6 +37,38 @@
     </navigation-rule>
 -->    
     <navigation-rule>
+        <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙
+        <navigation-case>
+            <from-outcome>Creator</from-outcome>	            
+            <to-view-id>/protected/event/EventPageCreator.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙     
+        <navigation-case>
+            <from-outcome>Viewer</from-outcome>
+            <to-view-id>/protected/event/EventPageViewer.xhtml</to-view-id>	        
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙
+        <navigation-case>
+            <from-outcome>NoVisibility</from-outcome>
+            <to-view-id>/protected/event/EventPageNoVisibility.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙    
+        <navigation-case>
+            <from-outcome>Error</from-outcome>
+            <to-view-id>/Error.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/protected/event/EventPage.xhtml</from-view-id>˙
         <navigation-case>
             <from-outcome>Creator</from-outcome>	            

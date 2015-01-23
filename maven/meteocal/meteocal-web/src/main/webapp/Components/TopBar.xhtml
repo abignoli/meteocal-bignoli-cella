@@ -20,9 +20,9 @@
             </f:facet>
 
             <p:menuitem value="Notification" url="/protected/personal/ManageNotifications.xhtml" icon="ui-icon-flag"/>
-            <p:menuitem value="NotificationNumber" url="#" icon="ui-icon-flag"/>
+            <p:menuitem value="#{topbarBean.notificationNumber}" url="#" icon="ui-icon-flag"/>
             <p:menuitem value="Invitation" url="/protected/personal/ManageInvitations.xhtml" icon="ui-icon-mail-closed"/>
-            <p:menuitem value="InvitationNumber" url="#" icon="ui-icon-mail-closed"/>
+            <p:menuitem value="#{topbarBean.invitationNumber}" url="#" icon="ui-icon-mail-closed"/>
 
             <p:submenu label="Events" >
                 <p:menuitem value="Create" url="/protected/event/EventCreate.xhtml" icon="ui-icon-document" />

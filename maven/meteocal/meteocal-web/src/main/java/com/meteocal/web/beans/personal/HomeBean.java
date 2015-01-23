@@ -5,59 +5,64 @@
  */
 package com.meteocal.web.beans.personal;
 
+import com.meteocal.business.entities.Event;
+import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.security.UserManager;
+import com.meteocal.web.converters.ConverterLocalDateTimeAndDate;
 import com.meteocal.web.utility.SessionUtility;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.ScheduleEvent;
 
 /**
  *
  * @author Leo
  */
-@Named
-@RequestScoped
+@ManagedBean
+@ViewScoped
 public class HomeBean implements Serializable{
-    private ScheduleModel visibleEvents = new DefaultScheduleModel();
-    private ScheduleEvent selectedEvent;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
+    private ScheduleModel visibleEvents;
+    private List<Event> userEvents;
     
     @Inject
     SessionUtility sessionUtility;
     
+    @EJB
+    UserManager um;
+    
     @PostConstruct
     public void init(){
+        Date d1,d2;
+        DefaultScheduleEvent tmpEvent;
+        int eventID;
+        
+        try {
+            userEvents = um.getEventsVisibilityMasked(um.getLoggedUser().getId());
+        }
+        catch (NotFoundException ex) {
+            Logger.getLogger(HomeBean.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         visibleEvents = new DefaultScheduleModel();
-        visibleEvents.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        visibleEvents.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), nextDay9Am()));
-        visibleEvents.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", today1Pm(), nextDay9Am()));
-        visibleEvents.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", previousDay8Pm(), nextDay9Am()));
-        request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        for(Event myEvent:userEvents){
+            d1 = ConverterLocalDateTimeAndDate.toDate(myEvent.getStart());
+            d2 = ConverterLocalDateTimeAndDate.toDate(myEvent.getEnd());
+            tmpEvent = new DefaultScheduleEvent(myEvent.getName(),d1,d2,myEvent.getId());
+            visibleEvents.addEvent(tmpEvent);
+        }
+        visibleEvents.addEvent(new DefaultScheduleEvent("-1:-Champions Legue", previousDay8Pm(), previousDay11Pm(),0));
      
-    }
-    
-    public Date getRandomDate() {
-        Calendar date = Calendar.getInstance();
-        date.setTime(new Date());
-        date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);    //set random day of month
-         
-        return date.getTime();
     }
     
     public ScheduleModel getVisibleEvents(){
@@ -91,22 +96,5 @@ public class HomeBean implements Serializable{
         t.set(Calendar.HOUR, 11);
          
         return t.getTime();
-    }
-     
-    private Date today1Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 1);
-         
-        return t.getTime();
-    }    
-    private Date nextDay9Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 9);
-         
-        return t.getTime();
-    }
-     
+    }  
 }
