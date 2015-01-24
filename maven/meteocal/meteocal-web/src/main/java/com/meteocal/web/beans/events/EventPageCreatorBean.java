@@ -9,6 +9,7 @@ import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.web.exceptions.NotValidParameter;
@@ -144,7 +145,11 @@ public class EventPageCreatorBean implements Serializable {
         return referredEvent.isPrivateEvent();
     }
     
-    public void setParticipant(String participant){
-        newParticipant=participant;
+    public List<User> getParticipants(){
+        return referredEvent.getParticipants();
+    }
+    
+    public boolean getRender() throws NotFoundException{
+        return ef.isSuggestedChangeAvailable(eventID);
     }
 }

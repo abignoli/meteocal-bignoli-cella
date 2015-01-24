@@ -20,58 +20,70 @@ and open the template in the editor.
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
         <h:form>
+            <p:growl/>
             <p:panel id="privacyPanel" header="Event Creation" footer="Creation form" style="margin-top:70px" class="panelForm">     
-                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
+                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
 
-                    <p:outputLabel value="Name" for="name" />
-                    <p:inputText id="name" value="#{eventCreationBean.createdEvent.name}" />
+                    <p:outputLabel value="Name:" for="name" />
+                    <p:inputText required="true" id="name" value="#{eventCreationBean.createdEvent.name}" />
+                    <p:message for="name" severity="error"/>
 
-                    <p:outputLabel value="Address" for="address" />
-                    <p:inputText id="address" value="#{eventCreationBean.createdEvent.address}" />
+                    <p:outputLabel value="Address:" for="address" />
+                    <p:inputText required="true" id="address" value="#{eventCreationBean.createdEvent.address}" />
+                    <p:message for="address" severity="error"/>
                     
-                    <p:outputLabel value="Country" for="country" />
-                    <p:selectOneMenu id="country" value="#{eventCreationBean.selectedCountry}" panelStyle="width:180px"
+                    <p:outputLabel value="Country:" for="country" />
+                    <p:selectOneMenu required="true" id="country" value="#{eventCreationBean.selectedCountry}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{eventCreationBean.countries}" var="country" itemLabel="#{country}" itemValue="#{country}" />
                         <f:ajax listener="#{eventCreationBean.updateCities}" render="city" />
                     </p:selectOneMenu>
+                    <p:message for="country" severity="error"/>
                     
-                    <p:outputLabel value="City" for="city"/>
-                    <p:selectOneMenu id="city" value="#{eventCreationBean.createdEvent.city}" panelStyle="width:180px"
+                    <p:outputLabel value="City:" for="city"/>
+                    <p:selectOneMenu required="true" id="city" value="#{eventCreationBean.createdEvent.city}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{eventCreationBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" />
                     </p:selectOneMenu>
+                    <p:message for="city" severity="error"/>
 
 
-                    <h:outputText value="Description"/>
-                    <p:inputTextarea id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventCreationBean.createdEvent.description}"/>
+                    <h:outputText value="Description:"/>
+                    <p:inputTextarea required="true" id="description" rows="5" cols="30" maxlength="250" autoResize="true" value="#{eventCreationBean.createdEvent.description}"/>
+                    <p:message for="description" severity="error"/>
 
 
                     <h:outputText value="Adverse Conditions: " />
-                    <p:selectManyButton value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.weatherConv}">
+                    <p:selectManyButton required="true" id="adverseCondition" value="#{eventCreationBean.createdEvent.adverseConditions}" converter="#{bean.weatherConv}">
                         <f:selectItems value="#{eventCreationBean.weatherConditions}" />
                     </p:selectManyButton>
+                    <p:message for="adverseCondition" severity="error"/>
 
                     <h:outputText value="Event beginning: " />
                     <p:calendar id="startingTime" value="#{eventCreationBean.createdEvent.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
+                    <p:message for="startingTime" severity="error"/>
 
-                    <h:outputText value="Event ending " />
-                    <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>
+                    <h:outputText value="Event ending: " />
+                    <p:calendar id="endingTime" required="true" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>
+                    <p:message for="endingTime" severity="error"/>
 
-                    <h:outputText>List of Users [username1,username2]</h:outputText>
+                    <h:outputText>Insert any number of users to invite <br/> writing their usernames separated by commas. (e.g. Username1, Username2, Username3)</h:outputText>
                     <p:inputTextarea rows="6" cols="33" value="#{eventCreationBean.participants}" />
+                    <h:outputText>participants could be added even later</h:outputText>
                     
                     <h:outputText value="Location: " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">
+                    <p:selectOneButton required="true"  id="location" value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />
                         <f:selectItem itemLabel="Outdoor" itemValue="false" />
                     </p:selectOneButton>
+                    <p:message for="location" severity="error"/>
 
-                    <h:outputText value="Privacy Mode " />
-                    <p:selectOneButton value="#{eventCreationBean.createdEvent.privateEvent}" converter="#{bean.booleanConv}">
+                    <h:outputText value="Privacy Mode: " />
+                    <p:selectOneButton id="privacyMod" value="#{eventCreationBean.createdEvent.privateEvent}" converter="#{bean.booleanConv}" required="true" >
                         <f:selectItem itemLabel="Private" itemValue="true" />
                         <f:selectItem itemLabel="Public" itemValue="false" />
                     </p:selectOneButton>
+                    <p:message for="privacyMod" severity="error"/>
 
                     <br/>    
                     <p:commandButton value="Create" action="#{eventCreationBean.create()}" type="submit" ajax="false" styleClass="block"/>

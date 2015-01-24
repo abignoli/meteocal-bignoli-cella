@@ -47,16 +47,18 @@ public class InvitationManagementBean {
     public List<Invitation> getInvitations() {
         for (Invitation i : invitations) {
             try {
-                invitationFacade.setAsSeen(i.getID());
+                userManager.setInvitationAsSeen(i.getID());
             }
             catch (NotFoundException ex) {
                 Logger.getLogger(InvitationManagementBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         return invitations;
     }
 
-    public void decline(){};
+    public void decline(){
+    }
     
     public void setInvitations(List<Invitation> newInvitations) {
         invitations = newInvitations;

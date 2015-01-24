@@ -33,13 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestScoped
 public class FilterEventCreator {
 
-    UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
+    private UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
 
     @Inject
     private SessionUtility sessionUtility;
 
     @Inject
-    ErrorBean error;
+    private ErrorBean error;
 
     @EJB
     private UserManager um;

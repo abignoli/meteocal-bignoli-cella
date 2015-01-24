@@ -43,7 +43,8 @@ public class EventPageViewerBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        setReferredEvent(ef.find(this.getId()));
+        id = getId();
+        setReferredEvent(ef.find(id));
     }
 
     public int getId() {
@@ -89,7 +90,7 @@ public class EventPageViewerBean implements Serializable{
         return referredEvent.getInvited();
     }
 
-    public List<User> getParticipant(){
+    public List<User> getParticipants(){
         return referredEvent.getParticipants();
     }
     
@@ -103,5 +104,10 @@ public class EventPageViewerBean implements Serializable{
     
     public void cancelPartecipation() throws BusinessException{
         ef.removeParticipant(id, um.getLoggedUser().getId());
+    }
+    
+    
+    public List<WeatherForecast> getWeatherForecasts() {
+        return referredEvent.getWeatherForecasts();
     }
 }

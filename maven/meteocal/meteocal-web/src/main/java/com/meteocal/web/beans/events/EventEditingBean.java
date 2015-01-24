@@ -12,6 +12,7 @@ import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.forecast.WeatherForecastService;
 import com.meteocal.geography.GeographicRepository;
+import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -22,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.convert.Converter;
 import javax.inject.Inject;
 
 /**
@@ -37,7 +39,7 @@ public class EventEditingBean implements Serializable {
 
     @EJB
     private WeatherForecastService weatherForecastUpdater;
-    
+
     @Inject
     private SessionUtility sessionUtility;
 
@@ -47,6 +49,7 @@ public class EventEditingBean implements Serializable {
     private List<String> cities, countries;
     private String address, city, country, name, description, selectedCountry;
     private Event event;
+    private WeatherConditionsConverter weatherConv;
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private List<WeatherCondition> weatherForecast;
     private boolean indoor, privateEvent;
@@ -55,6 +58,13 @@ public class EventEditingBean implements Serializable {
     public void init() {
         countries = gp.getCountryNames();
         this.setEvent(ef.find(getID()));
+        weatherConv = new WeatherConditionsConverter();
+        weatherConditions = EnumSet.noneOf(WeatherCondition.class);
+        listChoiche = EnumSet.noneOf(WeatherCondition.class);
+        weatherConditions.add(WeatherCondition.SUN);
+        weatherConditions.add(WeatherCondition.SNOW);
+        weatherConditions.add(WeatherCondition.RAIN);
+        weatherConditions.add(WeatherCondition.CLOUDS);
     }
 
     public EventEditingBean() {
@@ -72,69 +82,18 @@ public class EventEditingBean implements Serializable {
         int eventID;
         event.setCountry(selectedCountry);
         try {
-            eventID = ef.create(getEvent()).getId();
+            ef.updateData(getEvent());
         }
         catch (BusinessException e) {
             return "/Error";
         }
+        eventID = sessionUtility.getParameterAsClient();
         sessionUtility.setParameter(eventID);
         return "/protected/event/EventPage";
     }
 
-    public String getAddress() {
-        return address;
-    }
-
     public String getCity() {
         return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isIndoor() {
-        return indoor;
-    }
-
-    public boolean isPrivateEvent() {
-        return privateEvent;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setIndoor(boolean indoor) {
-        this.indoor = indoor;
-    }
-
-    public void setPrivateEvent(boolean privateEvent) {
-        this.privateEvent = privateEvent;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public List<String> getCities() {
@@ -149,12 +108,8 @@ public class EventEditingBean implements Serializable {
         return countries;
     }
 
-    public void setCountries(List<String> countries) {
-        this.countries = countries;
-    }
-
     private int getID() {
-        return sessionUtility.getParameterAsClient();
+        return sessionUtility.getParameter();
     }
 
     public void setSelectedCountry(String selectedCountry) {
@@ -176,15 +131,35 @@ public class EventEditingBean implements Serializable {
     public void setWeatherForecast(List<WeatherCondition> weatherForecastConditions) {
         this.weatherForecast = weatherForecastConditions;
     }
-    
-    
-    public void loadWeatherConditions(){
+
+    public void loadWeatherConditions() {
         try {
-            weatherForecastUpdater.askForecast(event.getStart(), event.getEnd(), event.getCity(), event.getCountry() );
+            weatherForecastUpdater.askForecast(event.getStart(), event.getEnd(), event.getCity(), event.getCountry());
             setWeatherForecast(weatherForecast);
         }
         catch (InvalidInputException ex) {
             Logger.getLogger(EventCreationBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
+
+    public EnumSet<WeatherCondition> getWeatherConditions() {
+        return weatherConditions;
+    }
+
+    public void setWeatherConditions(EnumSet<WeatherCondition> conditions) {
+        weatherConditions = conditions;
+    }
+
+    public EnumSet<WeatherCondition> getListChoiche() {
+        return listChoiche;
+    }
+
+    public void setListChoiche(EnumSet<WeatherCondition> conditions) {
+        listChoiche = conditions;
+    }
+
+    public Converter getWeatherConv() {
+        return weatherConv;
+    }
+
 }

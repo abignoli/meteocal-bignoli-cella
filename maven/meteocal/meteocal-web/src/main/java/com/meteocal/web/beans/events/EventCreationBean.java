@@ -83,7 +83,7 @@ public class EventCreationBean implements Serializable {
         SYSO_Testing.syso("advCond: " + createdEvent.getAdverseConditions().size());
         createdEvent.setCountry(selectedCountry);
         try {
-            eventID = ef.create(getCreatedEvent()).getId();
+            eventID = (ef.create(getCreatedEvent())).getId();
             ef.addInvitedList(eventID, participants);
         }
         catch (BusinessException e) {
@@ -125,16 +125,6 @@ public class EventCreationBean implements Serializable {
 
     public void updateCities() {
         cities = gp.getCityNames(selectedCountry);
-    }
-
-    public void mostra() {
-        for (WeatherCondition date : listChoiche) {
-            SYSO_Testing.syso("bean. " + date);
-        }
-    }
-
-    public void metodoDiProva() {
-        SYSO_Testing.syso("prova listener");
     }
 
     public List<String> getCities() {

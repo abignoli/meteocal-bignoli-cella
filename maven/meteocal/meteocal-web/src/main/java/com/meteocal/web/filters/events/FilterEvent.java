@@ -39,7 +39,7 @@ public class FilterEvent {
     private SessionUtility sessionUtility;
 
     @Inject
-    ErrorBean error;
+    private ErrorBean error;
 
     private User loggedUser;
 

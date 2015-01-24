@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title><h:outputText value="#{eventViewBean.name}" /></title>
+        <title><h:outputText value="#{eventPageViewerBean.name}" /></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
@@ -29,38 +29,43 @@ and open the template in the editor.
                 <br/>
                 <h:form id="form">
                     <h:panelGrid columns="2">
-                        <h:outputText value="Name" />
-                        <h:outputText value="#{eventViewBean.name}" />
+                        <h:outputText value="Name: " />
+                        <h:outputText value="#{eventPageViewerBean.name}" />
                         
-                        <h:outputText value="Address" />
-                        <h:outputText value="#{eventViewBean.address}" />
+                        <h:outputText value="Address: " />
+                        <h:outputText value="#{eventPageViewerBean.address}" />
 
-                        <p:outputLabel value="Weather Forecasts" for="weatherForecasts" />
-
-                        <p:ring id="weatherForecasts" value="#{eventEditingBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
+                        <p:outputLabel value="Weather Forecasts: "/>
+                        <p:ring id="weatherForecasts" value="#{eventPageViewerBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
                             <p:panelGrid columns="1">
                                 #{weatherForecast.forecastStart}
-                                <p:graphicImage id="img" name="/WEB-INF/Resources/images/#{weatherForecast.weatherCondition.code}.png" />
+                                <p:graphicImage id="img" library="images"  name="#{weatherForecast.weatherCondition.code}.png" />
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>
                         
-                        <h:outputText value="City" />
+                        <h:outputText value="City: " />
                         <h:outputText value="#{eventPageViewerBean.city}" />
 
-                        <h:outputText value="Country" />
+                        <h:outputText value="Country: " />
                         <h:outputText value="#{eventPageViewerBean.country}" />
 
-                        <h:outputText value="Description" />
+                        <h:outputText value="Description: " />
                         <h:outputText value="#{eventPageViewerBean.description}" />
 
-                        <h:outputText value="Indoor" />
+                        <h:outputText value="Indoor: " />
                         <h:outputText value="#{eventPageViewerBean.indoor}" />
                         
-                        <h:outputText value="Private" />
+                        <h:outputText value="Private: " />
                         <h:outputText value="#{eventPageViewerBean.private}" />
+                                
+                        <h:outputText value="Invited: " />
+                        <h:outputText value="#{eventPageViewerBean.invited}"/>
                         
-                        <h:outputText value="Cancel the participation"/>
+                        <h:outputText value="Participants: " />
+                        <h:outputText value="#{eventPageViewerBean.participants}"/>
+                        
+                        <h:outputText value="Cancel the participation: "/>
                         <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" />
                     </h:panelGrid>
                 </h:form>
