@@ -36,8 +36,8 @@ public class TopbarBean implements Serializable {
     public void init() {
         SYSO_Testing.syso("topbar_init: ");
         setUsername(sessionUtility.getLoggedUser());
-        setInvitationNumber("N°Inv.: "+um.getNotSeenInvitationsCount());
-        setNotificationNumber("N°Not.: " + um.getNotSeenNotificationsCount());
+        setInvitationNumber(""+um.getNotSeenInvitationsCount());
+        setNotificationNumber(""+um.getNotSeenNotificationsCount());
         SYSO_Testing.syso("now the field has value: " + this.getUsername());
     }
     
