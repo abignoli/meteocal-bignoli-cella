@@ -6,7 +6,9 @@
 package com.meteocal.business.dao;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.TableDictionary;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,20 @@ public class EventDAO extends DAObase<Event> {
     }
     
     public List<Event> findPlanned() {
-        String query = "select e from Event e where e.status = PLANNED";
-        return super.findResults(query);
+//        String query = "select e from Event e where e.status = PLANNED";
+//        return super.findResults(query);
+        List<Event> events = findAll();
+        List<Event> planned = new ArrayList<Event>();
+        
+        if(events != null) {
+            for(Event e: events)
+                if(e.getStatus() == EventStatus.PLANNED) {
+                    planned.add(e);
+                    refresh(e);
+                }
+        }
+        
+        return planned;
     }
     
     public List<Event> findToUpdateForWeatherForecast() {
