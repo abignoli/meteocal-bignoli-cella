@@ -10,6 +10,7 @@ import com.meteocal.business.dao.UserDAO;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.entities.WeatherForecastBase;
 import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
@@ -18,6 +19,7 @@ import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import com.meteocal.business.shared.utils.RegExUtils;
+import com.meteocal.shared.ServiceVariables;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -32,18 +34,18 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class EventFacadeImplementation implements EventFacade {
-    
+
     public static final String REXEX_PATTERN_INVITED_USER = "(\\s*(\\w*)\\s*,?)";
     public static final int REXEX_PATTERN_INVITED_USER_GROUP = 2;
-    
+
     public static final String REXEX_PATTERN_INVITED_USERS = "(\\s*(\\w*)\\s*,?)*";
-            
+
     @EJB
     private EventDAO eventDAO;
 
     @EJB
     private UserDAO userDAO;
-    
+
     @EJB
     private UserFacade userFacade;
 
@@ -67,12 +69,12 @@ public class EventFacadeImplementation implements EventFacade {
         try {
             savedEvent = create(e, creator.getId());
             eventDAO.flush();
-            
+
             updateWeatherForecastsAsync(savedEvent);
         } catch (NotFoundException notFoundException) {
             throw new BusinessException(BusinessException.EVENT_CREATION_INTERNAL_PROCESSING);
         }
-        
+
         return savedEvent;
     }
 
@@ -134,17 +136,10 @@ public class EventFacadeImplementation implements EventFacade {
         boolean schedulingChanged = false;
         Event.validateScheduling(start, end);
 
-        if (e.hasDifferentScheduling(start, end)) {
-            e.setStart(start);
-            e.setEnd(end);
-
+        if (e.setScheduling(start, end)) {
             schedulingChanged = true;
 
-            e.clearSuggestedChange();
-
-            notificationFacade.createNotificationForEventChange(e.getId());
-
-            updateWeatherForecasts(e);
+            updateWeatherForecastsAsync(e);
         }
 
         return schedulingChanged;
@@ -193,18 +188,18 @@ public class EventFacadeImplementation implements EventFacade {
             return UserEventVisibility.VIEWER;
         }
     }
-    
+
     @Override
     public void addInvited(int eventID, String username) throws BusinessException {
         Event e = eventDAO.retrieve(eventID);
-        
+
         addInvited(e, username);
     }
-    
+
     private void addInvited(Event e, String username) throws BusinessException {
         User u = userFacade.findByUsername(username);
-        
-        if(u != null) {
+
+        if (u != null) {
             e.addInvited(u);
         }
     }
@@ -218,15 +213,16 @@ public class EventFacadeImplementation implements EventFacade {
             throw new BusinessException(InvalidInputException.USER_ALREADY_INVITED);
         }
     }
-    
+
     @Override
     public void addInvitedList(int eventID, String listInvited) throws BusinessException {
         List<String> usernames = RegExUtils.decomposeMultiple(listInvited, REXEX_PATTERN_INVITED_USER, REXEX_PATTERN_INVITED_USER_GROUP);
-        
+
         Event e = eventDAO.retrieve(eventID);
-        
-        for(String username: usernames)
+
+        for (String username : usernames) {
             addInvited(e, username);
+        }
     }
 
     public void updateWeatherForecasts(int eventID) throws InvalidInputException, NotFoundException {
@@ -236,6 +232,10 @@ public class EventFacadeImplementation implements EventFacade {
     }
 
     private void updateWeatherForecasts(Event e) throws InvalidInputException, NotFoundException {
+        if (e.getStatus() != EventStatus.PLANNED) {
+            return;
+        }
+
         // Ask new weather forecasts
         List<WeatherForecast> newForecasts = weatherForecastFacade.askWeatherForecasts(e.getId());
         boolean newForecastsGood = e.areForecastsGood(newForecasts);
@@ -261,7 +261,7 @@ public class EventFacadeImplementation implements EventFacade {
         e.setWeatherForecasts(newForecasts);
         weatherForecastFacade.save(newForecasts);
 
-        if (!newForecastsGood) {
+        if (!newForecastsGood && needsSuggestedScheduling(e)) {
             // TODO check suggested scheduling
             updateSuggestedScheduling(e);
         }
@@ -273,8 +273,19 @@ public class EventFacadeImplementation implements EventFacade {
         }
     }
 
-    private void updateSuggestedScheduling(Event e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void updateSuggestedScheduling(Event e) throws NotFoundException, InvalidInputException {
+        List<WeatherForecastBase> suggestion = weatherForecastFacade.askSuggestion(e.getId());
+
+        if (suggestion != null) {
+            e.setSuggestedChangeAvailable(true);
+
+            if (!e.isSuggestedChangeProvided()) {
+                notificationFacade.createNotificationForSuggestedChange(e.getId());
+                e.setSuggestedChangeProvided(true);
+            }
+        } else {
+            e.setSuggestedChangeAvailable(false);
+        }
     }
 
     @Override
@@ -284,39 +295,40 @@ public class EventFacadeImplementation implements EventFacade {
 
     public List<Event> mask(List<Event> events) {
         // Make sure the events are detached
-        for(Event e: events) {
+        for (Event e : events) {
             eventDAO.detach(e);
-            
+
             mask(e);
         }
-        
+
         return events;
     }
 
     private void mask(Event e) {
         Event result = new Event();
-        
+
         result.setStart(e.getStart());
         result.setEnd(e.getEnd());
-        
+
         e = result;
     }
 
     @Override
     public List<Event> search(String eventName) {
         List<Event> events = new ArrayList<Event>();
-        
+
         // TODO implement properly
         Event found = eventDAO.findByName(eventName);
-        if(found != null)
+        if (found != null) {
             events.add(found);
-        
+        }
+
         return events;
     }
 
     @Override
     public void updateWeatherForecasts() throws InvalidInputException, NotFoundException {
-        for(Event e: getPlannedEvents()) {
+        for (Event e : getPlannedEvents()) {
             updateWeatherForecasts(e);
         }
     }
@@ -324,7 +336,7 @@ public class EventFacadeImplementation implements EventFacade {
     private List<Event> getPlannedEvents() {
         return eventDAO.findPlanned();
     }
-    
+
     @Asynchronous
     private void updateWeatherForecastsAsync(Event e) throws InvalidInputException, NotFoundException {
         updateWeatherForecasts(e);
@@ -333,13 +345,29 @@ public class EventFacadeImplementation implements EventFacade {
     @Override
     public boolean isSuggestedChangeAvailable(int eventID) throws NotFoundException {
         Event e = eventDAO.retrieve(eventID);
-        
-        
-        
-        return false;
+
+        return isInSuggestedChangeRange(e) && e.isSuggestedChangeAvailable();
     }
 
+    @Override
+    public void checkEventsSchedule() {
+        List<Event> events = eventDAO.findPlanned();
 
-    
-    
+        for (Event e : events) {
+            if (e.getStart().isBefore(LocalDateTime.now())) {
+                e.setStatus(EventStatus.CONCLUDED);
+            }
+        }
+    }
+
+    private boolean isInSuggestedChangeRange(Event e) {
+        LocalDateTime max = LocalDateTime.now().minusHours(LocalDateTime.now().getHour()).plusDays(ServiceVariables.SUGGESTED_CHANGE_RANGE_DAYS_BEFORE_START + 1);
+
+        return e.getStart().isBefore(max);
+    }
+
+    private boolean needsSuggestedScheduling(Event e) {
+        return isInSuggestedChangeRange(e);
+    }
+
 }

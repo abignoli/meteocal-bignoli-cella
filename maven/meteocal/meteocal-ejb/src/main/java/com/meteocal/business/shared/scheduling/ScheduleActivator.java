@@ -10,5 +10,5 @@ package com.meteocal.business.shared.scheduling;
  * @author AB
  */
 public class ScheduleActivator {
-    public static final boolean WEATHER_FORECAST_UPDATER = false;
+    public static final boolean WEATHER_FORECAST_UPDATER = true;
 }

@@ -16,6 +16,8 @@ import com.meteocal.business.entities.shared.EventStatus;
 import com.meteocal.business.entities.shared.NotificationType;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
+import com.meteocal.business.shared.utils.LocalDateTimeUtils;
+import com.meteocal.shared.ServiceVariables;
 import java.time.LocalDateTime;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -37,15 +39,18 @@ public class NotificationFacadeImplementation implements NotificationFacade {
     EventDAO eventDAO;
 
     public void createNotificationForEventChange(int eventID) throws NotFoundException {
-        Notification changeNotification = new Notification();
         Event e = eventDAO.retrieve(eventID);
+        
+        if(inRangeForWeatherNotification(e)) {
+            Notification changeNotification = new Notification();
 
-        changeNotification.setEvent(e);
-        changeNotification.setType(NotificationType.EVENT_CHANGE);
+            changeNotification.setEvent(e);
+            changeNotification.setType(NotificationType.EVENT_CHANGE);
 
-        save(changeNotification);
+            save(changeNotification);
 
-        notificateParticipantsAndCreator(changeNotification);
+            notificateParticipantsAndCreator(changeNotification);
+        }
     }
 
     private void notificateParticipantsAndCreator(Notification notification) {
@@ -103,6 +108,25 @@ public class NotificationFacadeImplementation implements NotificationFacade {
         notification.setGenerationDateTime(LocalDateTime.now());
         
         notificationDAO.save(notification);
+    }
+
+    private boolean inRangeForWeatherNotification(Event e) {
+        LocalDateTime max = LocalDateTime.now().minusHours(LocalDateTime.now().getHour()).plusDays(ServiceVariables.WEATHER_NOTIFICATION_RANGE_DAYS_BEFORE_START + 1);
+        
+        return e.getStart().isBefore(max);
+    }
+
+    @Override
+    public void createNotificationForSuggestedChange(int eventID) throws NotFoundException {
+        Notification changeSuggestionNotification = new Notification();
+        Event e = eventDAO.retrieve(eventID);
+
+        changeSuggestionNotification.setEvent(e);
+        changeSuggestionNotification.setType(NotificationType.SUGGESTED_CHANGE);
+        
+        save(changeSuggestionNotification);
+
+        notificateParticipantsAndCreator(changeSuggestionNotification);
     }
 
 }

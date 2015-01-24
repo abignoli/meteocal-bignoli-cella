@@ -25,5 +25,7 @@ public interface WeatherForecastFacade {
     public void save(List<WeatherForecast> newForecasts);
     
     public void save(WeatherForecast newForecast);
+
+    public List<WeatherForecastBase> askSuggestion(int eventId) throws NotFoundException, InvalidInputException;
     
 }

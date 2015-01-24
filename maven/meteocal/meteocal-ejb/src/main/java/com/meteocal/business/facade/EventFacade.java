@@ -118,7 +118,7 @@ public interface EventFacade {
     public abstract List<Event> search(String eventName);
     
     /**
-     * Updates weather forecast for all planned events.
+     * Updates weather forecast for all planned events. This also checks the need for changes suggestion.
      * 
      * @throws InvalidInputException
      * @throws NotFoundException 
@@ -130,4 +130,9 @@ public interface EventFacade {
     public abstract void addInvitedList(int eventID, String listInvited) throws BusinessException;
     
     public void addInvited(int eventID, String username) throws BusinessException;
+
+    /**
+     * Takes care of changing the event state from EventStatus.PLANNED to EventStatus.CONCLUDED when the event start is reached.
+     */
+    public void checkEventsSchedule();
 }

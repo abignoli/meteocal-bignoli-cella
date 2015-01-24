@@ -131,7 +131,19 @@ public class WeatherForecastService {
         return mergeForecasts(getShortRangeForecast(city, countryID), getLongRangeForecast(city, countryID));
     }
 
-    public List<WeatherForecastBase> askClosestMatch(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, String city, String countryID, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
+    /**
+     * Returns null if no match is available.
+     * 
+     * @param scheduledStart
+     * @param scheduledEnd
+     * @param forecastRange
+     * @param adverseConditions
+     * @return
+     * @throws InvalidInputException 
+     */
+    public List<WeatherForecastBase> askClosestMatch(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, String city, String country, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
+        String countryID = geographicRepository.getCountryID(country);
+        
         List<WeatherForecastBase> forecastRange = askForecast(city, countryID);
 
         if (adverseConditions == null) {
@@ -143,6 +155,16 @@ public class WeatherForecastService {
         return lookForCompatibility(scheduledStart, scheduledEnd, forecastRange, adverseConditions);
     }
 
+    /**
+     * Returns null if no match is available.
+     * 
+     * @param scheduledStart
+     * @param scheduledEnd
+     * @param forecastRange
+     * @param adverseConditions
+     * @return
+     * @throws InvalidInputException 
+     */
     private List<WeatherForecastBase> lookForCompatibility(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, List<WeatherForecastBase> forecastRange, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
         if (scheduledStart == null || scheduledEnd == null) {
             throw new NullPointerException(EXCEPTION_ASK_FORECAST_NO_START_END);
@@ -198,9 +220,11 @@ public class WeatherForecastService {
             }
         }
 
-        List<WeatherForecastBase> result = new ArrayList<WeatherForecastBase>();
+        List<WeatherForecastBase> result = null;
 
         if (bestMatchStartIndex != null) {
+            result = new ArrayList<WeatherForecastBase>();
+            
             for (int i = bestMatchStartIndex; i <= bestMatchEndIndex; i++) {
                 result.add(forecastRange.get(i));
             }

@@ -26,10 +26,17 @@ public class ScheduledController {
     @EJB
     EventFacade eventFacade;
     
-    @Schedule(second = "0", minute = "*/5", hour = "*", persistent = false)
-    public void updateForecasts() {
+    private static final Logger logger = Logger.getLogger(ScheduledController.class.getName());
+    
+    @Schedule(second = "*/20", minute = "*", hour = "*", persistent = false)
+    public void updateEventsAndForecasts() {
         if (ScheduleActivator.WEATHER_FORECAST_UPDATER) {
             try {
+                logger.log(Level.INFO, "[SCHEDULED CONTROLLER] Checking event schedule.");
+                eventFacade.checkEventsSchedule();
+                
+                logger.log(Level.INFO, "[SCHEDULED CONTROLLER] Updating event forecasts and suggested changes.");
+                // Update forecasts and check the need for a change suggestion
                 eventFacade.updateWeatherForecasts();
             } catch (InvalidInputException ex) {
                 Logger.getLogger(ScheduledController.class.getName()).log(Level.SEVERE, null, ex);

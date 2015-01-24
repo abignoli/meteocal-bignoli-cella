@@ -187,7 +187,7 @@ public abstract class DAObase<T> {
     }
     
     protected List<T> findResults(String namedQuery) {
-        List<T> result = null;
+        List<T> result = new ArrayList<T>();
 
         try {
             

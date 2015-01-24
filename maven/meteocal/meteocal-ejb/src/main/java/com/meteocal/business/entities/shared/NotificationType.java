@@ -10,5 +10,5 @@ package com.meteocal.business.entities.shared;
  * @author AB
  */
 public enum NotificationType {
-    WEATHER_NOTIFICATION, EVENT_CHANGE, EVENT_CANCEL
+    WEATHER_NOTIFICATION, EVENT_CHANGE, EVENT_CANCEL, SUGGESTED_CHANGE
 }

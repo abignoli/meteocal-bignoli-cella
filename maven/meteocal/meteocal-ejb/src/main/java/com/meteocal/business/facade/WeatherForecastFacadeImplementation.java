@@ -87,4 +87,11 @@ public class WeatherForecastFacadeImplementation implements WeatherForecastFacad
         weatherForecastDAO.save(newForecast);
     }
 
+    @Override
+    public List<WeatherForecastBase> askSuggestion(int eventId) throws NotFoundException, InvalidInputException {
+        Event e = eventDAO.retrieve(eventId);
+        
+        return weatherForecastService.askClosestMatch(e.getStart(), e.getEnd(), e.getCity(), e.getCountry(), e.getAdverseConditions());
+    }
+
 }

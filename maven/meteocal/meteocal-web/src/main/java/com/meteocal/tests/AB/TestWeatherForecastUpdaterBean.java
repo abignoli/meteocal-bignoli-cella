@@ -88,7 +88,7 @@ public class TestWeatherForecastUpdaterBean {
     }
     
     public void testAskUpdateAllEvents() {
-        scheduledController.updateForecasts();
+        scheduledController.updateEventsAndForecasts();
     }
     
 }

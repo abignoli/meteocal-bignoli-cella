@@ -61,10 +61,6 @@ public class Event {
     // TODO Bad Weather Conditions set
     private boolean privateEvent;
 
-    private LocalDateTime suggestedChangeStart;
-
-    private LocalDateTime suggestedChangeEnd;
-
 //    @ElementCollection(targetClass = WeatherCondition.class)
 //    @CollectionTable(name = "ADVERSE_CONDITIONS",
 //            joinColumns = @JoinColumn(name = "eventID",
@@ -72,6 +68,9 @@ public class Event {
 //    @Column(name = "adverseCondition")
 //    @Enumerated(EnumType.STRING)
     EnumSet<WeatherCondition> adverseConditions;
+    
+    private boolean suggestedChangeProvided;
+    private boolean suggestedChangeAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATORID", referencedColumnName = "ID")
@@ -132,7 +131,7 @@ public class Event {
      *
      * @param e
      */
-    public Event(Event e) {
+    public Event(Event e) throws InvalidInputException {
         name = e.getName();
         description = e.getDescription();
         country = e.getCountry();
@@ -141,12 +140,18 @@ public class Event {
         indoor = e.isIndoor();
         privateEvent = e.isPrivateEvent();
         
+        suggestedChangeProvided = false;
+        suggestedChangeAvailable = false;
+        
         adverseConditions = e.getAdverseConditions();
         if(adverseConditions == null)
             adverseConditions = EnumSet.noneOf(WeatherCondition.class);
         
+        validateScheduling(e.getStart(),e.getEnd());
+        
         start = e.getStart();
         end = e.getEnd();
+        
         status = EventStatus.PLANNED;
     }
 
@@ -164,6 +169,22 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isSuggestedChangeProvided() {
+        return suggestedChangeProvided;
+    }
+
+    public void setSuggestedChangeProvided(boolean suggestedChangeProvided) {
+        this.suggestedChangeProvided = suggestedChangeProvided;
+    }
+
+    public boolean isSuggestedChangeAvailable() {
+        return suggestedChangeAvailable;
+    }
+
+    public void setSuggestedChangeAvailable(boolean suggestedChangeAvailable) {
+        this.suggestedChangeAvailable = suggestedChangeAvailable;
     }
 
     public List<Invitation> getInvitations() {
@@ -413,22 +434,6 @@ public class Event {
         this.status = status;
     }
 
-    public LocalDateTime getSuggestedChangeStart() {
-        return suggestedChangeStart;
-    }
-
-    public void setSuggestedChangeStart(LocalDateTime suggestedChangeStart) {
-        this.suggestedChangeStart = suggestedChangeStart;
-    }
-
-    public LocalDateTime getSuggestedChangeEnd() {
-        return suggestedChangeEnd;
-    }
-
-    public void setSuggestedChangeEnd(LocalDateTime suggestedChangeEnd) {
-        this.suggestedChangeEnd = suggestedChangeEnd;
-    }
-
     public EnumSet<WeatherCondition> getAdverseConditions() {
         if (adverseConditions == null) {
             adverseConditions = EnumSet.noneOf(WeatherCondition.class);
@@ -526,12 +531,12 @@ public class Event {
 //        return result;
 //    }
     public boolean hasDifferentScheduling(LocalDateTime start, LocalDateTime end) {
-        return this.start != start || this.end != end;
+        return !this.start.equals(start) || !this.end.equals(end);
     }
 
     public void clearSuggestedChange() {
-        setSuggestedChangeStart(null);
-        setSuggestedChangeEnd(null);
+        suggestedChangeAvailable = false;
+        suggestedChangeProvided = false;
     }
 
     public boolean validForSave() {
@@ -544,5 +549,19 @@ public class Event {
 
     public boolean isEditable() {
         return status == EventStatus.PLANNED;
+    }
+
+    public boolean setScheduling(LocalDateTime start, LocalDateTime end) throws InvalidInputException {
+        if(hasDifferentScheduling(start, end)) {
+            validateScheduling(start, end);
+            
+            this.start = start;
+            this.end = end;
+            clearSuggestedChange();
+            
+            return true;
+        }
+        
+        return false;
     }
 }
