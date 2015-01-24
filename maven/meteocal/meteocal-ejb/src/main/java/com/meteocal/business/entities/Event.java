@@ -30,7 +30,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
     @NotNull(message = "Event name cannot be empty")
     private String name;
 
