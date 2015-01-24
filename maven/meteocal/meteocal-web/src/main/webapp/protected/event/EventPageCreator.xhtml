@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Own Event</title>
+        <title><h:outputText value="#{eventViewBean.name}" /></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
@@ -23,24 +23,18 @@ and open the template in the editor.
             </ui:include>
         </div>
         <p:growl></p:growl>
-        <p:fieldset legend="Your Event " toggleSpeed="500">
+        <p:fieldset legend="Your Event" toggleSpeed="500">
             <p:ajax event="toggle" />
             <h:panelGrid columns="2" cellpadding="5">
-                <h:outputText value="Here there are all the available informations as far as an event concerns. ">
-                </h:outputText>
-                <br/>
                 <br/>
                 <h:form id="form">
                     <h:panelGrid columns="2">
-                        <h:outputText value="ID" />
-                        <h:outputText value="1" />
-
                         <h:outputText value="Name" />
-                        <h:outputText value="#{eventPageCreatorBean.name}" />
-
+                        <h:outputText value="#{eventViewBean.name}" />
+                        
                         <h:outputText value="Address" />
                         <h:outputText value="#{eventPageCreatorBean.address}" />
-
+                        
                         <p:ring id="weatherForecasts" value="#{eventPageCreatorBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
                             <p:panelGrid columns="1">
                                 #{weatherForecast.forecastStart}
@@ -48,7 +42,7 @@ and open the template in the editor.
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>
-˙
+                        
                         <h:outputText value="City" />
                         <h:outputText value="#{eventPageCreatorBean.city}" />
 
@@ -62,7 +56,7 @@ and open the template in the editor.
                         <h:outputText value="#{eventPageCreatorBean.indoor}" />
 
                         <h:outputText value="Private" />
-                        <h:outputText value="Y/N" />
+                        <h:outputText value="#{eventPageCreatorBean.private}" />
 
                         <p:commandButton value="Edit" icon="ui-icon-check" action="/protected/event/EventEdit" type="submit" ajax="false" styleClass="block"/>
 

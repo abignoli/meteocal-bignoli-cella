@@ -84,7 +84,7 @@ public class EventCreationBean implements Serializable {
         createdEvent.setCountry(selectedCountry);
         try {
             eventID = ef.create(getCreatedEvent()).getId();
-            //ef.invite(participants);
+            ef.addInvitedList(eventID, participants);
         }
         catch (BusinessException e) {
             error.setMessage("An error occurs: " + e.getMessage());

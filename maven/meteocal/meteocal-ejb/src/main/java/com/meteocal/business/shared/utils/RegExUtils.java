@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class RegExUtils {
     
     public static List<String> decomposeMultiple(String input, String pattern, int interestingGroup) {
-        Matcher m = Pattern.compile(input).matcher(pattern);
+        Matcher m = Pattern.compile(pattern).matcher(input);
         List<String> result = new ArrayList<String>();
         
         while (m.find()) {

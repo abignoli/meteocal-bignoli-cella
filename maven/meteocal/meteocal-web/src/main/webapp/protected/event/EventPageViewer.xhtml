@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Events Page</title>
+        <title><h:outputText value="#{eventViewBean.name}" /></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <body>
@@ -29,12 +29,9 @@ and open the template in the editor.
                 <br/>
                 <h:form id="form">
                     <h:panelGrid columns="2">
-                        <h:outputText value="ID" />
-                        <h:outputText value="#{eventViewBean.id}" />
-
                         <h:outputText value="Name" />
                         <h:outputText value="#{eventViewBean.name}" />
-
+                        
                         <h:outputText value="Address" />
                         <h:outputText value="#{eventViewBean.address}" />
 
@@ -47,7 +44,7 @@ and open the template in the editor.
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>
-
+                        
                         <h:outputText value="City" />
                         <h:outputText value="#{eventPageViewerBean.city}" />
 
@@ -59,6 +56,9 @@ and open the template in the editor.
 
                         <h:outputText value="Indoor" />
                         <h:outputText value="#{eventPageViewerBean.indoor}" />
+                        
+                        <h:outputText value="Private" />
+                        <h:outputText value="#{eventPageViewerBean.private}" />
                         
                         <h:outputText value="Cancel the participation"/>
                         <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" />

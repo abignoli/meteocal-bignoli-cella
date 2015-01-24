@@ -97,6 +97,10 @@ public class EventPageViewerBean implements Serializable{
         return referredEvent.isIndoor();
     }
     
+    public boolean getPrivate() {
+        return referredEvent.isPrivateEvent();
+    }
+    
     public void cancelPartecipation() throws BusinessException{
         ef.removeParticipant(id, um.getLoggedUser().getId());
     }
