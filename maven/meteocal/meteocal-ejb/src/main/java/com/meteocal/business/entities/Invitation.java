@@ -31,6 +31,9 @@ public class Invitation {
     
     @Column(columnDefinition="boolean default false")
     private boolean seen;
+    
+    @Column(columnDefinition="boolean default false")
+    private boolean declined;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @PrimaryKeyJoinColumn(name="USERID", referencedColumnName = "ID")
@@ -79,6 +82,14 @@ public class Invitation {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public boolean isDeclined() {
+        return declined;
+    }
+
+    public void setDeclined(boolean declined) {
+        this.declined = declined;
     }
     
     

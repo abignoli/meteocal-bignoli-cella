@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -368,6 +370,23 @@ public class EventFacadeImplementation implements EventFacade {
 
     private boolean needsSuggestedScheduling(Event e) {
         return isInSuggestedChangeRange(e);
+    }
+
+    @Override
+    public List<WeatherForecastBase> askSuggestedChange(int eventID) throws NotFoundException {
+        Event e = eventDAO.retrieve(eventID);
+        
+        if(!needsSuggestedScheduling(e)) {
+            return null;
+        }
+        
+        try {
+            return weatherForecastFacade.askSuggestion(eventID);
+        } catch (InvalidInputException ex) {
+            Logger.getLogger(EventFacadeImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
     }
 
 }

@@ -14,4 +14,6 @@ import com.meteocal.business.exceptions.NotFoundException;
  */
 public interface InvitationFacade {
     public void setAsSeen(InvitationID invitationID) throws NotFoundException;
+
+    public void setAsDeclined(InvitationID invitationID) throws NotFoundException;
 }

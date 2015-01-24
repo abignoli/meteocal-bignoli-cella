@@ -6,6 +6,7 @@
 package com.meteocal.business.facade;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.WeatherForecastBase;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.exceptions.NotFoundException;
@@ -135,4 +136,6 @@ public interface EventFacade {
      * Takes care of changing the event state from EventStatus.PLANNED to EventStatus.CONCLUDED when the event start is reached.
      */
     public void checkEventsSchedule();
+    
+    public List<WeatherForecastBase> askSuggestedChange(int eventID) throws NotFoundException;
 }

@@ -21,6 +21,7 @@ import com.meteocal.business.shared.data.Group;
 import com.meteocal.business.shared.security.UserEventVisibility;
 import com.meteocal.business.shared.security.UserUserVisibility;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -135,5 +136,33 @@ public class UserManagerImplementation implements UserManager {
     @Override
     public void setInvitationAsSeen(InvitationID invitationID) throws NotFoundException {
         invitationFacade.setAsSeen(invitationID);
+    }
+
+    @Override
+    public List<Invitation> getCurrentInvitations() {
+        User u = getLoggedUser();
+
+        List<Invitation> result = null;
+        
+        if(u!= null) {
+            result = new ArrayList<Invitation>();
+            
+            List<Invitation> invitations = u.getInvitations();
+            
+            if(invitations != null) {
+                for(Invitation i: invitations) {
+                    if(!i.isDeclined()) {
+                        result.add(i);
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public void setInvitationAsDeclined(InvitationID invitationID) throws NotFoundException {
+        invitationFacade.setAsDeclined(invitationID);
     }
 }

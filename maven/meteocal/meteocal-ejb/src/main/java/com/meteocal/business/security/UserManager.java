@@ -6,6 +6,7 @@
 package com.meteocal.business.security;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.Invitation;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.BusinessException;
@@ -66,10 +67,17 @@ public interface UserManager {
     public int getNotSeenInvitationsCount();
     
     public void setInvitationAsSeen(InvitationID invitationID) throws NotFoundException;
+    
+    public void setInvitationAsDeclined(InvitationID invitationID) throws NotFoundException;
 
     public int getNotSeenNotificationsCount();
 
     public void setNotificationAsSeen(int notificationID) throws NotFoundException;
     
     public List<Event> getEventsVisibilityMasked(int userID) throws NotFoundException;
+    
+    /**
+     * Returns the list of not declined invitations.
+     */
+    public List<Invitation> getCurrentInvitations();
 }

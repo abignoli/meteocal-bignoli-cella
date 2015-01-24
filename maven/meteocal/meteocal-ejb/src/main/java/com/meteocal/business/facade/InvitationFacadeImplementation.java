@@ -26,5 +26,10 @@ public class InvitationFacadeImplementation implements InvitationFacade {
     public void setAsSeen(InvitationID invitationID) throws NotFoundException {
         invitationDAO.retrieve(invitationID).setSeen(true);
     }
+
+    @Override
+    public void setAsDeclined(InvitationID invitationID) throws NotFoundException {
+        invitationDAO.retrieve(invitationID).setDeclined(true);
+    }
     
 }
