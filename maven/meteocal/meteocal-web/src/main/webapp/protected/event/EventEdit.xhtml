@@ -69,7 +69,12 @@ and open the template in the editor.
                     <h:outputText value="Weather Conditions " />
                     <p:ring id="weatherCondition" value="#{eventEditingBean.weatherForecast}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
                         <p:panelGrid columns="1">
-                            <p:graphicImage id="img" library="images" name="#{weatherForecast.code}.png" />
+                            <p:graphicImage id="img1" library="images" name="#{weatherForecast.code}.png" />
+                            <p:graphicImage id="img2" library="images" value="#{weatherForecast.code}.png}" />
+                            <p:graphicImage id="img3" library="images" name="#{weatherForecast.code}.png}" />
+                            <p:graphicImage id="img4" library="images" value="#{weatherForecast.code}.png" />
+                            <p:graphicImage id="img5" value="/resources/images/#{weatherForecast.code}.png" />
+                            <p:graphicImage id="img6" value="resources/images/#{weatherForecast.code}.png" />
                         </p:panelGrid>
                     </p:ring>
                     <h:outputText value="(not always available)" />

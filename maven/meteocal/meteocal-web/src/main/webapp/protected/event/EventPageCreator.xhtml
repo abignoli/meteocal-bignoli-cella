@@ -31,19 +31,21 @@ and open the template in the editor.
                     <h:panelGrid columns="2">
                         <h:outputText value="Name:  " />
                         <h:outputText value="#{eventPageCreatorBean.name}" />
-                        
+
                         <h:outputText value="Address: " />
                         <h:outputText value="#{eventPageCreatorBean.address}" />
-                        
+
                         <p:outputLabel value="Weather Forecasts:" />
                         <p:ring id="weatherForecasts" value="#{eventPageCreatorBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
                             <p:panelGrid columns="1">
                                 #{weatherForecast.forecastStart}
-                                <p:graphicImage id="img" library="images"  name="#{weatherForecast.weatherCondition.code}.png}" />
+                                <p:graphicImage value="Resources/images/1.png" />
+                                <p:graphicImage value="resources/images/1.png" />
+                                <p:graphicImage library="images" name="1.png" />
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>
-                        
+
                         <h:outputText value="City:" />
                         <h:outputText value="#{eventPageCreatorBean.city}" />
 
@@ -58,16 +60,16 @@ and open the template in the editor.
 
                         <h:outputText value="Private:" />
                         <h:outputText value="#{eventPageCreatorBean.private}" />
-                        
+
                         <h:outputText value="Invited:" />
                         <h:outputText value="#{eventPageCreatorBean.invited}"/>
-                        
+
                         <h:outputText value="Participants:" />
                         <h:outputText value="#{eventPageCreatorBean.participants}"/>
-                        
+
                         <p:commandButton value="Edit" icon="ui-icon-pencil" action="/protected/event/EventEdit" type="submit" ajax="false" styleClass="block"/>
                         <p:commandButton value="Available Changes" icon="ui-icon-clock" action="/protected/event/EventSuggestedChange" type="submit" ajax="false" rendered="#{eventPageCreatorBean.render}" styleClass="block"/>
-                        
+
                     </h:panelGrid>
                 </h:form>
             </h:panelGrid>

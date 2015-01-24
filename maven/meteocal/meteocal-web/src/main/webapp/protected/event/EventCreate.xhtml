@@ -22,7 +22,7 @@ and open the template in the editor.
         <h:form>
             <p:growl/>
             <p:panel id="privacyPanel" header="Event Creation" footer="Creation form" style="margin-top:70px" class="panelForm">     
-                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
+                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5" id="firstPart">
 
                     <p:outputLabel value="Name:" for="name" />
                     <p:inputText required="true" id="name" value="#{eventCreationBean.createdEvent.name}" />
@@ -31,7 +31,7 @@ and open the template in the editor.
                     <p:outputLabel value="Address:" for="address" />
                     <p:inputText required="true" id="address" value="#{eventCreationBean.createdEvent.address}" />
                     <p:message for="address" severity="error"/>
-                    
+
                     <p:outputLabel value="Country:" for="country" />
                     <p:selectOneMenu required="true" id="country" value="#{eventCreationBean.selectedCountry}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
@@ -39,7 +39,7 @@ and open the template in the editor.
                         <f:ajax listener="#{eventCreationBean.updateCities}" render="city" />
                     </p:selectOneMenu>
                     <p:message for="country" severity="error"/>
-                    
+
                     <p:outputLabel value="City:" for="city"/>
                     <p:selectOneMenu required="true" id="city" value="#{eventCreationBean.createdEvent.city}" panelStyle="width:180px"
                                      effect="fade" var="city" style="width:160px" filter="true" filterMatchMode="startsWith">
@@ -66,11 +66,16 @@ and open the template in the editor.
                     <h:outputText value="Event ending: " />
                     <p:calendar id="endingTime" required="true" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>
                     <p:message for="endingTime" severity="error"/>
+                </h:panelGrid>
+                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5" id="secondpart">
 
-                    <h:outputText>Insert any number of users to invite <br/> writing their usernames separated by commas. (e.g. Username1, Username2, Username3)</h:outputText>
+                    <p:row>
+                        <h:outputText>Insert any number of users to invite writing their usernames separated by commas. (e.g. Username1, Username2, Username3)</h:outputText>
+                    </p:row>
+                    <h:outputText>Participants</h:outputText>
                     <p:inputTextarea rows="6" cols="33" value="#{eventCreationBean.participants}" />
                     <h:outputText>participants could be added even later</h:outputText>
-                    
+
                     <h:outputText value="Location: " />
                     <p:selectOneButton required="true"  id="location" value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />
