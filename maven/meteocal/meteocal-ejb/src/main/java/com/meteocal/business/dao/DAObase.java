@@ -85,7 +85,8 @@ public abstract class DAObase<T> {
     }
     
     public T refresh(T toRefresh) {
-        em.refresh(toRefresh);
+        if(toRefresh != null)
+            em.refresh(toRefresh);
         return toRefresh;
     }
 
@@ -102,7 +103,8 @@ public abstract class DAObase<T> {
     public T findAndRefresh(Object primaryKey) {
         try {
             T result = em.find(databaseEntityClass, primaryKey);
-            em.refresh(result);
+            if(result != null)
+                em.refresh(result);
             
             return result;
         } catch (Exception e) {
