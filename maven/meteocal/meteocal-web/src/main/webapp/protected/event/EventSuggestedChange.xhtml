@@ -21,14 +21,14 @@ and open the template in the editor.
             <p:panel id="privacyPanel" header="Event Suggestion | Creator Mode" style="margin-top:70px" class="panelForm">     
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     
-                    <p:outputLabel value="Name" for="name" />
-                    <p:outputLabel id="name" value="#{eventSuggestionsBean.name}" />
+                    <p:outputLabel value="EventName" for="eventname" />
+                    <p:outputLabel id="eventname" value="#{eventSuggestionsBean.name}" />
                     
-                    <p:outputLabel value="Name" for="name" />
-                    <p:outputLabel id="name" value="#{eventSuggestionsBean.start}" />
+                    <p:outputLabel value="Suggested start" for="start" />
+                    <p:outputLabel id="start" value="#{eventSuggestionsBean.start}" />
                     
-                    <p:outputLabel value="Name" for="name" />
-                    <p:outputLabel id="name" value="#{eventSuggestionsBean.end}" />
+                    <p:outputLabel value="Suggested end" for="end" />
+                    <p:outputLabel id="end" value="#{eventSuggestionsBean.end}" />
                     
                     <p:commandButton value="Discard Suggestions" icon="ui-icon-closethick" action="#{eventSuggestionsBean.discard()}"/>
                     <p:commandButton value="Accept Suggestions" icon="ui-icon-check" action="#{eventSuggestionsBean.accept()}"/>

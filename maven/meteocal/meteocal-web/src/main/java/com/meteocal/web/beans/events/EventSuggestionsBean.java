@@ -97,7 +97,6 @@ public class EventSuggestionsBean implements Serializable {
     }
 
     public void setValues() {
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         try {
             listOfSuggestions = ef.askSuggestedChange(eventID);
         }
@@ -109,7 +108,7 @@ public class EventSuggestionsBean implements Serializable {
         }
         if (!listOfSuggestions.isEmpty()) {
             start = listOfSuggestions.get(0).getForecastStart();
-            end = listOfSuggestions.get(listOfSuggestions.size()).getForecastEnd();
+            end = listOfSuggestions.get(listOfSuggestions.size()-1).getForecastEnd();
         }
         else {
             Event tmpEvent = ef.find(eventID);
