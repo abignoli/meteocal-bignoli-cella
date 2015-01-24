@@ -36,7 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 public class EventPageCreatorBean implements Serializable {
 
     private String newParticipant;
-    private Event referredEvent;
+    private final String errorOutcome = "Error";
+    private Event referredEvent, tmpEv;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private int eventID;
 
@@ -51,13 +52,20 @@ public class EventPageCreatorBean implements Serializable {
 
     @PostConstruct
     public void init() {
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+
         try {
             eventID = this.getID();
+            tmpEv = ef.find(eventID);
+            if (tmpEv == null)
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
         }
         catch (NotValidParameter ex) {
-
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
         }
-        setReferredEvent(ef.find(eventID));
+
+        setReferredEvent(tmpEv);
     }
 
     public String addParticipant() {
@@ -74,7 +82,7 @@ public class EventPageCreatorBean implements Serializable {
         sessionUtility.setParameter(eventID);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Participant addedd!"));
-        
+
         return "/protected/event/EventPageCreator";
     }
 
@@ -137,23 +145,23 @@ public class EventPageCreatorBean implements Serializable {
         return newParticipant;
     }
 
-    public void setParticipant(String participant){
-        newParticipant = participant; 
+    public void setParticipant(String participant) {
+        newParticipant = participant;
     }
-    
+
     public boolean getIndoor() {
         return referredEvent.isIndoor();
     }
-    
+
     public boolean getPrivate() {
         return referredEvent.isPrivateEvent();
     }
-    
-    public List<User> getParticipants(){
+
+    public List<User> getParticipants() {
         return referredEvent.getParticipants();
     }
-    
-    public boolean getRender() throws NotFoundException{
+
+    public boolean getRender() throws NotFoundException {
         return ef.isSuggestedChangeAvailable(eventID);
     }
 }

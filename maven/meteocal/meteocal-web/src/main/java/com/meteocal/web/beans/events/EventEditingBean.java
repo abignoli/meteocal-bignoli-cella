@@ -81,12 +81,8 @@ public class EventEditingBean implements Serializable {
     public String eventEditing() {
         int eventID;
         event.setCountry(selectedCountry);
-        try {
-            ef.updateData(getEvent());
-        }
-        catch (BusinessException e) {
-            return "/Error";
-        }
+        ef.updateData(getEvent());
+
         eventID = sessionUtility.getParameterAsClient();
         sessionUtility.setParameter(eventID);
         return "/protected/event/EventPage";

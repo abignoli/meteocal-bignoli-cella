@@ -28,12 +28,14 @@
                     <p:outputLabel value="Username" for="userRegistration" />
                     <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}"/>
                     </p:inputText>
                     <p:message for="userRegistration" severity="error"/>
                     
                     <p:outputLabel value="Password" for="passwordRegistration"/>
                     <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" requiredMessage="this field is compulsory" required="true">
                     <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
                     </p:password>
                     <p:message for="passwordRegistration" severity="error"/>
                     
@@ -41,6 +43,7 @@
                     <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
                     <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
                     </p:password>
                     <p:message for="passwordConfirmation" severity="error"/>
                     
@@ -57,12 +60,14 @@
                     <p:outputLabel value="Username" for="userLogin" />
                     <p:inputText id="userLogin" value="#{loginBean.username}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
                     </p:inputText>
                     <p:message for="userLogin" severity="error"/>
                     
                     <p:outputLabel value="Password" for="pswLog"/>
                     <p:password id="pswLog" value="#{loginBean.password}" required="true" requiredMessage="this field is compulsory">
                     <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
                     </p:password>
                     <p:message for="pswLog" severity="error"/>
                     

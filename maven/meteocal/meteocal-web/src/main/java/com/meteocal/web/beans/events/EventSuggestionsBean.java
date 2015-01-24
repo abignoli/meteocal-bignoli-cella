@@ -97,6 +97,7 @@ public class EventSuggestionsBean implements Serializable {
     }
 
     public void setValues() {
+        setName(ef.find(eventID).getName());
         try {
             listOfSuggestions = ef.askSuggestedChange(eventID);
         }
