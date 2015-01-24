@@ -43,32 +43,15 @@ public class EventSuggestionsBean implements Serializable {
     private LocalDateTime start, end;
     private String name;
     private HttpServletResponse response;
-    
+
     private int eventID;
 
     @PostConstruct
-    public void init(){
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+    public void init() {
         getID();
-        try {
-            listOfSuggestions = ef.askSuggestedChange(eventID);
-        }
-        catch (NotFoundException ex) {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
-            
-            return;
-        }
-        if(!listOfSuggestions.isEmpty()){
-            start = listOfSuggestions.get(0).getForecastStart();
-            end = listOfSuggestions.get(listOfSuggestions.size()).getForecastEnd();
-        }else{
-            Event tmpEvent = ef.find(eventID);
-            start = tmpEvent.getStart();
-            end = tmpEvent.getEnd();
-        }
+        setValues();
     }
-    
+
     public EventSuggestionsBean() {
     }
 
@@ -111,5 +94,27 @@ public class EventSuggestionsBean implements Serializable {
 
     private void getID() {
         eventID = sessionUtility.getParameter();
+    }
+
+    public void setValues() {
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        try {
+            listOfSuggestions = ef.askSuggestedChange(eventID);
+        }
+        catch (NotFoundException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
+
+            return;
+        }
+        if (!listOfSuggestions.isEmpty()) {
+            start = listOfSuggestions.get(0).getForecastStart();
+            end = listOfSuggestions.get(listOfSuggestions.size()).getForecastEnd();
+        }
+        else {
+            Event tmpEvent = ef.find(eventID);
+            start = tmpEvent.getStart();
+            end = tmpEvent.getEnd();
+        }
     }
 }

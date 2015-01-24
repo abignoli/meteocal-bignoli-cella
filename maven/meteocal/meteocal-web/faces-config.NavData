@@ -3,7 +3,6 @@
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
         <Node id="Test/testWeatherForecastUpdater.xhtml" x="1432" y="151" zoom="true"/>
-        <Node id="Test/testEventFindAll.xhtml" x="650" y="450" zoom="true"/>
         <Node id="Test/testEditEntity.xhtml" x="900" y="300" zoom="true"/>
         <Node id="protected/event/EventPage.xhtml" x="736" y="238" zoom="true"/>
         <Node id="Components/TopBar.xhtml" x="129" y="386" zoom="true"/>
@@ -24,8 +23,8 @@
         <Node id="protected/event/EventCreate.xhtml" x="1654" y="167" zoom="true"/>
         <Node id="protected/SearchResults.xhtml" x="150" y="600" zoom="true"/>
         <Node id="protected/personal/ManageEvents.xhtml" x="900" y="450" zoom="true"/>
-        <Node id="Test/testCreateEventWithDateTime.xhtml" x="650" y="600" zoom="true"/>
         <Node id="Convertitore.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="Test/testCreateEventWithDateTime.xhtml" x="650" y="600" zoom="true"/>
         <Node id="protected/event/EventPageCreator.xhtml" x="900" y="150" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>

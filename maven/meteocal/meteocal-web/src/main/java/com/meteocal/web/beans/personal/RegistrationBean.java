@@ -88,7 +88,7 @@ public class RegistrationBean implements Serializable {
             SYSO_Testing.syso("Registration complete!");
         }
         else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Credentials are not valid!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credentials are not valid!", "Credentials are not valid!"));
         }
         return "/Index";
     }

@@ -137,6 +137,10 @@ public class EventPageCreatorBean implements Serializable {
         return newParticipant;
     }
 
+    public void setParticipant(String participant){
+        newParticipant = participant; 
+    }
+    
     public boolean getIndoor() {
         return referredEvent.isIndoor();
     }
