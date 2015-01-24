@@ -104,12 +104,11 @@ public class EventSuggestionsBean implements Serializable {
         catch (NotFoundException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
-
-            return;
         }
-        if (!listOfSuggestions.isEmpty()) {
+
+        if (listOfSuggestions != null && !listOfSuggestions.isEmpty()) {
             start = listOfSuggestions.get(0).getForecastStart();
-            end = listOfSuggestions.get(listOfSuggestions.size()-1).getForecastEnd();
+            end = listOfSuggestions.get(listOfSuggestions.size() - 1).getForecastEnd();
         }
         else {
             Event tmpEvent = ef.find(eventID);

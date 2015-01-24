@@ -28,8 +28,9 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class InvitationManagementBean {
-    private int eventID,userID;
-    
+
+    private int eventID, userID;
+
     @EJB
     private EventFacade eventFacade;
 
@@ -38,7 +39,7 @@ public class InvitationManagementBean {
 
     @EJB
     private UserManager userManager;
-    
+
     @PostConstruct
     public void init() {
         setInvitations(userManager.getCurrentInvitations());
@@ -55,16 +56,16 @@ public class InvitationManagementBean {
                 Logger.getLogger(InvitationManagementBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return invitations;
     }
 
-    public void decline() throws NotFoundException{
+    public void decline() throws NotFoundException {
         getParam();
-        InvitationID invID =  new InvitationID(userID,eventID);
+        InvitationID invID = new InvitationID(userID, eventID);
         userManager.setInvitationAsDeclined(invID);
     }
-    
+
     public void setInvitations(List<Invitation> newInvitations) {
         invitations = newInvitations;
     }
@@ -73,13 +74,12 @@ public class InvitationManagementBean {
         getParam();
         eventFacade.addParticipant(eventID, userID);
     }
-    
-    private void getParam(){
+
+    private void getParam() {
         String evID;
         evID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("eventID");
         eventID = Integer.parseInt(evID);
         userID = userManager.getLoggedUser().getId();
     }
-    
 
 }

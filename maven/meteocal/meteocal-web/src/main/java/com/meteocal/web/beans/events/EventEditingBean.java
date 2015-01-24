@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
 
@@ -81,7 +82,13 @@ public class EventEditingBean implements Serializable {
     public String eventEditing() {
         int eventID;
         event.setCountry(selectedCountry);
-        ef.updateData(getEvent());
+        try {
+            ef.updateData(getEvent());
+        }
+        catch (BusinessException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
+        }
 
         eventID = sessionUtility.getParameterAsClient();
         sessionUtility.setParameter(eventID);
