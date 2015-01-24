@@ -8,7 +8,9 @@ package com.meteocal.web.beans.events;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.facade.EventFacade;
+import com.meteocal.business.forecast.WeatherForecastService;
 import com.meteocal.geography.GeographicRepository;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.converters.WeatherConditionsConverter;
@@ -17,6 +19,8 @@ import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -39,6 +43,9 @@ public class EventCreationBean implements Serializable {
 
     @Inject
     private ErrorBean error;
+    
+    @EJB
+    private WeatherForecastService weatherForecastUpdater;
 
     @Inject
     private SessionUtility sessionUtility;
@@ -47,8 +54,8 @@ public class EventCreationBean implements Serializable {
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
     private List<String> cities, countries;
-    private String selectedCountry;
-    private boolean indoor, privateEvent;
+    private String selectedCountry,participants;
+    private List<WeatherCondition> weatherForecast;
 
     @PostConstruct
     public void init() {
@@ -77,6 +84,7 @@ public class EventCreationBean implements Serializable {
         createdEvent.setCountry(selectedCountry);
         try {
             eventID = ef.create(getCreatedEvent()).getId();
+            //ef.invite(participants);
         }
         catch (BusinessException e) {
             error.setMessage("An error occurs: " + e.getMessage());
@@ -145,11 +153,37 @@ public class EventCreationBean implements Serializable {
         this.countries = countries;
     }
 
+    public void setParticipants(String participant){
+        this.participants = participant;
+    }
+    
+    public String getParticipants(){
+        return participants;
+    }
+    
     public void setSelectedCountry(String selectedCountry){
         this.selectedCountry = selectedCountry;
     }
     
     public String getSelectedCountry(){
         return selectedCountry;
+    }
+
+    public List<WeatherCondition> getWeatherForecast() {
+        return weatherForecast;
+    }
+
+    public void setWeatherForecast(List<WeatherCondition> weatherForecastConditions) {
+        this.weatherForecast = weatherForecastConditions;
+    }
+    
+    public void loadWeatherConditions(){
+        try {
+            weatherForecastUpdater.askForecast(createdEvent.getStart(), createdEvent.getEnd(), createdEvent.getCity(), createdEvent.getCountry() );
+            setWeatherForecast(weatherForecast);
+        }
+        catch (InvalidInputException ex) {
+            Logger.getLogger(EventCreationBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

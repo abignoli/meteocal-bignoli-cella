@@ -56,8 +56,11 @@ and open the template in the editor.
                     <p:calendar id="startingTime" value="#{eventCreationBean.createdEvent.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
 
                     <h:outputText value="Event ending " />
-                    <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
+                    <p:calendar id="endingTime" value="#{eventCreationBean.createdEvent.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>
 
+                    <h:outputText>List of Users [username1,username2]</h:outputText>
+                    <p:inputTextarea rows="6" cols="33" value="#{eventCreationBean.participants}" />
+                    
                     <h:outputText value="Location: " />
                     <p:selectOneButton value="#{eventCreationBean.createdEvent.indoor}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />

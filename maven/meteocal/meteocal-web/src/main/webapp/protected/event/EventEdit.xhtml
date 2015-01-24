@@ -54,8 +54,16 @@ and open the template in the editor.
                     <p:calendar id="startingTime" value="#{eventEditingBean.event.start}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter" />  
 
                     <h:outputText value="Event ending " />
+                        <f:ajax listener="#{eventEditingBean.loadWeatherConditions}" render="weatherForecasts" />
                     <p:calendar id="endingTime" value="#{eventEditingBean.event.end}" pattern="yyyy-MM-dd HH:mm:ss" converter="TimeConverter"/>  
 
+                    <h:outputText value="Weather Conditions " />
+                    <p:ring id="weatherCondition" value="#{eventEditingBean.weatherForecast}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
+                        <p:panelGrid columns="1">
+                            <p:graphicImage id="img" name="/WEB-INF/Resources/images/#{weatherForecast.code}.png" />
+                        </p:panelGrid>
+                    </p:ring>
+                    
                     <h:outputText value="Location: " />
                     <p:selectOneButton value="#{eventEditingBean.event.indoor}" converter="#{bean.booleanConv}">
                         <f:selectItem itemLabel="Indoor" itemValue="true" />
