@@ -5,16 +5,25 @@
  */
 package com.meteocal.web.beans.events;
 
+import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.WeatherForecastBase;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -30,13 +39,34 @@ public class EventSuggestionsBean implements Serializable {
     @Inject
     private SessionUtility sessionUtility;
 
+    private List<WeatherForecastBase> listOfSuggestions;
     private LocalDateTime start, end;
     private String name;
+    private HttpServletResponse response;
     
     private int eventID;
 
     @PostConstruct
     public void init(){
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        getID();
+        try {
+            listOfSuggestions = ef.askSuggestedChange(eventID);
+        }
+        catch (NotFoundException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
+            
+            return;
+        }
+        if(!listOfSuggestions.isEmpty()){
+            start = listOfSuggestions.get(0).getForecastStart();
+            end = listOfSuggestions.get(listOfSuggestions.size()).getForecastEnd();
+        }else{
+            Event tmpEvent = ef.find(eventID);
+            start = tmpEvent.getStart();
+            end = tmpEvent.getEnd();
+        }
     }
     
     public EventSuggestionsBean() {
@@ -79,8 +109,7 @@ public class EventSuggestionsBean implements Serializable {
         ef.find(eventID).clearSuggestedChange();
     }
 
-    private int getID() {
+    private void getID() {
         eventID = sessionUtility.getParameter();
-        return eventID;
     }
 }

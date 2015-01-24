@@ -38,10 +38,10 @@
 -->    
 
     <navigation-rule>
-        <from-view-id>/protected/SearchResults.xhtml</from-view-id>˙   
+        <from-view-id>/protected/event/EventSuggestedChange.xhtml</from-view-id>˙   
         <navigation-case>
-            <from-outcome>MyCalendar</from-outcome>
-            <to-view-id>/protected/personal/HomeCalendar.xhtml</to-view-id>	        
+            <from-outcome>Error</from-outcome>
+            <to-view-id>/Error.xhtml</to-view-id>	        
         </navigation-case>
     </navigation-rule>
     

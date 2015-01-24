@@ -35,8 +35,8 @@ and open the template in the editor.
                             Would you like to join him?
 
                             <p:commandButton value="Join" actionListener="#{invitationManagementBean.accept()}" icon="ui-icon-arrowrefresh-1-w" >
-                                <f:param name="userID" value="#{invitation.userID}" />
                                 <f:param name="eventID" value="#{invitation.eventID}" />
+                                <f:param name="invitationID" value="#{invitation.ID}" />
                             </p:commandButton>    
                             <p:commandButton value="Decline" actionListener="#{invitationManagementBean.decline()}" ajax="false" icon="ui-icon-close" />
 

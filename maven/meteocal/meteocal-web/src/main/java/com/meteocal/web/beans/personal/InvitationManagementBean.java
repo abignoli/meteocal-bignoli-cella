@@ -6,6 +6,7 @@
 package com.meteocal.web.beans.personal;
 
 import com.meteocal.business.entities.Invitation;
+import com.meteocal.business.entities.keys.InvitationID;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
@@ -27,7 +28,8 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class InvitationManagementBean {
-
+    private int eventID,userID;
+    
     @EJB
     private EventFacade eventFacade;
 
@@ -39,7 +41,7 @@ public class InvitationManagementBean {
     
     @PostConstruct
     public void init() {
-        setInvitations(userManager.getLoggedUser().getInvitations());
+        setInvitations(userManager.getCurrentInvitations());
     }
 
     List<Invitation> invitations;
@@ -57,7 +59,10 @@ public class InvitationManagementBean {
         return invitations;
     }
 
-    public void decline(){
+    public void decline() throws NotFoundException{
+        getParam();
+        InvitationID invID =  new InvitationID(userID,eventID);
+        userManager.setInvitationAsDeclined(invID);
     }
     
     public void setInvitations(List<Invitation> newInvitations) {
@@ -65,13 +70,15 @@ public class InvitationManagementBean {
     }
 
     public void accept() throws BusinessException {
-        String evID,usID;
-        int eventID,userID;
-        evID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("eventID");
-        usID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userID");
-        eventID = Integer.parseInt(evID);
-        userID = Integer.parseInt(usID);
+        getParam();
         eventFacade.addParticipant(eventID, userID);
+    }
+    
+    private void getParam(){
+        String evID;
+        evID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("eventID");
+        eventID = Integer.parseInt(evID);
+        userID = userManager.getLoggedUser().getId();
     }
     
 
