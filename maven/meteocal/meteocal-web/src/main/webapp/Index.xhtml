@@ -23,7 +23,7 @@
     </h:head>
     <h:body>
     	<h:form>
-            <p:panel id="registrationPanel" header="First Option - Registration" style="margin-bottom:20px" class="panelForm">
+            <p:panel id="registrationPanel" header="Registration" style="margin-bottom:20px" class="panelForm">
                 <h:panelGrid columns="3" id="registrationGrid">
                     <p:outputLabel value="Username" for="userRegistration" />
                     <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true" requiredMessage="this field is compulsory">
@@ -52,7 +52,7 @@
 	</h:form> 
         
         <h:form>
-            <p:panel id="loginPanel" header="Second Option - Login" style="margin-bottom:20px"  class="panelForm">
+            <p:panel id="loginPanel" header="Login" style="margin-bottom:20px"  class="panelForm">
                 <h:panelGrid columns="3" id="loginGrid">
                     <p:outputLabel value="Username" for="userLogin" />
                     <p:inputText id="userLogin" value="#{loginBean.username}" required="true" requiredMessage="this field is compulsory">
