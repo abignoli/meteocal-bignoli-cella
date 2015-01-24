@@ -17,6 +17,7 @@ import com.meteocal.business.exceptions.InvalidInputException;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserEventVisibility;
+import com.meteocal.business.shared.utils.RegExUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -31,12 +32,20 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class EventFacadeImplementation implements EventFacade {
-
+    
+    public static final String REXEX_PATTERN_INVITED_USER = "(\\s*(\\w*)\\s*,?)";
+    public static final int REXEX_PATTERN_INVITED_USER_GROUP = 2;
+    
+    public static final String REXEX_PATTERN_INVITED_USERS = "(\\s*(\\w*)\\s*,?)*";
+            
     @EJB
     private EventDAO eventDAO;
 
     @EJB
     private UserDAO userDAO;
+    
+    @EJB
+    private UserFacade userFacade;
 
     @EJB
     private WeatherForecastFacade weatherForecastFacade;
@@ -184,6 +193,21 @@ public class EventFacadeImplementation implements EventFacade {
             return UserEventVisibility.VIEWER;
         }
     }
+    
+    @Override
+    public void addInvited(int eventID, String username) throws BusinessException {
+        Event e = eventDAO.retrieve(eventID);
+        
+        addInvited(e, username);
+    }
+    
+    private void addInvited(Event e, String username) throws BusinessException {
+        User u = userFacade.findByUsername(username);
+        
+        if(u != null) {
+            e.addInvited(u);
+        }
+    }
 
     @Override
     public void addInvited(int eventID, int userID) throws BusinessException {
@@ -193,6 +217,16 @@ public class EventFacadeImplementation implements EventFacade {
         if (!e.addInvited(u)) {
             throw new BusinessException(InvalidInputException.USER_ALREADY_INVITED);
         }
+    }
+    
+    @Override
+    public void addInvitedList(int eventID, String listInvited) throws BusinessException {
+        List<String> usernames = RegExUtils.decomposeMultiple(listInvited, REXEX_PATTERN_INVITED_USER, REXEX_PATTERN_INVITED_USER_GROUP);
+        
+        Event e = eventDAO.retrieve(eventID);
+        
+        for(String username: usernames)
+            addInvited(e, username);
     }
 
     public void updateWeatherForecasts(int eventID) throws InvalidInputException, NotFoundException {
@@ -298,8 +332,14 @@ public class EventFacadeImplementation implements EventFacade {
 
     @Override
     public boolean isSuggestedChangeAvailable(int eventID) throws NotFoundException {
+        Event e = eventDAO.retrieve(eventID);
+        
+        
+        
         return false;
     }
+
+
     
     
 }

@@ -201,7 +201,7 @@ public class Event {
 
         if (!isInvited(u) && creator.getId() != u.getId()) {
             invited.add(u);
-            u.getParticipatingTo().add(this);
+            u.getInvitedTo().add(this);
             return true;
         }
 

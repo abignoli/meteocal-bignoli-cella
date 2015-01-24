@@ -126,4 +126,8 @@ public interface EventFacade {
     public void updateWeatherForecasts() throws InvalidInputException, NotFoundException;
     
     public boolean isSuggestedChangeAvailable(int eventID) throws NotFoundException;
+    
+    public abstract void addInvitedList(int eventID, String listInvited) throws BusinessException;
+    
+    public void addInvited(int eventID, String username) throws BusinessException;
 }

@@ -60,10 +60,8 @@ public class EventPageCreatorBean implements Serializable {
     }
 
     public String addParticipant() {
-        int userID;
-        userID = uf.findByUsername(newParticipant).getId();
         try {
-            ef.addInvited(eventID, userID);
+            ef.addInvited(eventID, newParticipant);
         }
         catch (BusinessException ex) {
             Logger.getLogger(EventPageCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
