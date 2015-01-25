@@ -40,7 +40,7 @@ public class EventPageViewerBean implements Serializable {
     private Event referredEvent;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private final String errorOutcome = "Error";
-    
+
     @EJB
     EventFacade ef;
 
@@ -132,7 +132,7 @@ public class EventPageViewerBean implements Serializable {
         return referredEvent.isPrivateEvent();
     }
 
-    public void cancelPartecipation() {
+    public String cancelPartecipation() {
         try {
             um.removeParticipation(id);
         }
@@ -140,9 +140,11 @@ public class EventPageViewerBean implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
         }
+        sessionUtility.setParameter(id);
+        return "/protected/event/EventPageViewer?faces-redirect=true";
     }
 
-    public void confirmPartecipation() {
+    public String confirmPartecipation() {
         try {
             um.addParticipation(id);
         }
@@ -150,12 +152,14 @@ public class EventPageViewerBean implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
         }
+        sessionUtility.setParameter(id);
+        return "/protected/event/EventPageViewer?faces-redirect=true";
     }
-    
-    public boolean getRenderDelete(){
+
+    public boolean getRenderDelete() {
         return ef.find(id).isParticipant(um.getLoggedUser());
     }
-    
+
     public String getStart() {
         return referredEvent.getStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
     }
@@ -173,14 +177,15 @@ public class EventPageViewerBean implements Serializable {
 
         return result;
     }
-    
+
     public boolean isParticipantFlag() {
         try {
             return um.isLoggedUserParticipatingTo(id);
-        } catch (NotFoundException nfe) {
+        }
+        catch (NotFoundException nfe) {
 
         }
-        
+
         return false;
     }
 
