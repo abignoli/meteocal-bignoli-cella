@@ -37,8 +37,6 @@ public class WeatherForecastServiceIT {
     @EJB
     WeatherForecastService weatherForecastService;
 
-//    @PersistenceContext
-//    EntityManager em;
     @Deployment
     public static WebArchive createArchiveAndDeploy() {
         return ShrinkWrap.create(WebArchive.class)
