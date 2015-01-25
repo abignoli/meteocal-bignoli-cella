@@ -59,12 +59,17 @@ public class FilterCalendar {
 
         userB = getUser();
         
-        if(userB.equals(loggedUser.getUsername())){
+        if (isNotLogged()) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+        }
+
+        if (userB.equals(loggedUser.getUsername())) {
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, myCalendarOutcome);
             return;
         }
-            
+
         try {
             visibility = um.getVisibilityOverUser(uf.findByUsername(userB).getId());
         }

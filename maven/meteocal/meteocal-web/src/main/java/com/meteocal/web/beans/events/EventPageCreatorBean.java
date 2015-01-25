@@ -6,7 +6,6 @@
 package com.meteocal.web.beans.events;
 
 import com.meteocal.business.entities.Event;
-import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
@@ -80,13 +79,13 @@ public class EventPageCreatorBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info!", "Participant not added!"));
 
-            return "/protected/event/EventPageCreator";
+            return "/protected/event/EventPageCreator?faces-redirect=true";
         }
         sessionUtility.setParameter(eventID);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Participant addedd!"));
 
-        return "/protected/event/EventPageCreator";
+        return "/protected/event/EventPageCreator?faces-redirect=true";
     }
 
     private int getID() throws NotValidParameter {

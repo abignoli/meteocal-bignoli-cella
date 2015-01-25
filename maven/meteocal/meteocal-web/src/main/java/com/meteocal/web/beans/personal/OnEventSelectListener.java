@@ -14,12 +14,17 @@ import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 
@@ -35,7 +40,9 @@ public class OnEventSelectListener {
     public static final String errorOutcome = "Error";
     public static final String viewerOutcome = "Viewer";
     public static final String noVisibilityOutcome = "noVisibility";
-
+    private HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+    private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    
     @Inject
     SessionUtility sessionUtility;
 
@@ -65,7 +72,22 @@ public class OnEventSelectListener {
         if (ef.find(eventID).isPrivateEvent()) {// NO VISIBILITY
             FacesContext fc = FacesContext.getCurrentInstance();
             sessionUtility.setParameter(eventID);
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
+            try {
+                response.sendRedirect("/protected/personal/HomeCalendar.xhtml?faces-redirect=true");
+            }
+            catch (IOException ex) {
+                fc = FacesContext.getCurrentInstance();
+                sessionUtility.setParameter(eventID);
+                FacesContext context = FacesContext.getCurrentInstance();
+                String contextPath = request.getContextPath();
+            
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");
+                } 
+                catch (IOException ex1) {
+                    Logger.getLogger(OnEventSelectListener.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+        }
             return;
         }
         try {
@@ -100,6 +122,6 @@ public class OnEventSelectListener {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
 
         }
-        return;
+        return; 
     }
 }

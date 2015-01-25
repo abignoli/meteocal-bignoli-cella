@@ -60,19 +60,21 @@ public class InvitationManagementBean {
         return invitations;
     }
 
-    public void decline() throws NotFoundException {
+    public String decline() throws NotFoundException {
         getParam();
         InvitationID invID = new InvitationID(userID, eventID);
         userManager.setInvitationAsDeclined(invID);
+        return "/protected/personal/HomeCalendar?faces-redirect=true";
     }
 
     public void setInvitations(List<Invitation> newInvitations) {
         invitations = newInvitations;
     }
 
-    public void accept() throws BusinessException {
+    public String accept() throws BusinessException {
         getParam();
         eventFacade.addParticipant(eventID, userID);
+        return "/protected/personal/HomeCalendar?faces-redirect=true";
     }
 
     private void getParam() {

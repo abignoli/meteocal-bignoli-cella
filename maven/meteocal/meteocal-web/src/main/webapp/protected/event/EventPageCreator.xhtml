@@ -74,8 +74,8 @@ and open the template in the editor.
                         <h:outputText value="Participants:" />
                         <h:outputText value="#{eventPageCreatorBean.participants}"/>
 
-                        <p:commandButton value="Edit" icon="ui-icon-pencil" action="/protected/event/EventEdit" type="submit" ajax="false" styleClass="block"/>
-                        <p:commandButton value="Available Changes" icon="ui-icon-clock" action="/protected/event/EventSuggestedChange" type="submit" ajax="false" rendered="#{eventPageCreatorBean.render}" styleClass="block"/>
+                        <p:commandButton value="Edit" icon="ui-icon-pencil" action="/protected/event/EventEdit?faces-redire=true" type="submit" ajax="false" styleClass="block"/>
+                        <p:commandButton value="Available Changes" icon="ui-icon-clock" action="/protected/event/EventSuggestedChange?faces-redirect=true" type="submit" ajax="false" rendered="#{eventPageCreatorBean.render}" styleClass="block"/>
 
                     </h:panelGrid>
                 </h:form>
@@ -85,6 +85,7 @@ and open the template in the editor.
             <h:form>
                 <p:inputText value="#{eventPageCreatorBean.participant}"></p:inputText>
                 <p:commandButton action="#{eventPageCreatorBean.addParticipant()}" value="add Participant" type="submit" ajax="false"></p:commandButton>
+                <h:outputText value="you can't add yourself" />
             </h:form>
         </p:fieldset>
     </h:body>

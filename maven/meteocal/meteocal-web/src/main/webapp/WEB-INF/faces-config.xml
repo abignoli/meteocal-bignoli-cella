@@ -38,14 +38,6 @@
 -->    
 
     <navigation-rule>
-        <from-view-id>/protected/event/EventSuggestedChange.xhtml</from-view-id>˙   
-        <navigation-case>
-            <from-outcome>Error</from-outcome>
-            <to-view-id>/Error.xhtml</to-view-id>	        
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
         <from-view-id>/protected/SearchResults.xhtml</from-view-id>˙
         <navigation-case>
             <from-outcome>Visible</from-outcome>	            
@@ -62,7 +54,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/protected/SearchResults.xhtml</from-view-id>˙   
+        <from-view-id>/protected/*</from-view-id>˙   
         <navigation-case>
             <from-outcome>Error</from-outcome>
             <to-view-id>/Error.xhtml</to-view-id>	        
@@ -95,14 +87,6 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙    
-        <navigation-case>
-            <from-outcome>Error</from-outcome>
-            <to-view-id>/Error.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
         <from-view-id>/protected/event/EventPage.xhtml</from-view-id>˙
         <navigation-case>
             <from-outcome>Creator</from-outcome>	            
@@ -123,14 +107,6 @@
         <navigation-case>
             <from-outcome>NoVisibility</from-outcome>
             <to-view-id>/protected/event/EventPageNoVisibility.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/protected/event/EventPage.xhtml</from-view-id>˙        
-        <navigation-case>
-            <from-outcome>Error</from-outcome>
-            <to-view-id>/Error.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     

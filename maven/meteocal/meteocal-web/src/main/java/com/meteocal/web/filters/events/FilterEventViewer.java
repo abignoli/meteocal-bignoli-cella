@@ -12,6 +12,7 @@ import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -45,7 +46,7 @@ public class FilterEventViewer {
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String errorPath = context + "/Error.xhtml";
+    private final String errorPath = context + "/Error.xhtml?faces-redirect=true";
     
     @PostConstruct
     public void init(){

@@ -11,6 +11,9 @@ import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.business.shared.security.UserUserVisibility;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -65,7 +68,13 @@ public class FilterCalendarVisible {
         }
         catch (NotFoundException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+            String contextPath = request.getContextPath();
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");
+            }
+            catch (IOException ex1) {
+                Logger.getLogger(FilterCalendarVisible.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             return;
         }
 

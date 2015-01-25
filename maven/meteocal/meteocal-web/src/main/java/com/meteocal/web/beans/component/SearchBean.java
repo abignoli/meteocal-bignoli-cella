@@ -7,15 +7,12 @@ package com.meteocal.web.beans.component;
 
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
-import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;

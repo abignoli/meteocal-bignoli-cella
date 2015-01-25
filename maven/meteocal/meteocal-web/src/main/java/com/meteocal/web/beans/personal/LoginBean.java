@@ -72,7 +72,7 @@ public class LoginBean {
         if (sessionUtility != null) {
             if (sessionUtility.isThereAnActiveSession()) {
                 SYSO_Testing.syso("I redirect you to your active session");
-                return "/protected/personal/HomeCalendar";
+                return "/protected/personal/HomeCalendar?faces-redirect=true";
             }
         }
 
@@ -94,9 +94,8 @@ public class LoginBean {
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Login end successfully!", "Login end successfully!"));
-
-        return "/protected/personal/HomeCalendar.xhtml";
+        
+        return "/protected/personal/HomeCalendar.xhtml?faces-redirect=true";
     }
 
     public void logout() {
@@ -112,8 +111,8 @@ public class LoginBean {
         try {
             contextPath = request.getContextPath();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Logout!"));
-            
-            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml");
+        
+            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");
         }
         catch (IOException ex) {
         }

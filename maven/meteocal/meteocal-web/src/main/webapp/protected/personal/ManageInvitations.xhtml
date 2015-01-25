@@ -30,16 +30,18 @@ and open the template in the editor.
                             </f:facet>
                             
                             <h:outputText value="#{invitation.user.username}" />
-                            invites you to his event:  
+                            you were invite to the event:  
                             <p:link value="#{invitation.event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{invitation.event.id}"></p:link>
                             Would you like to join him?
 
-                            <p:commandButton value="Join" actionListener="#{invitationManagementBean.accept()}" icon="ui-icon-arrowrefresh-1-w" >
+                            <p:commandButton value="Join" action="#{invitationManagementBean.accept()}" icon="ui-icon-arrowrefresh-1-w" >
                                 <f:param name="eventID" value="#{invitation.eventID}" />
                                 <f:param name="invitationID" value="#{invitation.ID}" />
                             </p:commandButton>    
-                            <p:commandButton value="Decline" actionListener="#{invitationManagementBean.decline()}" ajax="false" icon="ui-icon-close" />
-
+                            <p:commandButton value="Decline" action="#{invitationManagementBean.decline()}" icon="ui-icon-close" >
+                                <f:param name="eventID" value="#{invitation.eventID}" />
+                                <f:param name="invitationID" value="#{invitation.ID}" />
+                            </p:commandButton>
                             <p:separator />
                         </p:dataList>
 

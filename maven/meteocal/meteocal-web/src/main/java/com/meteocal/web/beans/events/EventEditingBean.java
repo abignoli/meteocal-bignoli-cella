@@ -92,7 +92,7 @@ public class EventEditingBean implements Serializable {
 
         eventID = sessionUtility.getParameterAsClient();
         sessionUtility.setParameter(eventID);
-        return "/protected/event/EventPage";
+        return "/protected/event/EventPage?faces-redirect=true";
     }
 
     public String getCity() {

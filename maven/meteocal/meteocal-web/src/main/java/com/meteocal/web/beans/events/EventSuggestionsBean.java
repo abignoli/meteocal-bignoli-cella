@@ -56,7 +56,7 @@ public class EventSuggestionsBean implements Serializable {
     }
 
     public String eventEditing() {
-        return "/protected/event/EventPageCreator.xhtml?";
+        return "/protected/event/EventPageCreator.xhtml?faces-redirect=true";
     }
 
     public LocalDateTime getStart() {

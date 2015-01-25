@@ -86,7 +86,7 @@ public class SettingsEditingBean implements Serializable{
                     userFacade.updateData(editedUser ,previousPassword);
                 }else{
                     sessionUtility.setError(Dictionary.NOTMATCHEDPASSWORD);
-                    return "/protected/personal/SettingsEdit";
+                    return "/protected/personal/SettingsEdit?faces-redirect=true";
                 }
             }
             SYSO_Testing.syso("update done");
@@ -94,15 +94,15 @@ public class SettingsEditingBean implements Serializable{
         catch(EJBException e){
             SYSO_Testing.syso("CATCH EJB");
             sessionUtility.setError(Dictionary.EXCEPTION);
-            return "/Error";
+            return "/Error?faces-redirect=true";
             
         }
         catch (BusinessException ex) {
             SYSO_Testing.syso("CATCH BusinessException");
             sessionUtility.setError(Dictionary.EXCEPTION);
-            return "/Error";
+            return "/Error?faces-redirect=true";
             //Logger.getLogger(SettingsEditingBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "/protected/personal/HomeCalendarMonth";
+        return "/protected/personal/HomeCalendar?faces-redirect=true";
     }
 }

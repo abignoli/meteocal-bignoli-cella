@@ -88,11 +88,11 @@ public class EventCreationBean implements Serializable {
         }
         catch (BusinessException e) {
             error.setMessage("An error occurs: " + e.getMessage());
-            return "/Error";
+            return "/Error?faces-redirect=true";
         }
 
         sessionUtility.setParameter(eventID);
-        return "/protected/event/EventPage";
+        return "/protected/event/EventPage?faces-redirect=true";
     }
 
     public Event getCreatedEvent() {
