@@ -14,9 +14,6 @@ import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -69,27 +66,6 @@ public class OnEventSelectListener {
         eventID = Integer.parseInt(selectedEvent.getData().toString());
         String username = sessionUtility.getLoggedUser();
 
-        if (ef.find(eventID).isPrivateEvent()) {// NO VISIBILITY
-            FacesContext fc = FacesContext.getCurrentInstance();
-            sessionUtility.setParameter(eventID);
-            try {
-                response.sendRedirect("/protected/personal/HomeCalendar.xhtml?faces-redirect=true");
-            }
-            catch (IOException ex) {
-                fc = FacesContext.getCurrentInstance();
-                sessionUtility.setParameter(eventID);
-                FacesContext context = FacesContext.getCurrentInstance();
-                String contextPath = request.getContextPath();
-            
-                try {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");
-                } 
-                catch (IOException ex1) {
-                    Logger.getLogger(OnEventSelectListener.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-        }
-            return;
-        }
         try {
             visibility = um.getVisibilityOverEvent(eventID);
             sessionUtility.setParameter(eventID);
@@ -102,7 +78,7 @@ public class OnEventSelectListener {
                 return;
             }
             else {
-                if (visibility == VIEWER) {
+                if (visibility == VIEWER && !ef.find(eventID).isPrivateEvent()) {
                     FacesContext fc = FacesContext.getCurrentInstance();
                     sessionUtility.setParameter(eventID);
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
@@ -120,7 +96,6 @@ public class OnEventSelectListener {
             error.setMessage("There is an incompatibility between you and the required event");
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
-
         }
         return; 
     }
