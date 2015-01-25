@@ -162,4 +162,17 @@ public class UserManagerImplementation implements UserManager {
     public void setInvitationAsDeclined(InvitationID invitationID) throws NotFoundException {
         invitationFacade.setAsDeclined(invitationID);
     }
+
+    @Override
+    public List<Event> getEventsWithPrivacyFilter(String username) throws NotFoundException {
+        User u = userDAO.findByUsername(username);
+        
+        if(u == null)
+            throw new NotFoundException();
+        
+        if(u.isCalendarVisible())
+            return getEventsVisibilityMasked(u.getId());
+        else
+            return new ArrayList<Event>();
+    }
 }

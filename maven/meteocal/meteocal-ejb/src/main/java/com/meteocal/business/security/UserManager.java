@@ -80,4 +80,6 @@ public interface UserManager {
      * Returns the list of not declined invitations.
      */
     public List<Invitation> getCurrentInvitations();
+    
+    public List<Event> getEventsWithPrivacyFilter(String username) throws NotFoundException;
 }
