@@ -175,4 +175,9 @@ public class UserManagerImplementation implements UserManager {
         else
             return new ArrayList<Event>();
     }
+
+    @Override
+    public boolean isLoggedUserParticipatingTo(int eventID) throws NotFoundException {
+        return eventFacade.isParticipant(eventID, getLoggedUser().getId());
+    }
 }

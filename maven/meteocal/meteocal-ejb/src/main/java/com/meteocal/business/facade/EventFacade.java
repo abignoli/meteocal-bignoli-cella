@@ -138,4 +138,6 @@ public interface EventFacade {
     public void checkEventsSchedule();
     
     public List<WeatherForecastBase> askSuggestedChange(int eventID) throws NotFoundException;
+
+    public boolean isParticipant(int eventID, int userID) throws NotFoundException;
 }
