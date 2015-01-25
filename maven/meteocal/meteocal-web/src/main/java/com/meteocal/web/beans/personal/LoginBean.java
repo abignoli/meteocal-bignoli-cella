@@ -68,8 +68,18 @@ public class LoginBean {
     public String login() {
         if (sessionUtility != null) {
             if (sessionUtility.isThereAnActiveSession()) {
-                SYSO_Testing.syso("I redirect you to your active session");
-                return "/protected/personal/HomeCalendar?faces-redirect=true";
+                if (sessionUtility.getLoggedUser().equals(this.username)) {
+                    SYSO_Testing.syso("I redirect you to your active session");
+                    return "/protected/personal/HomeCalendar?faces-redirect=true";
+                } else {
+                    // Invalidate
+
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+                    sessionUtility.sessionLogout();
+                    request.getSession().invalidate();
+                }
             }
         }
 
@@ -80,8 +90,7 @@ public class LoginBean {
 
         try {
             request.login(this.username, this.password);
-        }
-        catch (ServletException e) {
+        } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credentials are not valid!", "Credentials are not valid!"));
@@ -89,7 +98,7 @@ public class LoginBean {
         }
         SYSO_Testing.syso("LoginBean. Login successful");
         sessionUtility.addUser(username);
-        
+
         return "/protected/personal/HomeCalendar.xhtml?faces-redirect=true";
     }
 
@@ -105,12 +114,11 @@ public class LoginBean {
         request.getSession().invalidate();
         try {
             contextPath = request.getContextPath();
-            
+
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Logout!"));
-        
+
             FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
         }
     }
 }
