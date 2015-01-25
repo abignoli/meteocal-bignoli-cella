@@ -85,10 +85,10 @@ public class EventEditingBean implements Serializable {
     public String eventEditing() {
         int eventID;
         event.setCountry(selectedCountry);
-        if( isThereAnError() ){
+        if (isThereAnError()) {
             return "";
         }
-            
+
         try {
             ef.updateData(getEvent());
         }
@@ -173,11 +173,11 @@ public class EventEditingBean implements Serializable {
     }
 
     public boolean isThereAnError() {
-        LocalDateTime start, end,now;
+        LocalDateTime start, end, now;
         start = event.getStart();
         end = event.getEnd();
         now = LocalDateTime.now();
-        
-        return start.isAfter(now.plusMinutes(15)) && start.isBefore(end);
+
+        return !(start.isAfter(now.plusMinutes(15)) && start.isBefore(end));
     }
 }

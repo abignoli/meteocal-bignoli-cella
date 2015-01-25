@@ -188,6 +188,6 @@ public class EventCreationBean implements Serializable {
         end = createdEvent.getEnd();
         now = LocalDateTime.now();
         
-        return start.isAfter(now.plusMinutes(15)) && start.isBefore(end);
+        return !(start.isAfter(now.plusMinutes(15)) && start.isBefore(end));
     }
 }
