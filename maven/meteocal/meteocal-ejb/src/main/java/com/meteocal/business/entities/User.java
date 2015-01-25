@@ -129,11 +129,16 @@ public class User {
     
     void removeParticipatingToFromList(Event e) {
         List<Event> paricipatingTo = getParticipatingTo();
+        List<Event> toRemove = new ArrayList<Event>();
         
         for (Event entry : paricipatingTo) {
             if (entry.getId() == e.getId()) {
-                paricipatingTo.remove(entry);
+                toRemove.add(entry);
             }
+        }
+        
+        for(Event etr: toRemove) {
+            paricipatingTo.remove(etr);
         }
     }
     
@@ -207,11 +212,16 @@ public class User {
     
     void removeInvitedToFromList(Event e) {
         List<Event> invitedTo = getInvitedTo();
+        List<Event> toRemove = new ArrayList<Event>();
         
         for (Event entry : invitedTo) {
             if (entry.getId() == e.getId()) {
-                invitedTo.remove(entry);
+                toRemove.add(entry);
             }
+        }
+        
+        for(Event etr: toRemove) {
+            invitedTo.remove(etr);
         }
     }
     
