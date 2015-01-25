@@ -10,6 +10,7 @@ import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
 import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
+import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.web.exceptions.NotValidParameter;
@@ -133,7 +134,7 @@ public class EventPageViewerBean implements Serializable {
 
     public void cancelPartecipation() {
         try {
-            ef.removeParticipant(id, um.getLoggedUser().getId());
+            um.removeParticipation(id);
         }
         catch (BusinessException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -143,7 +144,7 @@ public class EventPageViewerBean implements Serializable {
 
     public void confirmPartecipation() {
         try {
-            ef.addParticipant(id, um.getLoggedUser().getId());
+            um.addParticipation(id);
         }
         catch (BusinessException ex) {
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -171,6 +172,16 @@ public class EventPageViewerBean implements Serializable {
         }
 
         return result;
+    }
+    
+    public boolean isParticipantFlag() {
+        try {
+            return um.isLoggedUserParticipatingTo(id);
+        } catch (NotFoundException nfe) {
+
+        }
+        
+        return false;
     }
 
     public List<WeatherForecast> getWeatherForecasts() {

@@ -69,7 +69,7 @@ public class WeatherForecastService {
 
     // Fixed
     private final int LONG_RANGE_FORECAST_HOURS_DURATION = 24;
-    
+
     @EJB
     GeographicRepository geographicRepository;
 
@@ -105,7 +105,7 @@ public class WeatherForecastService {
     public List<WeatherForecastBase> askForecast(LocalDateTime start, LocalDateTime end, String city, String country) throws InvalidInputException {
         ShortRangeForecast shortRangeForecast = null;
         LongRangeForecast longRangeForecast = null;
-        
+
         String countryID = geographicRepository.getCountryID(country);
 
         List<WeatherForecastBase> forecasts;
@@ -133,17 +133,17 @@ public class WeatherForecastService {
 
     /**
      * Returns null if no match is available.
-     * 
+     *
      * @param scheduledStart
      * @param scheduledEnd
      * @param forecastRange
      * @param adverseConditions
      * @return
-     * @throws InvalidInputException 
+     * @throws InvalidInputException
      */
     public List<WeatherForecastBase> askClosestMatch(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, String city, String country, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
         String countryID = geographicRepository.getCountryID(country);
-        
+
         List<WeatherForecastBase> forecastRange = askForecast(city, countryID);
 
         if (adverseConditions == null) {
@@ -157,13 +157,13 @@ public class WeatherForecastService {
 
     /**
      * Returns null if no match is available.
-     * 
+     *
      * @param scheduledStart
      * @param scheduledEnd
      * @param forecastRange
      * @param adverseConditions
      * @return
-     * @throws InvalidInputException 
+     * @throws InvalidInputException
      */
     private List<WeatherForecastBase> lookForCompatibility(LocalDateTime scheduledStart, LocalDateTime scheduledEnd, List<WeatherForecastBase> forecastRange, EnumSet<WeatherCondition> adverseConditions) throws InvalidInputException {
         if (scheduledStart == null || scheduledEnd == null) {
@@ -224,7 +224,7 @@ public class WeatherForecastService {
 
         if (bestMatchStartIndex != null) {
             result = new ArrayList<WeatherForecastBase>();
-            
+
             for (int i = bestMatchStartIndex; i <= bestMatchEndIndex; i++) {
                 result.add(forecastRange.get(i));
             }
@@ -233,7 +233,7 @@ public class WeatherForecastService {
         } else {
             result = null;
         }
-        
+
         return result;
     }
 
@@ -329,7 +329,9 @@ public class WeatherForecastService {
             }
         }
 
-        result.get(result.size() - 1).setForecastEnd(result.get(result.size() - 1).getForecastStart().plusHours(SHORT_RANGE_FORECAST_HOURS_DURATION));
+        if (result.size() > 0) {
+            result.get(result.size() - 1).setForecastEnd(result.get(result.size() - 1).getForecastStart().plusHours(SHORT_RANGE_FORECAST_HOURS_DURATION));
+        }
 
         cleanFromInvalidWeatherForecasts(result);
 
@@ -816,9 +818,10 @@ public class WeatherForecastService {
 
     private List<WeatherForecastBase> truncateDurationToClosestMatch(List<WeatherForecastBase> result, LocalDateTime scheduledStart, LocalDateTime scheduledEnd) throws InvalidInputException {
         long eventDuration = LocalDateTimeUtils.distance(scheduledStart, scheduledEnd);
-        
-        if(eventDuration <= 0) 
+
+        if (eventDuration <= 0) {
             throw new InvalidInputException(InvalidInputException.WEATHER_FORECAST_SERVICE_ASK_FORECAST_START_AFTER_END);
+        }
 
         if (result != null && result.size() > 0) {
             LocalDateTime forecastStart = result.get(0).getForecastStart();
@@ -839,7 +842,7 @@ public class WeatherForecastService {
         } else {
             result = null;
         }
-        
+
         return result;
     }
 
@@ -873,5 +876,5 @@ public class WeatherForecastService {
             logger.log(Level.INFO, wf.getForecastStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "            " + wf.getForecastEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)) + "           " + wf.getWeatherCondition());
         }
     }
- 
+
 }

@@ -79,8 +79,8 @@ and open the template in the editor.
             <p:separator/>
             <h:panelGrid>
                 <h:form>
-                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.confirmPartecipation()}" value="partecipate" rendered="#{!eventPageViewerBean.renderDelete}"/>
-                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" rendered="#{eventPageViewerBean.renderDelete}"/>
+                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.confirmPartecipation()}" value="partecipate" rendered="#{eventPageViewerBean.participantFlag}"/>
+                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" rendered="#{!eventPageViewerBean.participantFlag}"/>
                 </h:form>
             </h:panelGrid>
         </p:panel>
