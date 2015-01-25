@@ -12,7 +12,6 @@ import static com.meteocal.business.shared.security.UserEventVisibility.VIEWER;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -33,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestScoped
 public class FilterEventViewer {
         
-    UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
+    private UserEventVisibility visibility;//one of: CREATOR, VIEWER, NO_VISIBILITY
     
     @Inject
     private SessionUtility sessionUtility;
@@ -42,18 +41,17 @@ public class FilterEventViewer {
     private UserManager um;
     
     private String loggedUser;
-    HttpServletRequest request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+    private HttpServletRequest request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    private HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String errorPath = context + "Error";
+    private final String errorPath = "Error";
     
     @PostConstruct
     public void init(){
         this.setUser(sessionUtility.getLoggedUser());        
         request =  (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-       
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();   
     }
     
     private void setUser(String user){
@@ -86,7 +84,7 @@ public class FilterEventViewer {
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorPath);
                     return;
                 }
-                //If I reach this code, I'm the creator
+                //If I reach this code, I'm the viewer
 
             }
             catch (NotFoundException ex) {

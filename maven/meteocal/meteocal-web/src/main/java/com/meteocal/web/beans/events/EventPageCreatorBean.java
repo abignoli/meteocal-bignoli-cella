@@ -97,12 +97,13 @@ public class EventPageCreatorBean implements Serializable {
                 eventID = Integer.parseInt(strID);
             }
             catch (NumberFormatException e) {
-                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+                eventID = sessionUtility.getParameterAsClient();
             }
         }
-        else {
-            eventID = sessionUtility.getParameter();
-        }
+        else
+            eventID = sessionUtility.getParameterAsClient();
+        
+        
 
         return eventID;
     }

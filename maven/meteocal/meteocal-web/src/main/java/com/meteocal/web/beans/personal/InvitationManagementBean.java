@@ -73,6 +73,8 @@ public class InvitationManagementBean {
 
     public String accept() throws BusinessException {
         getParam();
+        InvitationID invID = new InvitationID(userID, eventID);
+        userManager.setInvitationAsSeen(invID);
         eventFacade.addParticipant(eventID, userID);
         return "/protected/personal/HomeCalendar?faces-redirect=true";
     }

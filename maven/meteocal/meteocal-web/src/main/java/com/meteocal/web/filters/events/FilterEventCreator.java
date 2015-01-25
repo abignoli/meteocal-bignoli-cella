@@ -96,6 +96,8 @@ public class FilterEventCreator {
                 return;
             }
         }
+        sessionUtility.setParameter(eventID);
+            
     }
 
     private int getID() throws NotValidParameter {
@@ -108,11 +110,11 @@ public class FilterEventCreator {
                 id = Integer.parseInt(strID);
             }
             catch (NumberFormatException e) {
-                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+                id = sessionUtility.getParameterAsClient();
             }
         }
         else {
-            id = sessionUtility.getParameter();
+            id = sessionUtility.getParameterAsClient();
         }
         if (id < 0) {
             throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);

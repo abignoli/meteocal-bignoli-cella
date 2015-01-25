@@ -112,7 +112,7 @@ public class EventEditingBean implements Serializable {
     }
 
     private int getID() {
-        return sessionUtility.getParameter();
+        return sessionUtility.getParameterAsClient();
     }
 
     public void setSelectedCountry(String selectedCountry) {

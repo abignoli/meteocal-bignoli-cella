@@ -73,11 +73,11 @@ public class EventPageViewerBean implements Serializable {
                 eventID = Integer.parseInt(strID);
             }
             catch (NumberFormatException e) {
-                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+                eventID = sessionUtility.getParameterAsClient();
             }
         }
         else {
-            eventID = sessionUtility.getParameter();
+            eventID = sessionUtility.getParameterAsClient();
         }
 
         return eventID;
@@ -131,10 +131,30 @@ public class EventPageViewerBean implements Serializable {
         return referredEvent.isPrivateEvent();
     }
 
-    public void cancelPartecipation() throws BusinessException {
-        ef.removeParticipant(id, um.getLoggedUser().getId());
+    public void cancelPartecipation() {
+        try {
+            ef.removeParticipant(id, um.getLoggedUser().getId());
+        }
+        catch (BusinessException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
+        }
     }
 
+    public void confirmPartecipation() {
+        try {
+            ef.addParticipant(id, um.getLoggedUser().getId());
+        }
+        catch (BusinessException ex) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "Error");
+        }
+    }
+    
+    public boolean getRenderDelete(){
+        return ef.find(id).isParticipant(um.getLoggedUser());
+    }
+    
     public String getStart() {
         return referredEvent.getStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
     }

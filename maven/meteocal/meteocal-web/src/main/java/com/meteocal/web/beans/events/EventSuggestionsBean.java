@@ -93,7 +93,7 @@ public class EventSuggestionsBean implements Serializable {
     }
 
     private void getID() {
-        eventID = sessionUtility.getParameter();
+        eventID = sessionUtility.getParameterAsClient();
     }
 
     public void setValues() {

@@ -15,7 +15,6 @@ import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
-import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -145,7 +144,7 @@ public class FilterEvent {
                 id = Integer.parseInt(strID);
             }
             catch (NumberFormatException e) {
-                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+                id = sessionUtility.getParameterAsClient();
             }
         }
         else {
