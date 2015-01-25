@@ -48,9 +48,9 @@ public class FilterEvent {
 
     private final String initialContext = "Home";
     private final String errorOutcome = "Error";
-    private final String creatorOutcome = "Creator";
-    private final String viewerOutcome = "Viewer";
-    private final String noVisibilityOutcome = "NoVisibility";
+    private final String creatorOutcome = "EventCreator";
+    private final String viewerOutcome = "EventViewer";
+    private final String noVisibilityOutcome = "EventNoVisible";
 
     @PostConstruct
     public void init() {
@@ -94,35 +94,26 @@ public class FilterEvent {
                     SYSO_Testing.syso("FilterEvent. Username " + username);
                     SYSO_Testing.syso("FilterEvent. I'm logged, and I've to check the visibility");
                     if (visibility == CREATOR) {
-                        String contextPath = request.getContextPath();
+                        FacesContext fc = FacesContext.getCurrentInstance();
                         sessionUtility.setParameter(eventID);
-                        FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageCreator.xhtml?faces-redirect=true");
+                        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, creatorOutcome);
                         return;
                     }
                     else {
                         if (visibility == VIEWER) {
-                            String contextPath = request.getContextPath();
+                            FacesContext fc = FacesContext.getCurrentInstance();
                             sessionUtility.setParameter(eventID);
-                            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageViewer.xhtml?faces-redirect=true");
+                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
                             return;
                         }
                         else {// NO VISIBILITY
                             FacesContext fc = FacesContext.getCurrentInstance();
-                            sessionUtility.setParameter(eventID);
-                            String contextPath = request.getContextPath();
-                            sessionUtility.setParameter(eventID);
-                            fc.getExternalContext().redirect(contextPath + "/protected/event/EventPageNoVisibility.xhtml?faces-redirect=true");
+                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
                             return;
                         }
                     }
                 }
                 catch (NotFoundException ex) {
-                    error.setMessage("There is an incompatibility between you and the required event");
-                    FacesContext fc = FacesContext.getCurrentInstance();
-                    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
-                    return;
-                }
-                catch (IOException e) {
                     error.setMessage("There is an incompatibility between you and the required event");
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
@@ -158,7 +149,7 @@ public class FilterEvent {
             }
         }
         else {
-            id = sessionUtility.getParameter();
+            id = sessionUtility.getParameterAsClient();
         }
         
         if (id < 0) {

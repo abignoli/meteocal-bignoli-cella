@@ -38,9 +38,6 @@ public class FilterEventCreator {
     @Inject
     private SessionUtility sessionUtility;
 
-    @Inject
-    private ErrorBean error;
-
     @EJB
     private UserManager um;
 
@@ -49,7 +46,7 @@ public class FilterEventCreator {
     private HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
     private final String context = request.getContextPath();
-    private final String errorOutcome = "/Error";
+    private final String errorOutcome = "Error";
 
     @PostConstruct
     public void init() {

@@ -42,8 +42,8 @@ public class FilterCalendarVisible {
 
     private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private final String errorOutcome = "Error";
-    private final String visibleOutcome = "Visible";
-    private final String noVisibleOutcome = "NoVisible";
+    private final String visibleOutcome = "UserVisible";
+    private final String noVisibleOutcome = "UserNoVisible";
     private User loggedUser;
 
     @PostConstruct
@@ -55,14 +55,13 @@ public class FilterCalendarVisible {
     private void setUser(User user) {
         this.loggedUser = user;
     }
-    
 
     public void check(ComponentSystemEvent event) {
         String userB;
         UserUserVisibility visibility;
 
         userB = getUser();
-        
+
         try {
             visibility = um.getVisibilityOverUser(uf.findByUsername(userB).getId());
         }
@@ -79,14 +78,8 @@ public class FilterCalendarVisible {
         }
 
         if (visibility == UserUserVisibility.NOT_VISIBLE) {
-            String contextPath = request.getContextPath();
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/user/UserNoVisibility.xhtml?faces-redirect=true");
-            }
-            catch (IOException ex) {
-                Logger.getLogger(FilterCalendarVisible.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return;
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibleOutcome);
         }
     }
 

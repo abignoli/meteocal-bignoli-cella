@@ -46,7 +46,7 @@ public class FilterEventViewer {
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String errorPath = context + "/Error.xhtml?faces-redirect=true";
+    private final String errorPath = context + "Error";
     
     @PostConstruct
     public void init(){

@@ -12,20 +12,15 @@ import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
-import com.meteocal.web.exceptions.NotValidParameter;
-import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -34,83 +29,62 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class EventPageViewerBean implements Serializable{
+public class EventPageViewerBean implements Serializable {
 
-    private String user,name;
     private Event referredEvent;
     private final HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    private int eventID;
-    
+
+
     @EJB
     EventFacade ef;
-    
-    @Inject
-    SessionUtility sessionUtility;
-    
+
     @EJB
     UserManager um;
-    
+
     private int id;
 
     @PostConstruct
     public void init() {
-        try {
-            id = getId();
-            setReferredEvent(ef.find(id));
-        }
-        catch (NotValidParameter ex) {
-            Logger.getLogger(EventPageViewerBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        id = getId();
+        setReferredEvent(ef.find(id));
     }
 
-    public int getId() throws NotValidParameter {
+    public int getId() {
         String strID;
-
-        if (!sessionUtility.isAParameter()) {
-            strID = request.getParameter("eventID");
-            try {
-                eventID = Integer.parseInt(strID);
-            }
-            catch (NumberFormatException e) {
-                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
-            }
-        }
-        else {
-            eventID = sessionUtility.getParameter();
-        }
-
-        return eventID;
+        strID = request.getParameter("eventID");
+        id = Integer.parseInt(strID);
+        return id;
     }
-    
-    public void setReferredEvent(Event event){
+
+    public void setReferredEvent(Event event) {
         referredEvent = event;
     }
-    
-    public Event getReferredEvent(){
+
+    public Event getReferredEvent() {
         return referredEvent;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return referredEvent.getName();
     }
-    
-    public String getAddress(){
+
+    public String getAddress() {
         return referredEvent.getAddress();
     }
 
-    public String getCity(){
+    public String getCity() {
         return referredEvent.getCity();
     }
-    
-    public String getCountry(){
+
+    public String getCountry() {
         return referredEvent.getCountry();
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return referredEvent.getDescription();
     }
 
-    public List<WeatherForecast> getAdverseConditions(){
+    public List<WeatherForecast> getAdverseConditions() {
         return referredEvent.getWeatherForecasts();
     }
 
@@ -121,37 +95,37 @@ public class EventPageViewerBean implements Serializable{
     public String getParticipants() {
         return referredEvent.getParticipantsAsString();
     }
-    
-    public boolean getIndoor(){
+
+    public boolean getIndoor() {
         return referredEvent.isIndoor();
     }
-    
+
     public boolean getPrivate() {
         return referredEvent.isPrivateEvent();
     }
-    
-    public void cancelPartecipation() throws BusinessException{
+
+    public void cancelPartecipation() throws BusinessException {
         ef.removeParticipant(id, um.getLoggedUser().getId());
     }
-    
+
     public String getStart() {
         return referredEvent.getStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
     }
-    
+
     public String getEnd() {
         return referredEvent.getEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
     }
-    
+
     public String getWeatherConditionsToAvoid() {
         String result = "";
-        
-        for(WeatherCondition wc: referredEvent.getAdverseConditions()) {
+
+        for (WeatherCondition wc : referredEvent.getAdverseConditions()) {
             result += wc.toString() + " ";
         }
-        
+
         return result;
     }
-    
+
     public List<WeatherForecast> getWeatherForecasts() {
         return referredEvent.getWeatherForecasts();
     }

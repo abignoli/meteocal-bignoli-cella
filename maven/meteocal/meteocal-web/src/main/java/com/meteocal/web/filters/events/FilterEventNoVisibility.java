@@ -41,7 +41,7 @@ public class FilterEventNoVisibility {
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
     private final String context = request.getContextPath();
-    private final String errorPath = context + "/Error.xhtml";
+    private final String errorPath = "Error.xhtml";
     
     @PostConstruct
     public void init(){

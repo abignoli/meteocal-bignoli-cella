@@ -39,7 +39,7 @@ and open the template in the editor.
                         <p:ring id="weatherForecasts" value="#{eventPageCreatorBean.weatherForecasts}" var="weatherForecast" styleClass="image-ring" easing="easeInOutBack">
                             <p:panelGrid columns="1">
                                 #{weatherForecast.forecastStart}
-                                <p:graphicImage value="Resources/images/1.png" />
+                                #{weatherForecast.weatherCondition}
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>

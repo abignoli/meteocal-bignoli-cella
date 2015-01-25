@@ -25,7 +25,7 @@ and open the template in the editor.
 
                 <p:column headerText="Name">
                     <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?faces-redirect=true&includeViewParams=true">
-                        <f:viewParam name="eventID" value="#{event.id}" />
+                        <f:param name="eventID" value="#{event.id}" />
                     </p:link>
                 </p:column>
 

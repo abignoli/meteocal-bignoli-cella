@@ -38,9 +38,9 @@ public class FilterCalendar {
 
     private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private final String errorOutcome = "Error";
-    private final String visibleOutcome = "Visible";
-    private final String noVisibleOutcome = "NoVisible";
-    private final String myCalendarOutcome = "MyCalendar";
+    private final String visibleOutcome = "UserVisible";
+    private final String noVisibleOutcome = "UserNoVisible";
+    private final String myCalendarOutcome = "UserMyCalendar";
     private User loggedUser;
 
     @PostConstruct
