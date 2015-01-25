@@ -319,6 +319,16 @@ public class Event {
 
         return false;
     }
+    
+    public boolean isParticipant(int userID) {
+        for (User participant : getParticipants()) {
+            if (participant.getId() == userID) {
+                return true;
+            }
+        }
+
+        return false;
+    }    
 
     public User findParticipant(User u) {
         for (User participant : getParticipants()) {

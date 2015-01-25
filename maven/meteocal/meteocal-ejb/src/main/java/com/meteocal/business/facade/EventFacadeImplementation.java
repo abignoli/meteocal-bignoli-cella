@@ -402,4 +402,14 @@ public class EventFacadeImplementation implements EventFacade {
         return null;
     }
 
+    @Override
+    public boolean isParticipant(int eventID, int userID) throws NotFoundException {
+        Event e = eventDAO.findAndRefresh(eventID);
+        
+        if(e == null)
+            throw new NotFoundException();
+        
+        return e.isParticipant(userID);
+    }
+
 }

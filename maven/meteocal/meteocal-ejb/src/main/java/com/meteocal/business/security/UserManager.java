@@ -82,4 +82,6 @@ public interface UserManager {
     public List<Invitation> getCurrentInvitations();
     
     public List<Event> getEventsWithPrivacyFilter(String username) throws NotFoundException;
+    
+    public boolean isLoggedUserParticipatingTo(int eventID) throws NotFoundException;
 }
