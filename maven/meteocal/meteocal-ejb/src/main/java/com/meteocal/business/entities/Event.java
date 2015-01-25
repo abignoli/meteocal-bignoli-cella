@@ -67,7 +67,7 @@ public class Event {
 //    @Column(name = "adverseCondition")
 //    @Enumerated(EnumType.STRING)
     EnumSet<WeatherCondition> adverseConditions;
-    
+
     private boolean suggestedChangeProvided;
     private boolean suggestedChangeAvailable;
 
@@ -109,17 +109,9 @@ public class Event {
 
     /**
      * Create a new event based on the provided one. The updated fields are:
-     * 
-     * Name
-     * Description
-     * Country
-     * City
-     * Address
-     * Indoor
-     * Private event
-     * Adverse weather conditions set
-     * Start
-     * End
+     *
+     * Name Description Country City Address Indoor Private event Adverse
+     * weather conditions set Start End
      *
      * Name Description Country City Address Indoor flag Privacy flag Adverse
      * weather conditions set Start End
@@ -138,19 +130,20 @@ public class Event {
         address = e.getAddress();
         indoor = e.isIndoor();
         privateEvent = e.isPrivateEvent();
-        
+
         suggestedChangeProvided = false;
         suggestedChangeAvailable = false;
-        
+
         adverseConditions = e.getAdverseConditions();
-        if(adverseConditions == null)
+        if (adverseConditions == null) {
             adverseConditions = EnumSet.noneOf(WeatherCondition.class);
-        
-        validateScheduling(e.getStart(),e.getEnd());
-        
+        }
+
+        validateScheduling(e.getStart(), e.getEnd());
+
         start = e.getStart();
         end = e.getEnd();
-        
+
         status = EventStatus.PLANNED;
     }
 
@@ -551,16 +544,44 @@ public class Event {
     }
 
     public boolean setScheduling(LocalDateTime start, LocalDateTime end) throws InvalidInputException {
-        if(hasDifferentScheduling(start, end)) {
+        if (hasDifferentScheduling(start, end)) {
             validateScheduling(start, end);
-            
+
             this.start = start;
             this.end = end;
             clearSuggestedChange();
-            
+
             return true;
         }
-        
+
         return false;
+    }
+
+    public String getInvitedAsString() {
+        String result = "";
+
+        if (invited != null && invited.size() > 0) {
+            result += invited.get(0).getUsername();
+
+            for (int i = 1; i < invited.size(); i++) {
+                result += ", " + invited.get(i).getUsername();
+            }
+        }
+
+        return result;
+    }
+    
+    public String getParticipantsAsString() {
+        String result = "";
+
+        if (participants != null && participants.size() > 0) {
+            result += participants.get(0).getUsername();
+
+            for (int i = 1; i < participants.size(); i++) {
+                result += ", " + participants.get(i).getUsername();
+            }
+        }
+
+        return result;
     }
 }

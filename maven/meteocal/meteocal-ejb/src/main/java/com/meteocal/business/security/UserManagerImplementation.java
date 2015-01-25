@@ -127,10 +127,7 @@ public class UserManagerImplementation implements UserManager {
     public List<Event> getEventsVisibilityMasked(int userID) throws NotFoundException {
         User u = userDAO.retrieve(userID);
         
-        if(u.isCalendarVisible())
-            return u.getCreatedAndParticipatingTo();
-        else
-            return eventFacade.mask(userDAO.retrieve(userID).getCreatedAndParticipatingTo());
+        return eventFacade.mask(userDAO.retrieve(userID).getCreatedAndParticipatingTo());
     }
 
     @Override

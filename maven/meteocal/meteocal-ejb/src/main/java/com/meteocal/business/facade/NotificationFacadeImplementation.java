@@ -49,14 +49,20 @@ public class NotificationFacadeImplementation implements NotificationFacade {
 
             save(changeNotification);
 
-            notificateParticipantsAndCreator(changeNotification);
+            notificateParticipants(changeNotification);
         }
     }
 
     private void notificateParticipantsAndCreator(Notification notification) {
-        // Notificate Creator
+        notificateCreator(notification);
+        notificateParticipants(notification);
+    }
+    
+    private void notificateCreator(Notification notification) {
         notificateUser(notification, notification.getEvent().getCreator());
-        
+    }
+    
+    private void notificateParticipants(Notification notification) {        
         for (User participant : notification.getEvent().getParticipants()) {
             notificateUser(notification, participant);
         }
@@ -80,7 +86,7 @@ public class NotificationFacadeImplementation implements NotificationFacade {
 
         save(cancelNotification);
 
-        notificateParticipantsAndCreator(cancelNotification);
+        notificateParticipants(cancelNotification);
     }
 
     @Override
@@ -126,7 +132,7 @@ public class NotificationFacadeImplementation implements NotificationFacade {
         
         save(changeSuggestionNotification);
 
-        notificateParticipantsAndCreator(changeSuggestionNotification);
+        notificateCreator(changeSuggestionNotification);
     }
 
 }

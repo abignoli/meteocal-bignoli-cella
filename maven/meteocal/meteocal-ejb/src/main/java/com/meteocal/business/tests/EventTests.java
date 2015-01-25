@@ -100,4 +100,44 @@ public class EventTests {
             Logger.getLogger(EventTests.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public User testCreateAndAskSuggestion1() {
+        User creator = new User();
+        creator.setUsername("u1");
+        creator.setPassword("pw");
+        creator = userManager.register(creator);
+        return creator;
+    }
+    
+    public Event testCreateAndAskSuggestion2(int creatorID) {
+        Event e = new Event();
+        e.setName("n");
+        e.setDescription("d");
+        e.setAddress("");
+        e.setIndoor(false);
+        e.setPrivateEvent(true);
+        
+        e.setCity("Milano");
+        e.setCountry("ITALY");
+        e.setStart(LocalDateTime.now().plusDays(1));
+        e.setEnd(LocalDateTime.now().plusDays(2).minusHours(2));
+        
+        try {
+            return eventFacade.create(e, creatorID);
+        } catch (InvalidInputException ex) {
+            Logger.getLogger(EventTests.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotFoundException ex) {
+            Logger.getLogger(EventTests.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    public void testCreateAndAskSuggestion3(int eventID) {
+        try {
+            eventFacade.askSuggestedChange(eventID);
+        } catch (NotFoundException ex) {
+            Logger.getLogger(EventTests.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

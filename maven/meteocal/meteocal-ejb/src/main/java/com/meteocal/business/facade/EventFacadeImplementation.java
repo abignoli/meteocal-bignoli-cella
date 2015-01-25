@@ -140,6 +140,9 @@ public class EventFacadeImplementation implements EventFacade {
 
         if (e.setScheduling(start, end)) {
             schedulingChanged = true;
+            
+            eventDAO.update(e);
+            eventDAO.flush();
 
             updateWeatherForecastsAsync(e);
         }
@@ -159,6 +162,8 @@ public class EventFacadeImplementation implements EventFacade {
 
         // Updates scheduling and checks weather forecasts
         updateScheduling(dbEntry, e.getStart(), e.getEnd());
+        
+        eventDAO.update(dbEntry);
     }
 
     public void cancel(int eventID) throws BusinessException {
@@ -296,23 +301,31 @@ public class EventFacadeImplementation implements EventFacade {
     }
 
     public List<Event> mask(List<Event> events) {
+        List<Event> result = new ArrayList<Event>();
+        
         // Make sure the events are detached
         for (Event e : events) {
             eventDAO.detach(e);
-
-            mask(e);
+            
+            result.add(mask(e));
         }
 
-        return events;
+        return result;
     }
 
-    private void mask(Event e) {
-        Event result = new Event();
+    private Event mask(Event e) {
+        if(e.isPrivateEvent()) {
+            Event result = new Event();
+            
+            result.setName("");
 
-        result.setStart(e.getStart());
-        result.setEnd(e.getEnd());
+            result.setStart(e.getStart());
+            result.setEnd(e.getEnd());
 
-        e = result;
+            return result;
+        }
+        
+        return e;
     }
 
     @Override

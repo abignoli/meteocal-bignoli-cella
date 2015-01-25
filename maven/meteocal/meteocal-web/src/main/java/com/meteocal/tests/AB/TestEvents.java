@@ -32,4 +32,10 @@ public class TestEvents {
         Event event = eventTests.testCreateAndForecast2(creator.getId());
         eventTests.testCreateAndForecast3(event.getId());
     }
+    
+    public void testCreateAndAskSuggestion() {
+        User creator = eventTests.testCreateAndAskSuggestion1();
+        Event event = eventTests.testCreateAndAskSuggestion2(creator.getId());
+        eventTests.testCreateAndAskSuggestion3(event.getId());
+    }
 }

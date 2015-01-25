@@ -19,28 +19,32 @@ and open the template in the editor.
         <div id="header">
             <ui:include src="/Components/TopBar.xhtml"></ui:include>
         </div>
-        
+
         <h:form>
             <p:panel id="privacyPanel" header="Changing Calendar Visibility Setting" style="margin-top:70px" class="panelForm">     
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     <h:outputText value="Calendar Visibility: " />
                     <p:selectOneButton value="#{settingsEditingBean.editedUser.calendarVisible}">
-                    <f:selectItem itemLabel="Visible" itemValue="#{settingsEditingBean.editedUser.calendarVisible}" />
-                    <f:selectItem itemLabel="Hidden" itemValue="#{!settingsEditingBean.editedUser.calendarVisible}" />
+                        <f:selectItem itemLabel="Visible" itemValue="#{settingsEditingBean.editedUser.calendarVisible}" />
+                        <f:selectItem itemLabel="Hidden" itemValue="#{!settingsEditingBean.editedUser.calendarVisible}" />
                     </p:selectOneButton>
-                    
+
                     <p:outputLabel value="Email" for="email" />
-                    <p:autoComplete id="email" value="#{settingsEditingBean.editedUser.email}" emptyMessage="not required" />
-                    
+                    <p:autoComplete id="email" value="#{settingsEditingBean.editedUser.email}" emptyMessage="not required">
+                    <f:validateRegex pattern="(^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$)?" />
+                    </p:autoComplete>
+
                     <h:outputText value="Previous Password " />
                     <p:password id="previousPassword" value="#{settingsEditingBean.previousPassword}" />
-                    
+
                     <h:outputText value="New Password: " />
-                    <p:password id="newPassword" value="#{settingsEditingBean.editedUser.password}" feedback="true" />
-                    
+                    <p:password id="newPassword" value="#{settingsEditingBean.editedUser.password}" feedback="true">
+                    <f:validateRegex pattern="(\w{4,})?" />
+                    </p:password>
+
                     <h:outputText value="Password Confirmation: " />
                     <p:password id="passwordConfirmation" value="#{settingsEditingBean.confirmationPassword}" feedback="true" />
-                    
+
                     <p:commandButton value="Save" icon="ui-icon-check" action="#{settingsEditingBean.saveSettings()}" type="submit" ajax="false"/>
                 </h:panelGrid>
             </p:panel>

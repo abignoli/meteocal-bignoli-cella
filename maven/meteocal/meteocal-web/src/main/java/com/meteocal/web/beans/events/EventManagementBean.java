@@ -35,7 +35,7 @@ public class EventManagementBean implements Serializable {
     @PostConstruct
     public void init(){
         username = sessionUtility.getLoggedUser();
-        events = um.getLoggedUser().getCreatedAndParticipatingTo();
+        events = um.getLoggedUser().getCreatedAndParticipatingToInTheFuture();
     }
     
     public List<Event> getEvents(){

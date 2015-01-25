@@ -8,10 +8,13 @@ package com.meteocal.web.beans.events;
 import com.meteocal.business.entities.Event;
 import com.meteocal.business.entities.User;
 import com.meteocal.business.entities.WeatherForecast;
+import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -86,12 +89,12 @@ public class EventPageViewerBean implements Serializable{
         return referredEvent.getWeatherForecasts();
     }
 
-    public List<User> getInvited(){
-        return referredEvent.getInvited();
+    public String getInvited() {
+        return referredEvent.getInvitedAsString();
     }
 
-    public List<User> getParticipants(){
-        return referredEvent.getParticipants();
+    public String getParticipants() {
+        return referredEvent.getParticipantsAsString();
     }
     
     public boolean getIndoor(){
@@ -106,6 +109,23 @@ public class EventPageViewerBean implements Serializable{
         ef.removeParticipant(id, um.getLoggedUser().getId());
     }
     
+    public String getStart() {
+        return referredEvent.getStart().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+    }
+    
+    public String getEnd() {
+        return referredEvent.getEnd().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+    }
+    
+    public String getWeatherConditionsToAvoid() {
+        String result = "";
+        
+        for(WeatherCondition wc: referredEvent.getAdverseConditions()) {
+            result += wc.toString() + " ";
+        }
+        
+        return result;
+    }
     
     public List<WeatherForecast> getWeatherForecasts() {
         return referredEvent.getWeatherForecasts();

@@ -40,9 +40,6 @@ and open the template in the editor.
                         <p:link value="#{user.username}" outcome="/protected/user/UserCalendar.xhtml?username=#{user.username}">
                             <f:param name="username" value="#{user.username}"/>
                         </p:link>
-                        <p:link value="#{user.email}" outcome="/protected/user/UserCalendar.xhtml?username=#{user.username}">
-                            <f:param name="username" value="#{user.username}"/>
-                        </p:link>
                         <p:separator />
                     </p:dataList>
                 </p:panel>
@@ -50,9 +47,6 @@ and open the template in the editor.
             <div id="right">
                 <p:panel id="events" header="List of compatible Events" style="margin-top:70px" class="panelForm">     
                     <p:dataList value="#{searchBean.events}" var="event">
-                        <p:link value="#{event.id}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}">
-                            <f:param name="eventID" value="#{event.id}"/>
-                        </p:link>
                         <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}">
                             <f:param name="eventID" value="#{event.id}"/>
                         </p:link>                        

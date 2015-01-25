@@ -22,28 +22,9 @@ and open the template in the editor.
 
         <h:form>    
             <p:dataTable var="event" value="#{eventManagementBean.events}">
-                <p:column headerText="Id">
-                    <p:link value="#{event.id}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}"></p:link>
-                </p:column>
 
                 <p:column headerText="Name">
-                    <h:outputText value="#{event.name}" />
-                </p:column>
-
-                <p:column headerText="Address">
-                    <h:outputText value="#{event.address}" />
-                </p:column>
-
-                <p:column headerText="City">
-                    <h:outputText value="#{event.city}" />
-                </p:column>
-
-                <p:column headerText="Country">
-                    <h:outputText value="#{event.country}" />
-                </p:column>
-                
-                <p:column headerText="Description">
-                    <h:outputText value="#{event.description}" />
+                    <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{event.id}"></p:link>
                 </p:column>
 
                 <p:column headerText="Start">
@@ -52,14 +33,6 @@ and open the template in the editor.
 
                 <p:column headerText="End">
                     <h:outputText value="#{event.end}" />
-                </p:column>
-
-                <p:column headerText="Indoor">
-                    <h:outputText value="#{event.indoor}" />
-                </p:column>
-                
-                <p:column headerText="Private">
-                    <h:outputText value="#{event.privateEvent}" />
                 </p:column>
 
                 <p:column headerText="Status">
