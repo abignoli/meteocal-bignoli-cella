@@ -17,6 +17,7 @@ import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
+
 /**
  *
  * @author Leo
@@ -43,7 +45,7 @@ public class EventCreationBean implements Serializable {
 
     @Inject
     private ErrorBean error;
-    
+
     @EJB
     private WeatherForecastService weatherForecastUpdater;
 
@@ -54,7 +56,7 @@ public class EventCreationBean implements Serializable {
     private EnumSet<WeatherCondition> listChoiche, weatherConditions;
     private Event createdEvent;
     private List<String> cities, countries;
-    private String selectedCountry,participants;
+    private String selectedCountry, participants;
     private List<WeatherCondition> weatherForecast;
 
     @PostConstruct
@@ -76,6 +78,9 @@ public class EventCreationBean implements Serializable {
 
     public String create() {
         int eventID;
+        if(isThereAnError())
+            return "";
+        
         SYSO_Testing.syso("in create()");
         SYSO_Testing.syso("address: " + createdEvent.getAddress() + " name: " + createdEvent.getName());
         SYSO_Testing.syso("city: " + createdEvent.getCity() + " country: " + createdEvent.getCountry());
@@ -143,19 +148,19 @@ public class EventCreationBean implements Serializable {
         this.countries = countries;
     }
 
-    public void setParticipants(String participant){
+    public void setParticipants(String participant) {
         this.participants = participant;
     }
-    
-    public String getParticipants(){
+
+    public String getParticipants() {
         return participants;
     }
-    
-    public void setSelectedCountry(String selectedCountry){
+
+    public void setSelectedCountry(String selectedCountry) {
         this.selectedCountry = selectedCountry;
     }
-    
-    public String getSelectedCountry(){
+
+    public String getSelectedCountry() {
         return selectedCountry;
     }
 
@@ -166,14 +171,23 @@ public class EventCreationBean implements Serializable {
     public void setWeatherForecast(List<WeatherCondition> weatherForecastConditions) {
         this.weatherForecast = weatherForecastConditions;
     }
-    
-    public void loadWeatherConditions(){
+
+    public void loadWeatherConditions() {
         try {
-            weatherForecastUpdater.askForecast(createdEvent.getStart(), createdEvent.getEnd(), createdEvent.getCity(), createdEvent.getCountry() );
+            weatherForecastUpdater.askForecast(createdEvent.getStart(), createdEvent.getEnd(), createdEvent.getCity(), createdEvent.getCountry());
             setWeatherForecast(weatherForecast);
         }
         catch (InvalidInputException ex) {
             Logger.getLogger(EventCreationBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public boolean isThereAnError() {
+        LocalDateTime start, end,now;
+        start = createdEvent.getStart();
+        end = createdEvent.getEnd();
+        now = LocalDateTime.now();
+        
+        return start.isAfter(now.plusMinutes(15)) && start.isBefore(end);
     }
 }

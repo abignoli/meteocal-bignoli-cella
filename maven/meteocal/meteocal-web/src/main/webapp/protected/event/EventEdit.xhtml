@@ -17,7 +17,7 @@ and open the template in the editor.
     <h:body>
         <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />
         <f:event listener="#{filterEventEditing.check}" type="preRenderView" />
-
+        <p:growl/>    
         <ui:include src="/Components/TopBar.xhtml"></ui:include>
         <h:form>
             <p:panel id="privacyPanel" header="Event Editing | creator only" style="margin-top:70px" class="panelForm">     

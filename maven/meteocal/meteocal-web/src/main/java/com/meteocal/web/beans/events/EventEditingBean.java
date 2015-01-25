@@ -15,12 +15,15 @@ import com.meteocal.geography.GeographicRepository;
 import com.meteocal.web.converters.WeatherConditionsConverter;
 import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -82,6 +85,10 @@ public class EventEditingBean implements Serializable {
     public String eventEditing() {
         int eventID;
         event.setCountry(selectedCountry);
+        if( isThereAnError() ){
+            return "";
+        }
+            
         try {
             ef.updateData(getEvent());
         }
@@ -165,4 +172,12 @@ public class EventEditingBean implements Serializable {
         return weatherConv;
     }
 
+    public boolean isThereAnError() {
+        LocalDateTime start, end,now;
+        start = event.getStart();
+        end = event.getEnd();
+        now = LocalDateTime.now();
+        
+        return start.isAfter(now.plusMinutes(15)) && start.isBefore(end);
+    }
 }
