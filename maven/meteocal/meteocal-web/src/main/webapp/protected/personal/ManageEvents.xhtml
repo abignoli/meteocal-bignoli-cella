@@ -24,7 +24,7 @@ and open the template in the editor.
             <p:dataTable var="event" value="#{eventManagementBean.events}">
 
                 <p:column headerText="Name">
-                    <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?faces-redirect=true&includeViewParams=true">
+                    <p:link value="#{event.name}" outcome="/protected/event/EventPage.xhtml?faces-redirect=true">
                         <f:param name="eventID" value="#{event.id}" />
                     </p:link>
                 </p:column>
