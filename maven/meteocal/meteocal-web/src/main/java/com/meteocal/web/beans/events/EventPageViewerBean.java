@@ -178,7 +178,7 @@ public class EventPageViewerBean implements Serializable {
         return result;
     }
 
-    public boolean isParticipantFlag() {
+    public boolean getParticipantFlag() {
         try {
             return um.isLoggedUserParticipatingTo(id);
         }

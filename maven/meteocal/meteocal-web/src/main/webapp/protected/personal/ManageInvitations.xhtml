@@ -30,9 +30,9 @@ and open the template in the editor.
                             </f:facet>
                             
                             <h:outputText value="#{invitation.user.username}" />
-                            you were invite to the event:  
+                            You were invited to   
                             <p:link value="#{invitation.event.name}" outcome="/protected/event/EventPage.xhtml?eventID=#{invitation.event.id}"></p:link>
-                            Would you like to join him?
+                            Would you like to join?
 
                             <p:commandButton value="Join" action="#{invitationManagementBean.accept()}" icon="ui-icon-arrowrefresh-1-w" >
                                 <f:param name="eventID" value="#{invitation.eventID}" />
