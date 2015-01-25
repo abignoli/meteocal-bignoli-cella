@@ -31,7 +31,7 @@ and open the template in the editor.
                     <h:panelGrid columns="2">
                         <h:outputText value="Name: " />
                         <h:outputText value="#{eventPageViewerBean.name}" />
-                        
+
                         <h:outputText value="Address: " />
                         <h:outputText value="#{eventPageViewerBean.address}" />
 
@@ -43,7 +43,7 @@ and open the template in the editor.
                                 #{weatherForecast.forecastEnd}
                             </p:panelGrid>
                         </p:ring>
-                        
+
                         <h:outputText value="City: " />
                         <h:outputText value="#{eventPageViewerBean.city}" />
 
@@ -55,28 +55,32 @@ and open the template in the editor.
 
                         <h:outputText value="Indoor: " />
                         <h:outputText value="#{eventPageViewerBean.indoor}" />
-                        
+
                         <h:outputText value="Private: " />
                         <h:outputText value="#{eventPageViewerBean.private}" />
-                        
+
                         <h:outputText value="Start:" />
                         <h:outputText value="#{eventPageViewerBean.start}" />
-                        
+
                         <h:outputText value="End:" />
                         <h:outputText value="#{eventPageViewerBean.end}" />
-                        
+
                         <h:outputText value="Weather conditions to avoid:" />
                         <h:outputText value="#{eventPageViewerBean.weatherConditionsToAvoid}" />
-                                
+
                         <h:outputText value="Invited: " />
                         <h:outputText value="#{eventPageViewerBean.invited}"/>
-                        
+
                         <h:outputText value="Participants: " />
                         <h:outputText value="#{eventPageViewerBean.participants}"/>
-                        
-                        <h:outputText value="Cancel the participation: "/>
-                        <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" />
                     </h:panelGrid>
+                </h:form>
+            </h:panelGrid>
+            <p:separator/>
+            <h:panelGrid>
+                <h:form>
+                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.confirmPartecipation()}" value="partecipate" rendered="#{!eventPageViewerBean.renderDelete}"/>
+                    <p:commandButton type="submit" ajax="false" action="#{eventPageViewerBean.cancelPartecipation()}" value="cancel" rendered="#{eventPageViewerBean.renderDelete}"/>
                 </h:form>
             </h:panelGrid>
         </p:panel>
