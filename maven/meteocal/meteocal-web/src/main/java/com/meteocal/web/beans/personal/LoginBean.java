@@ -36,9 +36,6 @@ public class LoginBean {
     @Inject
     private SessionUtility sessionUtility;
 
-    @Inject
-    private IndexRender ir;
-
     @EJB
     UserFacade uf;
 
@@ -87,8 +84,6 @@ public class LoginBean {
         catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             SYSO_Testing.syso("LoginBean. Login failed" + e.toString());
-            ir.setErrorLogin(true);
-
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credentials are not valid!", "Credentials are not valid!"));
             return "/Index.xhtml";
         }

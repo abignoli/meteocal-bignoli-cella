@@ -6,6 +6,7 @@
 package com.meteocal.web.beans.user;
 
 import com.meteocal.business.entities.Event;
+import com.meteocal.business.entities.User;
 import com.meteocal.business.exceptions.NotFoundException;
 import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
@@ -34,21 +35,25 @@ public class UserCalendarBean implements Serializable{
     private ScheduleModel visibleEvents;
     private List<Event> userEvents;
     private final String errorOutcome = "Error";
+    private String user;
     
     @Inject
     SessionUtility sessionUtility;
 
     @EJB
     UserManager um;
+    
+    @EJB
+    UserFacade uf;
 
     @PostConstruct
     public void init() {
         Date d1, d2;
         DefaultScheduleEvent tmpEvent;
         FacesContext fc = FacesContext.getCurrentInstance();
-        
+        user = sessionUtility.getUser();
         try {
-            userEvents = um.getEventsVisibilityMasked(um.getLoggedUser().getId());
+            userEvents = um.getEventsWithPrivacyFilter(user);
         }
         catch (NotFoundException ex) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
