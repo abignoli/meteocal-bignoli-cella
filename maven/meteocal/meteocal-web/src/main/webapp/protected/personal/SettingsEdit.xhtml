@@ -25,8 +25,8 @@ and open the template in the editor.
                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="settingEdit">
                     <h:outputText value="Calendar Visibility: " />
                     <p:selectOneButton value="#{settingsEditingBean.editedUser.calendarVisible}">
-                        <f:selectItem itemLabel="Visible" itemValue="#{settingsEditingBean.editedUser.calendarVisible}" />
-                        <f:selectItem itemLabel="Hidden" itemValue="#{!settingsEditingBean.editedUser.calendarVisible}" />
+                        <f:selectItem itemLabel="Visible" itemValue="#{!settingsEditingBean.editedUser.calendarVisible}" />
+                        <f:selectItem itemLabel="Hidden" itemValue="#{settingsEditingBean.editedUser.calendarVisible}" />
                     </p:selectOneButton>
 
                     <p:outputLabel value="Email" for="email" />

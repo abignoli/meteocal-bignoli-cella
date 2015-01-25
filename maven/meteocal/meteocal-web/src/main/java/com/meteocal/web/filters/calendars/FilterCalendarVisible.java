@@ -79,8 +79,11 @@ public class FilterCalendarVisible {
 
         if (visibility == UserUserVisibility.NOT_VISIBLE) {
             FacesContext fc = FacesContext.getCurrentInstance();
+            sessionUtility.setUser(userB);
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibleOutcome);
         }
+        sessionUtility.setUser(userB);
+        return;
     }
 
     private boolean isNotLogged() {
@@ -97,9 +100,9 @@ public class FilterCalendarVisible {
             user = request.getParameter("username");
         }
         else {
-            user = sessionUtility.getLoggedUser();
+            user = sessionUtility.getUser();
         }
-
+        
         return user;
     }
 }

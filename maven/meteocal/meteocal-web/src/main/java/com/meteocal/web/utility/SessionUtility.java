@@ -89,7 +89,7 @@ public class SessionUtility implements Serializable {
         return this.loggedUserName != null;
     }
     
-    public void setUser(String username) {
+    public void setUser(String username) { 
         requiredUser = username;
         isUser = true;
     }

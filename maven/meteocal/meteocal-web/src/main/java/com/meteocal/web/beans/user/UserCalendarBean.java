@@ -66,4 +66,8 @@ public class UserCalendarBean implements Serializable{
     public ScheduleModel getVisibleEvents(){
         return visibleEvents;
     }
+    
+    public void setVisibleEvents(ScheduleModel events){
+        visibleEvents = events;
+    }
 }
