@@ -12,15 +12,20 @@ import com.meteocal.business.entities.shared.WeatherCondition;
 import com.meteocal.business.exceptions.BusinessException;
 import com.meteocal.business.facade.EventFacade;
 import com.meteocal.business.security.UserManager;
+import com.meteocal.web.exceptions.NotValidParameter;
+import com.meteocal.web.utility.SessionUtility;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -39,6 +44,9 @@ public class EventPageViewerBean implements Serializable{
     @EJB
     EventFacade ef;
     
+    @Inject
+    SessionUtility sessionUtility;
+    
     @EJB
     UserManager um;
     
@@ -46,15 +54,32 @@ public class EventPageViewerBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        id = getId();
-        setReferredEvent(ef.find(id));
+        try {
+            id = getId();
+            setReferredEvent(ef.find(id));
+        }
+        catch (NotValidParameter ex) {
+            Logger.getLogger(EventPageViewerBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public int getId() {
+    public int getId() throws NotValidParameter {
         String strID;
-        strID = request.getParameter("eventID");
-        id = Integer.parseInt(strID);
-        return id;
+
+        if (!sessionUtility.isAParameter()) {
+            strID = request.getParameter("eventID");
+            try {
+                eventID = Integer.parseInt(strID);
+            }
+            catch (NumberFormatException e) {
+                throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
+            }
+        }
+        else {
+            eventID = sessionUtility.getParameter();
+        }
+
+        return eventID;
     }
     
     public void setReferredEvent(Event event){

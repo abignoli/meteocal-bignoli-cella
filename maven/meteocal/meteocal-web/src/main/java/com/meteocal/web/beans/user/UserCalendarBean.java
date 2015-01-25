@@ -11,10 +11,13 @@ import com.meteocal.business.facade.UserFacade;
 import com.meteocal.business.security.UserManager;
 import com.meteocal.web.converters.ConverterLocalDateTimeAndDate;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -25,7 +28,9 @@ import org.primefaces.model.ScheduleModel;
  *
  * @author Leo
  */
-public class UserCalendarBean {
+@ManagedBean
+@ViewScoped
+public class UserCalendarBean implements Serializable{
     private ScheduleModel visibleEvents;
     private List<Event> userEvents;
     private final String errorOutcome = "Error";
@@ -35,9 +40,6 @@ public class UserCalendarBean {
 
     @EJB
     UserManager um;
-    
-    @EJB
-    UserFacade uf;
 
     @PostConstruct
     public void init() {
@@ -59,6 +61,9 @@ public class UserCalendarBean {
             tmpEvent = new DefaultScheduleEvent(myEvent.getName(), d1, d2, myEvent.getId());
             visibleEvents.addEvent(tmpEvent);
         }
-
+    }
+    
+    public ScheduleModel getVisibleEvents(){
+        return visibleEvents;
     }
 }

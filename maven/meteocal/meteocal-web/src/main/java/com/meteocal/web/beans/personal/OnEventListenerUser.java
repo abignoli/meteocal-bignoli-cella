@@ -24,7 +24,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 
@@ -34,13 +33,13 @@ import org.primefaces.model.ScheduleEvent;
  */
 @ManagedBean
 @ViewScoped
-public class OnEventSelectListener {
+public class OnEventListenerUser {
 
     public static final String creatorOutcome = "Creator";
     public static final String errorOutcome = "Error";
     public static final String viewerOutcome = "Viewer";
     public static final String noVisibilityOutcome = "noVisibility";
-    
+ 
     @Inject
     SessionUtility sessionUtility;
 
@@ -57,6 +56,7 @@ public class OnEventSelectListener {
 
     @PostConstruct
     public void init() {
+        
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
@@ -67,23 +67,18 @@ public class OnEventSelectListener {
         String username = sessionUtility.getLoggedUser();
 
         try {
+            visibility = um.getVisibilityOverEvent(eventID);
             sessionUtility.setParameter(eventID);
             SYSO_Testing.syso("FilterEvent. Username " + username);
             SYSO_Testing.syso("FilterEvent. I'm logged, and I've to check the visibility");
-            
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            String contextPath = request.getContextPath();
-            sessionUtility.setParameter(eventID);
-            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPage.xhtml?faces-redirect=true");
-
-            /*if (visibility == CREATOR) {
+            if (visibility == CREATOR) {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 sessionUtility.setParameter(eventID);
                 //fc.getApplication().getNavigationHandler().handleNavigation(fc, null, creatorOutcome);
                 HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                 String contextPath = request.getContextPath();
-                fc.getExternalContext().redirect(contextPath + "/protected/event/EventPageCreator.xhtml?faces-redirect=true");
-
+                FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageCreator.xhtml?faces-redirect=true");
+                
                 return;
             }
             else {
@@ -93,7 +88,8 @@ public class OnEventSelectListener {
                     //fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String contextPath = request.getContextPath();
-                    fc.getExternalContext().redirect(contextPath + "/protected/event/EventPageViewer.xhtml?faces-redirect=true");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageViewer.xhtml?faces-redirect=true");
+                    
                     return;
                 }
                 else {// NO VISIBILITY
@@ -102,21 +98,22 @@ public class OnEventSelectListener {
                     //fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String contextPath = request.getContextPath();
-                    fc.getExternalContext().redirect(contextPath + "/protected/event/EventPageNoVisibility.xhtml?faces-redirect=true");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageNoVisibility.xhtml?faces-redirect=true");
+                
                     return;
                 }
-            }*/
-//        }
-//        catch (NotFoundException ex) {
-//            error.setMessage("There is an incompatibility between you and the required event");
-//            FacesContext fc = FacesContext.getCurrentInstance();
-//            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+            }
         }
-        catch (IOException ex) {
-            Logger.getLogger(OnEventSelectListener.class.getName()).log(Level.SEVERE, null, ex);
+        catch (NotFoundException ex) {
+            error.setMessage("There is an incompatibility between you and the required event");
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
         }
-        return;
+        catch (IOException ex) {
+            Logger.getLogger(OnEventListenerUser.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+        }
+        return; 
     }
 }

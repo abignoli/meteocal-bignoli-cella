@@ -79,8 +79,13 @@ public class FilterCalendarVisible {
         }
 
         if (visibility == UserUserVisibility.NOT_VISIBLE) {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibleOutcome);
+            String contextPath = request.getContextPath();
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/user/UserNoVisibility.xhtml?faces-redirect=true");
+            }
+            catch (IOException ex) {
+                Logger.getLogger(FilterCalendarVisible.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return;
         }
     }

@@ -110,6 +110,7 @@ public class LoginBean {
         request.getSession().invalidate();
         try {
             contextPath = request.getContextPath();
+            
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Logout!"));
         
             FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/Index.xhtml?faces-redirect=true");

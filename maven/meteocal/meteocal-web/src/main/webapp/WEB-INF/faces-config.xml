@@ -3,6 +3,7 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <!--
     <navigation-rule>
         <from-view-id>/protected/SearchResults.xhtml</from-view-id>˙
         <navigation-case>
@@ -18,7 +19,7 @@
             <to-view-id>/protected/user/UserNoVisibility.xhtml</to-view-id>	        
         </navigation-case>
     </navigation-rule>
-    
+    -->
     <navigation-rule>
         <from-view-id>/protected/*</from-view-id>˙   
         <navigation-case>
@@ -27,7 +28,7 @@
         </navigation-case>
     </navigation-rule>
     
-
+    <!--
     <navigation-rule>
         <from-view-id>/protected/personal/HomeCalendar.xhtml</from-view-id>˙
         <navigation-case>
@@ -88,10 +89,26 @@
         <from-view-id>/protected/user/UserCalendar.xhtml</from-view-id>˙
         <navigation-case>
             <from-outcome>NoVisibility</from-outcome>
-            <to-view-id>/protected/user/UserNoVisibility.xhtml</to-view-id>
+            <to-view-id>/protected/eventEventPageNoVisibility.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-        
+    
+    <navigation-rule>
+        <from-view-id>/protected/user/UserCalendar.xhtml</from-view-id>˙
+        <navigation-case>
+            <from-outcome>Creator</from-outcome>
+            <to-view-id>/protected/event/EventPageCreator.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/protected/user/UserCalendar.xhtml</from-view-id>˙
+        <navigation-case>
+            <from-outcome>Viewer</from-outcome>
+            <to-view-id>/protected/event/EventPageViewer.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    -->    
     <converter>
         <description>A converter for weather conditions</description>
         <converter-id>WeatherConditionsConverter</converter-id>

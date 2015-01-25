@@ -15,6 +15,7 @@ import com.meteocal.web.beans.component.ErrorBean;
 import com.meteocal.web.exceptions.NotValidParameter;
 import com.meteocal.web.utility.SYSO_Testing;
 import com.meteocal.web.utility.SessionUtility;
+import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -45,7 +46,7 @@ public class FilterEvent {
 
     private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
-    private final String initialContext =  "Home";
+    private final String initialContext = "Home";
     private final String errorOutcome = "Error";
     private final String creatorOutcome = "Creator";
     private final String viewerOutcome = "Viewer";
@@ -78,8 +79,10 @@ public class FilterEvent {
         try {
             if (isNotLogged()) {
                 SYSO_Testing.syso("I'm not logged");
+
                 FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, initialContext);
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+
                 return;
             }
             else {
@@ -91,27 +94,35 @@ public class FilterEvent {
                     SYSO_Testing.syso("FilterEvent. Username " + username);
                     SYSO_Testing.syso("FilterEvent. I'm logged, and I've to check the visibility");
                     if (visibility == CREATOR) {
-                        FacesContext fc = FacesContext.getCurrentInstance();
+                        String contextPath = request.getContextPath();
                         sessionUtility.setParameter(eventID);
-                        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, creatorOutcome);
+                        FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageCreator.xhtml?faces-redirect=true");
                         return;
                     }
                     else {
                         if (visibility == VIEWER) {
-                            FacesContext fc = FacesContext.getCurrentInstance();
+                            String contextPath = request.getContextPath();
                             sessionUtility.setParameter(eventID);
-                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, viewerOutcome);
+                            FacesContext.getCurrentInstance().getExternalContext().redirect(contextPath + "/protected/event/EventPageViewer.xhtml?faces-redirect=true");
                             return;
                         }
                         else {// NO VISIBILITY
                             FacesContext fc = FacesContext.getCurrentInstance();
                             sessionUtility.setParameter(eventID);
-                            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, noVisibilityOutcome);
+                            String contextPath = request.getContextPath();
+                            sessionUtility.setParameter(eventID);
+                            fc.getExternalContext().redirect(contextPath + "/protected/event/EventPageNoVisibility.xhtml?faces-redirect=true");
                             return;
                         }
                     }
                 }
                 catch (NotFoundException ex) {
+                    error.setMessage("There is an incompatibility between you and the required event");
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
+                    return;
+                }
+                catch (IOException e) {
                     error.setMessage("There is an incompatibility between you and the required event");
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.getApplication().getNavigationHandler().handleNavigation(fc, null, errorOutcome);
@@ -147,8 +158,9 @@ public class FilterEvent {
             }
         }
         else {
-            id = sessionUtility.getParameterAsClient();
+            id = sessionUtility.getParameter();
         }
+        
         if (id < 0) {
             throw new NotValidParameter(NotValidParameter.MISSING_PARAMETER);
         }

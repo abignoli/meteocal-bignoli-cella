@@ -49,7 +49,7 @@ public class FilterEventEditing {
     private HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
     private final String context = request.getContextPath();
-    private final String errorPath = context + "/Error";
+    private final String errorPath = context + "Error";
     private final String indexPath = context + "/Index";
     private final String initialContext = context + "/protected/personal/HomeCalendar";
 
