@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>MeteoCal Registration</title>
+        <style>
+            .panelForm{
+                width: 47%;
+                height: 300px;
+                margin: 1%;
+                float: left;
+            }
+        </style>
+        <link rel="stylesheet" href="%PATH%/jquery-ui.css" />  
+        <link rel="stylesheet" href="%PATH%/theme.css" />  
+        <link rel="stylesheet" href="%PATH%/prime-ui-min.css" />  
+        <script type="text/javascript" src="%PATH%/jquery.js"></script>  
+        <script type="text/javascript" src="%PATH%/jquery-ui.js"></script>  
+        <script type="text/javascript" src="%PATH%/prime-ui.js"></script>  
+    </h:head>
+    <h:body>
+    	<h:form>
+            <p:panel id="registrationPanel" header="Registration" style="margin-bottom:20px" class="panelForm">
+                <h:panelGrid columns="3" id="registrationGrid">
+                    <p:outputLabel value="Username" for="userRegistration" />
+                    <p:inputText id="userRegistration" value="#{registrationBean.user.username}" required="true" requiredMessage="this field is compulsory">
+                    <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}"/>
+                    </p:inputText>
+                    <p:message for="userRegistration" severity="error"/>
+                    
+                    <p:outputLabel value="Password" for="passwordRegistration"/>
+                    <p:password id="passwordRegistration" value="#{registrationBean.user.password}" feedback="true" requiredMessage="this field is compulsory" required="true">
+                    <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
+                    </p:password>
+                    <p:message for="passwordRegistration" severity="error"/>
+                    
+                    
+                    <p:outputLabel value="Password Confirmation" for="passwordConfirmation"/>
+                    <p:password id="passwordConfirmation" value="#{registrationBean.passwordConfirmation}" required="true" requiredMessage="this field is compulsory">
+                    <f:validateLength minimum="4" />
+                    <f:validateRegex pattern="\w{4,}" />
+                    </p:password>
+                    <p:message for="passwordConfirmation" severity="error"/>
+                    
+                    <p:commandButton action="#{registrationBean.register()}" value="Signup" type="submit" ajax="false" styleClass="block"/>
+                </h:panelGrid>
+                <p:separator/>
+                <p:growl/>
+            </p:panel>
+	</h:form> 
+        
+        <h:form>
+            <p:panel id="loginPanel" header="Login" style="margin-bottom:20px"  class="panelForm">
+                <h:panelGrid columns="3" id="loginGrid">
+                    <p:outputLabel value="Username" for="userLogin" />
+                    <p:inputText id="userLogin" value="#{loginBean.username}" required="true" requiredMessage="this field is compulsory">
+                    <f:validateLength minimum="4" />
+                    </p:inputText>
+                    <p:message for="userLogin" severity="error"/>
+                    
+                    <p:outputLabel value="Password" for="pswLog"/>
+                    <p:password id="pswLog" value="#{loginBean.password}" required="true" requiredMessage="this field is compulsory">
+                    <f:validateLength minimum="4" />
+                    </p:password>
+                    <p:message for="pswLog" severity="error"/>
+                    
+                    <p:commandButton action="#{loginBean.login()}" value="Login" type="submit" ajax="false" styleClass="block" />
+                </h:panelGrid>
+                <p:separator/>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

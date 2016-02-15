@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Settings View</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            #main{
+                text-align: center;
+            }
+        </style>
+    </h:head>
+    <body>
+        <f:event listener="#{notLoggedFilter.check}" type="preRenderView" />
+        <div id="header">
+            <ui:include src="/Components/TopBar.xhtml"></ui:include>
+        </div>
+        <div id="main">
+            <h:form id="form">
+                <p:panelGrid columns="2">
+
+                    <h:outputText value="Username:" />
+                    <h:outputText value="#{settingsBean.username}" />
+
+                    <h:outputText value="Mail:" />
+                    <h:outputText value="#{settingsBean.email}" />
+
+                    <h:outputText value="Public calendar:" />
+                    <h:outputText value="#{settingsBean.privacyMod}" />
+                    
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="edit" action="/protected/personal/SettingsEdit?faces-redirect=true" type="submit" ajax="false" styleClass="block"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+            </h:form>
+        </div>
+    </body>
+</html>

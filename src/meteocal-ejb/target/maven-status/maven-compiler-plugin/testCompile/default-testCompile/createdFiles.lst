@@ -1,0 +1,3 @@
+com\meteocal\business\forecast\WeatherForecastServiceIT.class
+com\meteocal\business\forecast\GeographicRepositoryIT.class
+com\meteocal\business\forecast\UseManagerIT.class
