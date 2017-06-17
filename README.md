@@ -1,6 +1,6 @@
 # meteocal-bignoli-cella
 
-MeteoCal is a Web Application that helps users in organizing events, managing scheduling and monitoring weather forecasts. 
+MeteoCal is a web application that helps users in organizing events, managing scheduling and monitoring weather forecasts. 
 
 Registered users are able to create events and invite any number of other users in the platform to participate. 
 
